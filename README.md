@@ -1,20 +1,22 @@
-# FantaXI
+<div align="center">
+  <img src="assets/images/fantaxi.png" alt="FantaXI logo" width="180" />
+  <h1>FantaXI</h1>
+  <p>A Fantasy Premier League companion for your squad, leagues, and live gameweeks.</p>
+</div>
 
-FantaXI is a Flutter dashboard for following a Fantasy Premier League team. It brings manager details, squad picks, league standings, season history, live gameweek scores, and player comparisons into one app.
-
-The app uses the public Fantasy Premier League API and a dark, sports-inspired interface.
+FantaXI is a Flutter app for following a Fantasy Premier League manager entry. It brings team picks, league standings, season history, live gameweek scores, and player comparisons together in a dark, football-focused dashboard.
 
 ## Features
 
-- **Home dashboard** — manager overview, gameweek status, league summaries, and quick actions.
-- **Squad picks** — view a manager's team and formation for a selected gameweek.
-- **Leagues** — browse classic league standings with search and pagination.
-- **History** — review season performance and gameweek results.
-- **Live gameweek** — follow player points and live statistics.
-- **Player market** — search and compare players.
-- **Onboarding** — save a manager entry ID for personalized data.
+- **Home dashboard** - manager overview, gameweek status, league summaries, and quick actions.
+- **Squad picks** - view a manager's lineup and formation for a gameweek.
+- **Leagues** - browse classic league standings, search entries, and load additional pages.
+- **History** - review season performance and gameweek results.
+- **Live gameweek** - follow player points and live statistics.
+- **Player market** - search and compare players.
+- **Onboarding** - connect the app to a manager entry ID.
 
-## Built with
+## Technology
 
 - Flutter and Dart
 - `flutter_bloc` and Cubit for state management
@@ -22,26 +24,26 @@ The app uses the public Fantasy Premier League API and a dark, sports-inspired i
 - `dio` for HTTP requests
 - `get_it` for dependency injection
 - `dartz` for typed repository results
-- Premier League Fantasy API: `https://fantasy.premierleague.com/api`
+- [Fantasy Premier League API](https://fantasy.premierleague.com/api)
 
 ## Getting started
 
 ### Requirements
 
-- Flutter SDK compatible with Dart `^3.7.0`
-- Xcode for iOS builds on macOS
-- Android Studio or an Android SDK for Android builds
+- Flutter SDK with Dart `^3.7.0`
+- Android Studio and Android SDK for Android development
+- Xcode on macOS for iOS development
 
-### Run locally
+### Install and run
 
 ```bash
-git clone <repository-url>
-cd fantasy
+git clone https://github.com/ElsaidAtif14/FantaXI.git
+cd FantaXI
 flutter pub get
 flutter run
 ```
 
-To build a release, use the Flutter build command for your target platform. For example:
+Choose a connected device with `flutter devices`. To create an Android release APK:
 
 ```bash
 flutter build apk --release
@@ -49,39 +51,36 @@ flutter build apk --release
 
 ## Architecture
 
-The code is organized by feature under `lib/features/`, with shared infrastructure in `lib/core/` and reusable UI in `lib/shared/`.
+The app uses a feature-first structure. Each API-backed feature separates its presentation Cubit, domain repository contract, data repository implementation, and response models.
 
-API-backed features use a repository flow:
+API requests follow this flow:
 
-1. A presentation Cubit requests data from a domain repository interface.
-2. The data repository implementation calls `DioClient` and maps the response into a typed model.
-3. Repository methods return `Either<Failure, Model>` so request or parsing errors are represented as failures.
-4. The Cubit emits loading, loaded, or error states for the UI.
+1. A Cubit requests data through a repository interface.
+2. The repository implementation calls `DioClient` and parses a typed model.
+3. The repository returns `Either<Failure, Model>` to represent success or failure.
+4. The Cubit emits loading, loaded, or error state for the UI.
 
-Repositories and Cubits are registered in `lib/core/di/injection.dart`. API paths and local storage keys are defined in `lib/core/constants/app_constants.dart`.
+Repositories and Cubits are registered in `lib/core/di/injection.dart`. API endpoints and local storage keys are defined in `lib/core/constants/app_constants.dart`.
 
 ```text
 lib/
-├── core/          # API client, dependency injection, routing, errors, theme
-├── features/      # bootstrap, history, home, league, live, manager,
-│                  # market, onboarding, picks, splash
-└── shared/        # reusable widgets
+|-- core/       # API client, dependency injection, routing, errors, and theme
+|-- features/   # bootstrap, history, home, league, live, manager, market,
+|               # onboarding, picks, and splash
+`-- shared/     # reusable widgets
 ```
 
-## Data and privacy
+## Data and generated files
 
-FantaXI reads football data from the public Fantasy Premier League API. The manager entry ID and onboarding status are stored locally using the app's configured storage keys. No API credentials are required for the configured endpoints.
+FantaXI reads football data from the public Fantasy Premier League API. The manager entry ID and onboarding status are stored locally on the device. The configured API endpoints do not require credentials.
 
-## Development
+Build outputs, local tool state, and generated platform files are excluded through `.gitignore`. Run Flutter and platform builds locally; do not commit generated `build/` directories.
+
+## Development commands
 
 ```bash
 flutter analyze
 flutter test
-```
-
-Format Dart files with:
-
-```bash
 dart format lib
 ```
 
