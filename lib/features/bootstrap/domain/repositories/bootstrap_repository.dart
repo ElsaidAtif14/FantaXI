@@ -5,5 +5,5 @@ import 'package:fantasy/features/bootstrap/data/models/bootstrap_model.dart';
 export 'package:fantasy/features/bootstrap/data/models/bootstrap_model.dart';
 
 abstract class BootstrapRepository {
-  Future<Either<Failure, BootstrapModel>> getBootstrap();
+  Future<Either<Failure, BootstrapModel>> getBootstrap({bool refresh = false});
 }

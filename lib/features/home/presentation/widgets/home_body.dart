@@ -25,11 +25,13 @@ class HomeBody extends StatelessWidget {
   const HomeBody({
     super.key,
     this.managerId,
+    this.onRefreshManager,
     this.isEntryIdLoading = false,
     this.entryIdError,
   });
 
   final int? managerId;
+  final ValueChanged<int>? onRefreshManager;
   final bool isEntryIdLoading;
   final String? entryIdError;
 
@@ -50,7 +52,7 @@ class HomeBody extends StatelessWidget {
             title: 'Home',
             onSettingsTap:
                 () => _showSettings(context, hasManagerId: hasManagerId),
-            isHome: true,
+            showActions: true,
           ),
           bottomNavigationBar: const AppNavigationDock(currentIndex: 0),
           body: DecoratedBox(
@@ -89,9 +91,7 @@ class HomeBody extends StatelessWidget {
                         HomeManagerCard(
                           manager: state.manager,
                           onRefresh:
-                              () => context.read<ManagerCubit>().loadManager(
-                                state.manager.id,
-                              ),
+                              () => onRefreshManager?.call(state.manager.id),
                           onShare:
                               () => _copyManagerSummary(context, state.manager),
                         ),

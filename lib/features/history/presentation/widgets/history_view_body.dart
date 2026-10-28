@@ -27,10 +27,10 @@ class _HistoryViewBodyState extends State<HistoryViewBody> {
     return Scaffold(
       extendBody: true,
       bottomNavigationBar: const AppNavigationDock(
-        currentIndex: 3,
+        currentIndex: 4,
         showLive: true,
       ),
-      appBar: CustomAppBar(title: 'History', isHome: false),
+      appBar: CustomAppBar(title: 'History', showActions: false),
       body: BlocBuilder<HistoryCubit, HistoryState>(
         builder: (context, state) {
           if (state is HistoryLoading) {
@@ -49,7 +49,7 @@ class _HistoryViewBodyState extends State<HistoryViewBody> {
                 icon: Icons.cloud_off_outlined,
                 message: state.message,
                 actionLabel: 'Try again',
-                onAction: () {},
+                onAction: () => context.read<HistoryCubit>().retry(),
               ),
             );
           }

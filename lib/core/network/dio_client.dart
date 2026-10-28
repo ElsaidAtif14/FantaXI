@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fantasy/core/constants/app_constants.dart';
 import 'package:fantasy/core/error/expentions.dart';
 
@@ -19,15 +20,18 @@ class DioClient {
       ),
     );
 
-    _dio.interceptors.add(
-      LogInterceptor(
-        requestBody: true,
-        error: true,
-        requestHeader: true,
-        responseBody: true,
-        request: true,
-      ),
-    );
+    if (kDebugMode) {
+      _dio.interceptors.add(
+        LogInterceptor(
+          requestBody: false,
+          error: true,
+          requestHeader: false,
+          responseBody: false,
+          responseHeader: false,
+          request: true,
+        ),
+      );
+    }
   }
 
   Future get(String endpoint, {Map<String, dynamic>? queryParams}) async {
@@ -36,6 +40,26 @@ class DioClient {
       return response.data as Map<String, dynamic>;
     } on DioException catch (e) {
       handleDioException(e);
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getList(
+    String endpoint, {
+    Map<String, dynamic>? queryParams,
+  }) async {
+    try {
+      final response = await _dio.get(endpoint, queryParameters: queryParams);
+      final data = response.data;
+      if (data is! List) {
+        throw const FormatException('Expected a list response from the API.');
+      }
+      return data
+          .whereType<Map>()
+          .map((item) => Map<String, dynamic>.from(item))
+          .toList();
+    } on DioException catch (e) {
+      handleDioException(e);
+      rethrow;
     }
   }
 

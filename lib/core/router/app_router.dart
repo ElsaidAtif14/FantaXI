@@ -7,6 +7,7 @@ import 'package:fantasy/features/history/presentation/pages/history_screen.dart'
 import 'package:fantasy/features/picks/presentation/pages/picks_screen.dart';
 import 'package:fantasy/features/live/presentation/pages/live_screen.dart';
 import 'package:fantasy/features/market/presentation/pages/market_screen.dart';
+import 'package:fantasy/features/matches/presentation/pages/matches_screen.dart';
 
 class AppRouter {
   static const String splash = '/';
@@ -17,6 +18,7 @@ class AppRouter {
   static const String picks = '/picks';
   static const String live = '/live';
   static const String market = '/market';
+  static const String matches = '/matches';
 
   static GoRouter get router => GoRouter(
     initialLocation: splash,
@@ -50,6 +52,7 @@ class AppRouter {
       ),
       GoRoute(path: live, builder: (context, state) => const LiveScreen()),
       GoRoute(path: market, builder: (context, state) => const MarketScreen()),
+      GoRoute(path: matches, builder: (context, state) => const MatchesScreen()),
     ],
   );
 }

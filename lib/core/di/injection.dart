@@ -18,6 +18,9 @@ import 'package:fantasy/features/bootstrap/presentation/cubit/bootstrap_cubit.da
 import 'package:fantasy/features/live/data/repositories/live_repository_impl.dart';
 import 'package:fantasy/features/live/domain/repositories/live_repository.dart';
 import 'package:fantasy/features/live/presentation/cubit/live_cubit.dart';
+import 'package:fantasy/features/matches/data/repositories/matches_repository_impl.dart';
+import 'package:fantasy/features/matches/domain/repositories/matches_repository.dart';
+import 'package:fantasy/features/matches/presentation/cubit/matches_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -27,17 +30,20 @@ Future<void> initDependencies() async {
 
   // Repositories
   sl.registerLazySingleton<ManagerRepository>(
-      () => ManagerRepositoryImpl(sl()));
-  sl.registerLazySingleton<LeagueRepository>(
-      () => LeagueRepositoryImpl(sl()));
+    () => ManagerRepositoryImpl(sl()),
+  );
+  sl.registerLazySingleton<LeagueRepository>(() => LeagueRepositoryImpl(sl()));
   sl.registerLazySingleton<HistoryRepository>(
-      () => HistoryRepositoryImpl(sl()));
-  sl.registerLazySingleton<PicksRepository>(
-      () => PicksRepositoryImpl(sl()));
+    () => HistoryRepositoryImpl(sl()),
+  );
+  sl.registerLazySingleton<PicksRepository>(() => PicksRepositoryImpl(sl()));
   sl.registerLazySingleton<BootstrapRepository>(
-      () => BootstrapRepositoryImpl(sl()));
-  sl.registerLazySingleton<LiveRepository>(
-      () => LiveRepositoryImpl(sl()));
+    () => BootstrapRepositoryImpl(sl()),
+  );
+  sl.registerLazySingleton<LiveRepository>(() => LiveRepositoryImpl(sl()));
+  sl.registerLazySingleton<MatchesRepository>(
+    () => MatchesRepositoryImpl(sl()),
+  );
 
   // Cubits (factory — new instance per page)
   sl.registerFactory<ManagerCubit>(() => ManagerCubit(sl()));
@@ -46,4 +52,5 @@ Future<void> initDependencies() async {
   sl.registerFactory<PicksCubit>(() => PicksCubit(sl()));
   sl.registerFactory<BootstrapCubit>(() => BootstrapCubit(sl()));
   sl.registerFactory<LiveCubit>(() => LiveCubit(sl()));
+  sl.registerFactory<MatchesCubit>(() => MatchesCubit(sl(), sl()));
 }

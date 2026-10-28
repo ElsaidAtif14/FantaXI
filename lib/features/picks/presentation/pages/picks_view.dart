@@ -46,7 +46,7 @@ class _PicksViewState extends State<PicksView> {
         return Scaffold(
           extendBody: true,
           backgroundColor: AppColors.lineupBackground,
-          appBar: CustomAppBar(title: 'Squad', isHome: false),
+          appBar: CustomAppBar(title: 'Squad', showActions: false),
 
           bottomNavigationBar: const AppNavigationDock(
             currentIndex: 1,
@@ -109,6 +109,7 @@ class _PicksViewState extends State<PicksView> {
                     onAction:
                         () => context.read<ManagerCubit>().loadManager(
                           widget.managerId!,
+                          refresh: true,
                         ),
                   );
                 }
@@ -118,7 +119,9 @@ class _PicksViewState extends State<PicksView> {
                     message: bootstrapState.message,
                     actionLabel: 'Retry',
                     onAction:
-                        () => context.read<BootstrapCubit>().loadBootstrap(),
+                        () => context.read<BootstrapCubit>().loadBootstrap(
+                          refresh: true,
+                        ),
                   );
                 }
                 if (picksState is PicksError) {
@@ -126,7 +129,9 @@ class _PicksViewState extends State<PicksView> {
                     icon: Icons.cloud_off_outlined,
                     message: picksState.message,
                     actionLabel: 'Retry',
-                    onAction: () => _loadGameweek(context, managerState),
+                    onAction:
+                        () =>
+                            _loadGameweek(context, managerState, refresh: true),
                   );
                 }
 
@@ -205,10 +210,18 @@ class _PicksViewState extends State<PicksView> {
     context.read<LiveCubit>().loadLive(gameweek);
   }
 
-  void _loadGameweek(BuildContext context, ManagerState managerState) {
+  void _loadGameweek(
+    BuildContext context,
+    ManagerState managerState, {
+    bool refresh = false,
+  }) {
     if (managerState is ManagerLoaded) {
       final gameweek = _currentGw ?? managerState.manager.currentEvent;
-      context.read<PicksCubit>().loadPicks(managerState.manager.id, gameweek);
+      context.read<PicksCubit>().loadPicks(
+        managerState.manager.id,
+        gameweek,
+        refresh: refresh,
+      );
       context.read<LiveCubit>().loadLive(gameweek);
     }
   }
