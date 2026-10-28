@@ -19,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late final Future<int> _entryIdFuture;
   bool _managerLoadStarted = false;
+  bool _refreshingManager = false;
 
   @override
   void initState() {
@@ -39,7 +40,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
       child: BlocListener<ManagerCubit, ManagerState>(
         listener: (context, state) {
-          if (state is ManagerLoaded && state.manager.currentEvent > 0) {
+          if (state is ManagerLoaded &&
+              state.manager.currentEvent > 0 &&
+              !_refreshingManager) {
             context.read<PicksCubit>().loadPicks(
               state.manager.id,
               state.manager.currentEvent,
@@ -60,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
             }
             return HomeBody(
               managerId: snap.data,
+              onRefreshManager: (entryId) => refreshManager(context, entryId),
               isEntryIdLoading: snap.connectionState != ConnectionState.done,
               entryIdError: snap.hasError ? snap.error.toString() : null,
             );
@@ -67,5 +71,15 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  void refreshManager(BuildContext context, int entryId) {
+    _refreshingManager = true;
+    context
+        .read<ManagerCubit>()
+        .loadManager(entryId, refresh: true)
+        .whenComplete(() {
+          _refreshingManager = false;
+        });
   }
 }

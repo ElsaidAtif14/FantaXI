@@ -31,16 +31,18 @@ class AppNavigationDock extends StatelessWidget {
     DockDestination('Squad', Icons.people, AppRouter.picks),
     DockDestination('Market', Icons.swap_horiz_rounded, AppRouter.market),
     // DockDestination('Live', Icons.bolt_rounded, AppRouter.live),
+    DockDestination('Matches', Icons.sports_soccer, AppRouter.matches),
     DockDestination('History', Icons.show_chart_rounded, AppRouter.history),
   ];
 
   @override
   Widget build(BuildContext context) {
-    final destinations = showLive
-        ? _allDestinations
-        : _allDestinations
-            .where((destination) => destination.label != 'Live')
-            .toList();
+    final destinations =
+        showLive
+            ? _allDestinations
+            : _allDestinations
+                .where((destination) => destination.label != 'Live')
+                .toList();
 
     return SafeArea(
       top: false,
@@ -55,10 +57,11 @@ class AppNavigationDock extends StatelessWidget {
               const gap = 4.0;
               final gaps =
                   gap * math.max(0, destinations.length - 1).toDouble();
-              final widthPerItem = destinations.isEmpty
-                  ? 0.0
-                  : (constraints.maxWidth - horizontalPadding - gaps) /
-                      destinations.length;
+              final widthPerItem =
+                  destinations.isEmpty
+                      ? 0.0
+                      : (constraints.maxWidth - horizontalPadding - gaps) /
+                          destinations.length;
               final itemWidth =
                   math.min(56.0, math.max(0.0, widthPerItem)).toDouble();
 
@@ -83,9 +86,11 @@ class AppNavigationDock extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            for (var index = 0;
-                                index < destinations.length;
-                                index++) ...[
+                            for (
+                              var index = 0;
+                              index < destinations.length;
+                              index++
+                            ) ...[
                               if (index > 0) const SizedBox(width: gap),
                               SizedBox(
                                 width: itemWidth,
@@ -93,8 +98,9 @@ class AppNavigationDock extends StatelessWidget {
                                 child: DockItem(
                                   destination: destinations[index],
                                   selected: currentIndex == index,
-                                  onTap: () =>
-                                      context.go(destinations[index].route),
+                                  onTap:
+                                      () =>
+                                          context.go(destinations[index].route),
                                 ),
                               ),
                             ],

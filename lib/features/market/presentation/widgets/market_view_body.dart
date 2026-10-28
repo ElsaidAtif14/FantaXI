@@ -2,17 +2,16 @@ import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/features/bootstrap/data/models/bootstrap_model.dart';
 import 'package:fantasy/features/bootstrap/data/models/player_model.dart';
 import 'package:fantasy/features/bootstrap/presentation/cubit/bootstrap_cubit.dart';
-import 'package:fantasy/features/manager/presentation/cubit/manager_cubit.dart';
 import 'package:fantasy/features/market/presentation/widgets/market_docked_comparison_panel.dart';
 import 'package:fantasy/features/market/presentation/widgets/market_player_tile.dart';
 import 'package:fantasy/features/market/presentation/widgets/market_position_selector.dart';
 import 'package:fantasy/features/market/presentation/widgets/market_quick_filters.dart';
 import 'package:fantasy/features/market/presentation/widgets/market_sort.dart';
 import 'package:fantasy/features/market/presentation/widgets/market_search_bar.dart';
-import 'package:fantasy/features/market/presentation/widgets/market_view_header.dart';
 import 'package:fantasy/features/picks/presentation/widgets/error_message_view.dart';
 import 'package:fantasy/shared/widgets/app_navigation_dock.dart';
 import 'package:fantasy/shared/widgets/app_snack_bar.dart';
+import 'package:fantasy/shared/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -41,6 +40,7 @@ class _MarketViewBodyState extends State<MarketViewBody> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
+      appBar: CustomAppBar(title: 'Market', showActions: false),
       backgroundColor: AppColors.marketBackground,
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
@@ -86,32 +86,21 @@ class _MarketViewBodyState extends State<MarketViewBody> {
               child: ErrorMessageView(
                 icon: Icons.cloud_off_outlined,
                 message: state.message,
-                actionLabel: 'Try again+',
-                onAction: () {},
+                actionLabel: 'Try again',
+                onAction:
+                    () => context.read<BootstrapCubit>().loadBootstrap(
+                      refresh: true,
+                    ),
               ),
             );
           }
           if (state is! BootstrapLoaded) return const SizedBox.shrink();
 
           final players = _filteredPlayers(state.data);
-          final managerState = context.watch<ManagerCubit>().state;
-          final bank =
-              managerState is ManagerLoaded ? managerState.manager.bank : null;
-          final gameweek =
-              managerState is ManagerLoaded
-                  ? managerState.manager.currentEvent
-                  : null;
-
           return SafeArea(
             bottom: false,
             child: Column(
               children: [
-                MarketViewHeader(
-                  bank: bank,
-                  gameweek: gameweek,
-                  sort: _sort,
-                  onSort: (sort) => setState(() => _sort = sort),
-                ),
                 MarketSearchBar(
                   controller: _searchController,
                   onSearchChanged: () => setState(() {}),

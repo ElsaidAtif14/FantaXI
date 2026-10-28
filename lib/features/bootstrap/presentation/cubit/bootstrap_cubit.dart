@@ -7,11 +7,14 @@ part 'bootstrap_state.dart';
 class BootstrapCubit extends Cubit<BootstrapState> {
   final BootstrapRepository _repository;
   BootstrapCubit(this._repository) : super(BootstrapInitial());
+  int _generation = 0;
 
-  Future<void> loadBootstrap() async {
+  Future<void> loadBootstrap({bool refresh = false}) async {
+    final generation = ++_generation;
     emit(BootstrapLoading());
 
-    final data = await _repository.getBootstrap();
+    final data = await _repository.getBootstrap(refresh: refresh);
+    if (isClosed || generation != _generation) return;
     data.fold(
       (failure) => emit(BootstrapError(failure.errMessage)),
       (bootstrap) => emit(BootstrapLoaded(bootstrap)),

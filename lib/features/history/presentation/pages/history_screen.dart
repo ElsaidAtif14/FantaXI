@@ -13,17 +13,34 @@ class HistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<HistoryCubit>(),
-      child: FutureBuilder<int>(
-        future: SharedPreferences.getInstance().then(
-          (p) => p.getInt(AppConstants.entryIdKey) ?? 0,
-        ),
-        builder: (context, snap) {
-          if (snap.hasData && snap.data! > 0) {
-            context.read<HistoryCubit>().loadHistory(snap.data!);
-          }
-          return const HistoryViewBody();
-        },
-      ),
+      child: const _HistoryLoader(),
     );
   }
+}
+
+class _HistoryLoader extends StatefulWidget {
+  const _HistoryLoader();
+
+  @override
+  State<_HistoryLoader> createState() => _HistoryLoaderState();
+}
+
+class _HistoryLoaderState extends State<_HistoryLoader> {
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    final preferences = await SharedPreferences.getInstance();
+    if (!mounted) return;
+    final entryId = preferences.getInt(AppConstants.entryIdKey) ?? 0;
+    if (entryId > 0) {
+      context.read<HistoryCubit>().loadHistory(entryId);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => const HistoryViewBody();
 }

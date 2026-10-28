@@ -5,6 +5,7 @@ class AppConstants {
 
   // Endpoints
   static const String bootstrapStatic = '/bootstrap-static/';
+  static const String fixtures = '/fixtures/';
   static String entry(int entryId) => '/entry/$entryId/';
   static String entryHistory(int entryId) => '/entry/$entryId/history/';
   static String entryPicks(int entryId, int gw) =>
@@ -22,4 +23,6 @@ class AppConstants {
       'https://resources.premierleague.com/premierleague26/photos/players/110x140/';
   static const String shirtImageBase =
       'https://fantasy.premierleague.com/dist/img/shirts/standard/shirt_';
+  static const String teamBadgeBase =
+      'https://resources.premierleague.com/premierleague/badges/70/t';
 }

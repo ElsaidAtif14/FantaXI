@@ -8,14 +8,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     required this.title,
     this.onSettingsTap,
-    this.leadingIcon = Icons.sports_soccer_rounded,
-    this.isHome = false,
+    this.showActions = false,
+    this.icons,
   });
 
   final String title;
   final VoidCallback? onSettingsTap;
-  final IconData leadingIcon;
-  final bool isHome;
+  final bool showActions;
+  final IconData? icons;
 
   @override
   Size get preferredSize => const Size.fromHeight(64);
@@ -39,7 +39,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               color: AppColors.lineupControl,
               borderRadius: BorderRadius.circular(9),
             ),
-            // child: Icon(leadingIcon, size: 16, color: AppColors.lineupMint),
             child: SvgPicture.asset('assets/svg/fantaxi.svg'),
           ),
           const SizedBox(width: 8),
@@ -55,8 +54,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ],
       ),
       actions: [
-        if (isHome) ...[
-          SettingsButton(onTap: onSettingsTap ?? () {}),
+        if (showActions) ...[
+          SettingsButton(icons: icons, onTap: onSettingsTap ?? () {}),
           const SizedBox(width: 16),
         ] else
           const SizedBox(width: 16),
