@@ -1,8 +1,9 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class DockItem extends StatelessWidget {
-  const DockItem({super.key, 
+  const DockItem({
+    super.key,
     required this.destination,
     required this.selected,
     required this.onTap,
@@ -15,7 +16,9 @@ class DockItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color =
-        selected ? AppColors.lineupLavender : AppColors.lineupTextSecondary;
+        selected
+            ? context.appColors.lineupLavender
+            : context.appColors.lineupTextSecondary;
 
     return Semantics(
       button: true,
@@ -32,14 +35,16 @@ class DockItem extends StatelessWidget {
             decoration: BoxDecoration(
               color:
                   selected
-                      ? AppColors.lineupPurple.withValues(alpha: .2)
+                      ? context.appColors.lineupPurple.withValues(alpha: .2)
                       : Colors.transparent,
               borderRadius: BorderRadius.circular(999),
               boxShadow:
                   selected
                       ? [
                         BoxShadow(
-                          color: AppColors.lineupPurple.withValues(alpha: .28),
+                          color: context.appColors.lineupPurple.withValues(
+                            alpha: .28,
+                          ),
                           blurRadius: 12,
                         ),
                       ]

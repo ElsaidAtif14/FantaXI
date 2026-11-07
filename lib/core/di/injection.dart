@@ -19,6 +19,10 @@ import 'package:fantasy/features/live/data/repositories/live_repository_impl.dar
 import 'package:fantasy/features/live/domain/repositories/live_repository.dart';
 import 'package:fantasy/features/live/presentation/cubit/live_cubit.dart';
 import 'package:fantasy/features/matches/data/repositories/matches_repository_impl.dart';
+import 'package:fantasy/features/matches/data/datasources/premier_league_match_data_source.dart';
+import 'package:fantasy/features/matches/data/repositories/match_details_repository_impl.dart';
+import 'package:fantasy/features/matches/domain/repositories/match_details_repository.dart';
+import 'package:fantasy/features/matches/presentation/cubit/match_details_cubit.dart';
 import 'package:fantasy/features/matches/domain/repositories/matches_repository.dart';
 import 'package:fantasy/features/matches/presentation/cubit/matches_cubit.dart';
 
@@ -44,6 +48,10 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<MatchesRepository>(
     () => MatchesRepositoryImpl(sl()),
   );
+  sl.registerLazySingleton(() => PremierLeagueMatchDataSource());
+  sl.registerLazySingleton<MatchDetailsRepository>(
+    () => MatchDetailsRepositoryImpl(sl()),
+  );
 
   // Cubits (factory — new instance per page)
   sl.registerFactory<ManagerCubit>(() => ManagerCubit(sl()));
@@ -53,4 +61,5 @@ Future<void> initDependencies() async {
   sl.registerFactory<BootstrapCubit>(() => BootstrapCubit(sl()));
   sl.registerFactory<LiveCubit>(() => LiveCubit(sl()));
   sl.registerFactory<MatchesCubit>(() => MatchesCubit(sl(), sl()));
+  sl.registerFactory<MatchDetailsCubit>(() => MatchDetailsCubit(sl()));
 }

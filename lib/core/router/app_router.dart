@@ -8,6 +8,7 @@ import 'package:fantasy/features/picks/presentation/pages/picks_screen.dart';
 import 'package:fantasy/features/live/presentation/pages/live_screen.dart';
 import 'package:fantasy/features/market/presentation/pages/market_screen.dart';
 import 'package:fantasy/features/matches/presentation/pages/matches_screen.dart';
+import 'package:fantasy/features/matches/presentation/pages/match_details_screen.dart';
 
 class AppRouter {
   static const String splash = '/';
@@ -19,6 +20,7 @@ class AppRouter {
   static const String live = '/live';
   static const String market = '/market';
   static const String matches = '/matches';
+  static const String matchDetails = '/matches/:fixtureId';
 
   static GoRouter get router => GoRouter(
     initialLocation: splash,
@@ -52,7 +54,25 @@ class AppRouter {
       ),
       GoRoute(path: live, builder: (context, state) => const LiveScreen()),
       GoRoute(path: market, builder: (context, state) => const MarketScreen()),
-      GoRoute(path: matches, builder: (context, state) => const MatchesScreen()),
+      GoRoute(
+        path: matches,
+        builder: (context, state) => const MatchesScreen(),
+      ),
+      GoRoute(
+        path: matchDetails,
+        builder: (context, state) {
+          final fixtureId = int.tryParse(
+            state.pathParameters['fixtureId'] ?? '',
+          );
+          final arguments = state.extra;
+          final details = arguments is MatchDetailsArguments ? arguments : null;
+          return MatchDetailsScreen(
+            fixtureId: fixtureId ?? 0,
+            fixture: details?.fixture,
+            teams: details?.teams,
+          );
+        },
+      ),
     ],
   );
 }

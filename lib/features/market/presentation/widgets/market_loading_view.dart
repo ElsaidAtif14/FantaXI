@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -74,7 +74,7 @@ class _MarketLoadingPlayerTile extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.all(11),
     decoration: BoxDecoration(
-      color: AppColors.marketSurface,
+      color: context.appColors.marketSurface,
       borderRadius: BorderRadius.circular(15),
     ),
     child: const Row(

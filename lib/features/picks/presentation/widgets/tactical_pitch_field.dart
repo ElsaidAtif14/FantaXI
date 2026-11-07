@@ -1,8 +1,8 @@
-import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/features/bootstrap/data/models/bootstrap_model.dart';
 import 'package:fantasy/features/live/data/models/element_live_model.dart';
 import 'package:fantasy/features/picks/data/models/gameweek_picks_model.dart';
 import 'package:fantasy/features/picks/presentation/widgets/player_pitch_icon.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 /// Renders the starting XI by position over the tactical field markings.
@@ -29,17 +29,17 @@ class TacticalPitchField extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       child: Container(
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
+          gradient:  LinearGradient(
             colors: [
-              AppColors.lineupPitchTop,
-              AppColors.lineupPitchMiddle,
-              AppColors.lineupPitchBottom,
+              context.appColors.lineupPitchTop,
+              context.appColors.lineupPitchMiddle,
+              context.appColors.lineupPitchBottom,
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
           border: Border.all(
-            color: AppColors.lineupPitchLine.withValues(alpha: .7),
+            color: context.appColors.lineupPitchLine.withValues(alpha: .7),
           ),
           borderRadius: BorderRadius.circular(16),
           boxShadow: const [
@@ -52,19 +52,23 @@ class TacticalPitchField extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            const Positioned.fill(child: CustomPaint(painter: _PitchPainter())),
+            Positioned.fill(
+              child: CustomPaint(
+                painter: _PitchPainter(context.appColors.lineupPitchLine),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 10, 8, 12),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (picks.isEmpty)
-                    const Padding(
+                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 28),
                       child: Text(
                         'No starting XI is available',
                         style: TextStyle(
-                          color: AppColors.lineupTextSecondary,
+                          color: context.appColors.lineupTextSecondary,
                           fontSize: 10,
                         ),
                       ),
@@ -116,12 +120,12 @@ class _PositionRow extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: AppColors.lineupMint, size: 10),
+            Icon(icon, color: context.appColors.lineupMint, size: 10),
             const SizedBox(width: 4),
             Text(
               label,
-              style: const TextStyle(
-                color: AppColors.lineupTextSecondary,
+              style:  TextStyle(
+                color: context.appColors.lineupTextSecondary,
                 fontSize: 7,
                 fontWeight: FontWeight.w700,
                 letterSpacing: .55,
@@ -156,13 +160,15 @@ class _PositionRow extends StatelessWidget {
 }
 
 class _PitchPainter extends CustomPainter {
-  const _PitchPainter();
+  const _PitchPainter(this.color);
+
+  final Color color;
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint =
         Paint()
-          ..color = AppColors.lineupPitchLine.withValues(alpha: .48)
+          ..color = color.withValues(alpha: .48)
           ..style = PaintingStyle.stroke
           ..strokeWidth = 1;
     final rect = Rect.fromLTWH(8, 8, size.width - 16, size.height - 16);
@@ -214,5 +220,6 @@ class _PitchPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _PitchPainter oldDelegate) => false;
+  bool shouldRepaint(covariant _PitchPainter oldDelegate) =>
+      color != oldDelegate.color;
 }

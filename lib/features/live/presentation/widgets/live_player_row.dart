@@ -1,5 +1,5 @@
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/features/bootstrap/data/models/player_model.dart';
 import 'package:fantasy/features/bootstrap/data/models/bootstrap_model.dart';
 import 'package:fantasy/features/live/data/models/element_live_model.dart';
@@ -44,18 +44,21 @@ class LivePlayerRow extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: AppColors.card,
+          color: context.appColors.card,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
-            color: pick.isStarting ? AppColors.outline : Colors.transparent,
+            color:
+                pick.isStarting
+                    ? context.appColors.outline
+                    : Colors.transparent,
           ),
           gradient:
               pick.isStarting
-                  ? AppColors.cardGradient
+                  ? context.appColors.cardGradient
                   : LinearGradient(
                     colors: [
-                      AppColors.surfaceVariant.withOpacity(0.5),
-                      AppColors.background,
+                      context.appColors.surfaceVariant.withOpacity(0.5),
+                      context.appColors.background,
                     ],
                   ),
         ),
@@ -66,8 +69,8 @@ class LivePlayerRow extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(
                 pick.positionName,
-                style: const TextStyle(
-                  color: AppColors.textSecondary,
+                style: TextStyle(
+                  color: context.appColors.textSecondary,
                   fontSize: 11,
                   fontWeight: FontWeight.bold,
                 ),
@@ -83,28 +86,28 @@ class LivePlayerRow extends StatelessWidget {
                     children: [
                       Text(
                         player.webName,
-                        style: const TextStyle(
-                          color: AppColors.textPrimary,
+                        style: TextStyle(
+                          color: context.appColors.textPrimary,
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
                         ),
                       ),
                       if (pick.isCaptain)
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.only(left: 6),
-                          child: _Badge('C', AppColors.primary),
+                          child: _Badge('C', context.appColors.primary),
                         ),
                       if (pick.isViceCaptain)
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.only(left: 6),
-                          child: _Badge('V', AppColors.textSecondary),
+                          child: _Badge('V', context.appColors.textSecondary),
                         ),
                     ],
                   ),
                   Text(
                     '${stats.minutes} mins played',
-                    style: const TextStyle(
-                      color: AppColors.textSecondary,
+                    style: TextStyle(
+                      color: context.appColors.textSecondary,
                       fontSize: 11,
                     ),
                   ),
@@ -119,8 +122,8 @@ class LivePlayerRow extends StatelessWidget {
                   style: TextStyle(
                     color:
                         pick.isStarting
-                            ? AppColors.electricBlue
-                            : AppColors.textMuted,
+                            ? context.appColors.electricBlue
+                            : context.appColors.textMuted,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -128,8 +131,8 @@ class LivePlayerRow extends StatelessWidget {
                 if (stats.bonus > 0)
                   Text(
                     '${stats.bonus} Bonus',
-                    style: const TextStyle(
-                      color: AppColors.gold,
+                    style: TextStyle(
+                      color: context.appColors.gold,
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
                     ),

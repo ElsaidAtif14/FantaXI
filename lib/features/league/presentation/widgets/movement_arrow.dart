@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class MovementArrow extends StatelessWidget {
@@ -8,9 +8,9 @@ class MovementArrow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (mov == 0) {
-      return const Icon(
+      return  Icon(
         Icons.remove_rounded,
-        color: AppColors.rankSame,
+        color: context.appColors.rankSame,
         size: 16,
       );
     }
@@ -18,13 +18,13 @@ class MovementArrow extends StatelessWidget {
       children: [
         Icon(
           mov > 0 ? Icons.arrow_upward_rounded : Icons.arrow_downward_rounded,
-          color: mov > 0 ? AppColors.rankUp : AppColors.rankDown,
+          color: mov > 0 ? context.appColors.rankUp : context.appColors.rankDown,
           size: 14,
         ),
         Text(
           '${mov.abs()}',
           style: TextStyle(
-            color: mov > 0 ? AppColors.rankUp : AppColors.rankDown,
+            color: mov > 0 ? context.appColors.rankUp : context.appColors.rankDown,
             fontSize: 11,
             fontWeight: FontWeight.w600,
           ),

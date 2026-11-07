@@ -1,7 +1,7 @@
-import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/features/bootstrap/data/models/player_model.dart';
 import 'package:fantasy/features/market/presentation/widgets/comparison_row.dart';
 import 'package:fantasy/features/market/presentation/widgets/player_heading.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class PlayerComparisonSheet extends StatelessWidget {
@@ -15,9 +15,9 @@ class PlayerComparisonSheet extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        gradient: AppColors.cardGradient,
+        gradient: context.appColors.cardGradient,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-        border: const Border(top: BorderSide(color: AppColors.outline)),
+        border:  Border(top: BorderSide(color: context.appColors.outline)),
       ),
       child: SafeArea(
         top: false,
@@ -26,10 +26,10 @@ class PlayerComparisonSheet extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
+               Text(
                 'PLAYER COMPARISON',
                 style: TextStyle(
-                  color: AppColors.textMuted,
+                  color: context.appColors.textMuted,
                   fontSize: 10,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.8,
@@ -39,11 +39,11 @@ class PlayerComparisonSheet extends StatelessWidget {
               Row(
                 children: [
                   Expanded(child: PlayerHeading(player: first)),
-                  const Padding(
+                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8),
                     child: Icon(
                       Icons.compare_arrows_rounded,
-                      color: AppColors.primaryLight,
+                      color: context.appColors.primaryLight,
                     ),
                   ),
                   Expanded(child: PlayerHeading(player: second)),

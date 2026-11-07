@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:fantasy/features/history/data/models/manager_history_model.dart';
 import 'package:fantasy/features/history/presentation/widgets/metric_pill.dart';
 import 'package:fantasy/features/history/presentation/widgets/tag.dart';
@@ -36,17 +36,17 @@ class HistoryOverview extends StatelessWidget {
             Container(
               width: 8,
               height: 8,
-              decoration: const BoxDecoration(
-                color: AppColors.lineupMint,
+              decoration:  BoxDecoration(
+                color: context.appColors.lineupMint,
                 shape: BoxShape.circle,
               ),
             ),
             const SizedBox(width: 6),
-            const Expanded(
+             Expanded(
               child: Text(
                 'Overall Rank Trajectory',
                 style: TextStyle(
-                  color: AppColors.lineupText,
+                  color: context.appColors.lineupText,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
@@ -65,14 +65,14 @@ class HistoryOverview extends StatelessWidget {
                 icon: Icons.trending_up_rounded,
                 label: 'Best Rank',
                 value: bestRank == 0 ? '—' : _formatRank(bestRank),
-                valueColor: AppColors.lineupMint,
+                valueColor: context.appColors.lineupMint,
               ),
               const SizedBox(width: 8),
               MetricPill(
                 icon: Icons.bolt_rounded,
                 label: 'Avg Points',
                 value: history.averagePoints.toStringAsFixed(1),
-                valueColor: AppColors.lineupLavender,
+                valueColor: context.appColors.lineupLavender,
               ),
               const SizedBox(width: 8),
               MetricPill(
@@ -81,7 +81,7 @@ class HistoryOverview extends StatelessWidget {
                 value: bestEvent == null
                     ? '—'
                     : 'GW${bestEvent.event} (${bestEvent.points}p)',
-                valueColor: AppColors.lineupMint,
+                valueColor: context.appColors.lineupMint,
               ),
             ],
           ),

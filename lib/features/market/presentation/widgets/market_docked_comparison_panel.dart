@@ -1,7 +1,7 @@
-import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/features/bootstrap/data/models/player_model.dart';
 import 'package:fantasy/features/market/presentation/widgets/comparison_row.dart';
 import 'package:fantasy/features/market/presentation/widgets/player_heading.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class MarketDockedComparisonPanel extends StatelessWidget {
@@ -29,9 +29,9 @@ class MarketDockedComparisonPanel extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.fromLTRB(10, 0, 10, 5),
         decoration: BoxDecoration(
-          color: AppColors.marketPanel,
+          color: context.appColors.marketPanel,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.marketPanelBorder),
+          border: Border.all(color: context.appColors.marketPanelBorder),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: .26),
@@ -54,17 +54,17 @@ class MarketDockedComparisonPanel extends StatelessWidget {
                       width: 35,
                       height: 3,
                       decoration: BoxDecoration(
-                        color: AppColors.marketControl,
+                        color: context.appColors.marketControl,
                         borderRadius: BorderRadius.circular(3),
                       ),
                     ),
                     const SizedBox(height: 6),
                     Row(
                       children: [
-                        const Text(
+                         Text(
                           'TACTICAL MATRIX',
                           style: TextStyle(
-                            color: AppColors.marketLavender,
+                            color: context.appColors.marketLavender,
                             fontSize: 9,
                             fontWeight: FontWeight.w800,
                             letterSpacing: .5,
@@ -77,13 +77,13 @@ class MarketDockedComparisonPanel extends StatelessWidget {
                             vertical: 2,
                           ),
                           decoration: BoxDecoration(
-                            color: AppColors.marketControl,
+                            color: context.appColors.marketControl,
                             borderRadius: BorderRadius.circular(9),
                           ),
                           child: Text(
                             '${players.length}/2 locked',
-                            style: const TextStyle(
-                              color: AppColors.marketText,
+                            style:  TextStyle(
+                              color: context.appColors.marketText,
                               fontSize: 8,
                             ),
                           ),
@@ -93,7 +93,7 @@ class MarketDockedComparisonPanel extends StatelessWidget {
                           expanded
                               ? Icons.keyboard_arrow_down
                               : Icons.keyboard_arrow_up,
-                          color: AppColors.marketText,
+                          color: context.appColors.marketText,
                           size: 18,
                         ),
                       ],
@@ -169,10 +169,10 @@ class MarketDockedComparisonPanel extends StatelessWidget {
                               ),
                             ),
                             style: FilledButton.styleFrom(
-                              backgroundColor: AppColors.marketMint,
-                              disabledBackgroundColor: AppColors.marketMint
+                              backgroundColor: context.appColors.marketMint,
+                              disabledBackgroundColor: context.appColors.marketMint
                                   .withValues(alpha: .78),
-                              disabledForegroundColor: AppColors.marketBackground,
+                              disabledForegroundColor: context.appColors.marketBackground,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(13),
                               ),
@@ -180,20 +180,20 @@ class MarketDockedComparisonPanel extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 5),
-                        const Text(
+                         Text(
                           'Transfer management is not supported by this app yet',
                           style: TextStyle(
-                            color: AppColors.marketText,
+                            color: context.appColors.marketText,
                             fontSize: 9,
                           ),
                         ),
                       ] else
-                        const Padding(
+                         Padding(
                           padding: EdgeInsets.all(12),
                           child: Text(
                             'Select one more player to compare',
                             style: TextStyle(
-                              color: AppColors.marketText,
+                              color: context.appColors.marketText,
                               fontSize: 11,
                             ),
                           ),
@@ -226,7 +226,7 @@ class MarketFaceOffHeader extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 4),
       decoration: BoxDecoration(
-        color: AppColors.marketBackground,
+        color: context.appColors.marketBackground,
         borderRadius: BorderRadius.circular(14),
       ),
       child: Row(
@@ -239,13 +239,13 @@ class MarketFaceOffHeader extends StatelessWidget {
                   width: 24,
                   height: 24,
                   decoration: BoxDecoration(
-                    color: AppColors.marketLavender.withValues(alpha: .16),
+                    color: context.appColors.marketLavender.withValues(alpha: .16),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
+                  child:  Icon(
                     Icons.compare_arrows_rounded,
                     size: 14,
-                    color: AppColors.marketLavender,
+                    color: context.appColors.marketLavender,
                   ),
                 ),
               ),
@@ -272,15 +272,15 @@ class MarketEmptyComparisonSlot extends StatelessWidget {
   const MarketEmptyComparisonSlot({super.key});
 
   @override
-  Widget build(BuildContext context) => const Column(
+  Widget build(BuildContext context) =>  Column(
     children: [
       Text(
         'Add player',
-        style: TextStyle(color: AppColors.textSecondary, fontSize: 11),
+        style: TextStyle(color: context.appColors.textSecondary, fontSize: 11),
       ),
       Text(
         'Choose from market',
-        style: TextStyle(color: AppColors.textMuted, fontSize: 8),
+        style: TextStyle(color: context.appColors.textMuted, fontSize: 8),
       ),
     ],
   );

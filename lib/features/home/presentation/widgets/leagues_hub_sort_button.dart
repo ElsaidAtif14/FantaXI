@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class LeaguesHubSortButton extends StatelessWidget {
@@ -15,7 +15,7 @@ class LeaguesHubSortButton extends StatelessWidget {
   Widget build(BuildContext context) => Tooltip(
     message: ascending ? 'Sort by rank ascending' : 'Sort by rank descending',
     child: Material(
-      color: AppColors.lineupControl,
+      color: context.appColors.lineupControl,
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
@@ -27,7 +27,7 @@ class LeaguesHubSortButton extends StatelessWidget {
             ascending
                 ? Icons.arrow_upward_rounded
                 : Icons.arrow_downward_rounded,
-            color: AppColors.lineupTextSecondary,
+            color: context.appColors.lineupTextSecondary,
             size: 19,
           ),
         ),

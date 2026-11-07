@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class FormationActions extends StatelessWidget {
@@ -24,15 +24,15 @@ class FormationActions extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
           decoration: BoxDecoration(
-            color: AppColors.lineupPurple.withValues(alpha: .2),
+            color: context.appColors.lineupPurple.withValues(alpha: .2),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
             '$defenders-$midfielders-$forwards FORMATION',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: AppColors.lineupLavender,
+            style:  TextStyle(
+              color: context.appColors.lineupLavender,
               fontSize: 8,
               fontWeight: FontWeight.w700,
               letterSpacing: .35,
@@ -43,8 +43,8 @@ class FormationActions extends StatelessWidget {
       const SizedBox(width: 6),
       Text(
         '${played ?? '—'} / $startingCount Played',
-        style: const TextStyle(
-          color: AppColors.lineupTextSecondary,
+        style:  TextStyle(
+          color: context.appColors.lineupTextSecondary,
           fontSize: 8,
         ),
       ),
@@ -82,7 +82,7 @@ class _UnavailableAction extends StatelessWidget {
       height: 28,
       padding: EdgeInsets.symmetric(horizontal: label.isEmpty ? 6 : 8),
       decoration: BoxDecoration(
-        color: AppColors.lineupControl.withValues(alpha: .8),
+        color: context.appColors.lineupControl.withValues(alpha: .8),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -91,14 +91,14 @@ class _UnavailableAction extends StatelessWidget {
           Icon(
             icon,
             size: 12,
-            color: AppColors.lineupTextSecondary.withValues(alpha: .55),
+            color: context.appColors.lineupTextSecondary.withValues(alpha: .55),
           ),
           if (label.isNotEmpty) ...[
             const SizedBox(width: 4),
             Text(
               label,
               style: TextStyle(
-                color: AppColors.lineupTextSecondary.withValues(alpha: .55),
+                color: context.appColors.lineupTextSecondary.withValues(alpha: .55),
                 fontSize: 8,
                 fontWeight: FontWeight.w600,
               ),

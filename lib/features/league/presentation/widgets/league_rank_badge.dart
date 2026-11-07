@@ -1,4 +1,4 @@
-
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:fantasy/features/league/data/models/league_response_model.dart';
 import 'package:fantasy/features/league/presentation/widgets/battle_summary.dart';
 import 'package:fantasy/features/league/presentation/widgets/filter_chips.dart';
@@ -26,6 +26,10 @@ class LeagueLoadingView extends StatelessWidget {
     return IgnorePointer(
       child: Skeletonizer(
         enabled: true,
+        effect: ShimmerEffect(
+          baseColor: context.appColors.surface,
+          highlightColor: context.appColors.surfaceVariant,
+        ),
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 20),
           children: [
@@ -65,10 +69,3 @@ class LeagueLoadingView extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-

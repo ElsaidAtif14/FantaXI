@@ -1,5 +1,5 @@
-import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/features/picks/data/models/gameweek_picks_model.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class ChipDashboard extends StatelessWidget {
@@ -20,7 +20,7 @@ class ChipDashboard extends StatelessWidget {
                 picks == null
                     ? 'Bank unavailable'
                     : '£${picks!.stats.bank.toStringAsFixed(1)}m in bank',
-            accent: AppColors.lineupMint,
+            accent: context.appColors.lineupMint,
           ),
         ),
         const SizedBox(width: 8),
@@ -29,7 +29,7 @@ class ChipDashboard extends StatelessWidget {
             title: 'Wildcard',
             value: activeChip == 'wildcard' ? 'ACTIVE' : 'Unavailable',
             detail: 'Chip availability unavailable',
-            accent: AppColors.lineupLavender,
+            accent: context.appColors.lineupLavender,
           ),
         ),
         const SizedBox(width: 8),
@@ -41,7 +41,7 @@ class ChipDashboard extends StatelessWidget {
                 activeChip == '3xc'
                     ? 'Active this gameweek'
                     : 'Current gameweek state',
-            accent: AppColors.lineupPurple,
+            accent: context.appColors.lineupPurple,
           ),
         ),
       ],
@@ -67,7 +67,7 @@ class _ChipCard extends StatelessWidget {
     constraints: const BoxConstraints(minHeight: 78),
     padding: const EdgeInsets.all(8),
     decoration: BoxDecoration(
-      color: AppColors.lineupPanel.withValues(alpha: .9),
+      color: context.appColors.lineupPanel.withValues(alpha: .9),
       borderRadius: BorderRadius.circular(12),
     ),
     child: Column(
@@ -78,7 +78,7 @@ class _ChipCard extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            color: AppColors.lineupTextSecondary,
+            color: context.appColors.lineupTextSecondary,
             fontSize: 9,
             fontWeight: FontWeight.w600,
           ),
@@ -100,7 +100,7 @@ class _ChipCard extends StatelessWidget {
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            color: AppColors.textPrimary,
+            color: context.appColors.textPrimary,
             fontSize: 9,
             height: 1.15,
           ),

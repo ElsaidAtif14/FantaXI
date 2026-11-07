@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:fantasy/features/home/presentation/widgets/league_badge.dart';
 import 'package:fantasy/features/manager/data/models/cup_match_model.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class LeaguesHubCupMatchCard extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.only(bottom: 9),
     child: Material(
-      color: AppColors.lineupPanel,
+      color: context.appColors.lineupPanel,
       borderRadius: BorderRadius.circular(14),
       child: InkWell(
         borderRadius: BorderRadius.circular(14),
@@ -30,12 +30,12 @@ class LeaguesHubCupMatchCard extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: AppColors.lineupLavender.withValues(alpha: .13),
+                  color: context.appColors.lineupLavender.withValues(alpha: .13),
                   borderRadius: BorderRadius.circular(13),
                 ),
-                child: const Icon(
+                child:  Icon(
                   Icons.emoji_events_rounded,
-                  color: AppColors.lineupLavender,
+                  color: context.appColors.lineupLavender,
                   size: 23,
                 ),
               ),
@@ -51,17 +51,17 @@ class LeaguesHubCupMatchCard extends StatelessWidget {
                             cup.knockoutName,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              color: AppColors.lineupText,
+                            style:  TextStyle(
+                              color: context.appColors.lineupText,
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
                         const SizedBox(width: 6),
-                        const LeagueBadge(
+                         LeagueBadge(
                           label: 'INVITATIONAL',
-                          color: AppColors.lineupLavender,
+                          color: context.appColors.lineupLavender,
                         ),
                       ],
                     ),
@@ -70,16 +70,16 @@ class LeaguesHubCupMatchCard extends StatelessWidget {
                       'vs ${cup.opponentName}',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: AppColors.lineupTextSecondary,
+                      style:  TextStyle(
+                        color: context.appColors.lineupTextSecondary,
                         fontSize: 10,
                       ),
                     ),
                     const SizedBox(height: 5),
                     Text(
                       '${cup.myPoints} pts  •  ${cup.opponentPoints} pts',
-                      style: const TextStyle(
-                        color: AppColors.lineupLavender,
+                      style:  TextStyle(
+                        color: context.appColors.lineupLavender,
                         fontSize: 9,
                         fontWeight: FontWeight.w600,
                       ),
@@ -91,16 +91,16 @@ class LeaguesHubCupMatchCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const Icon(
+                   Icon(
                     Icons.chevron_right_rounded,
                     size: 19,
-                    color: AppColors.lineupTextSecondary,
+                    color: context.appColors.lineupTextSecondary,
                   ),
                   const SizedBox(height: 4),
                   Text(
                     'GW ${cup.event}',
-                    style: const TextStyle(
-                      color: AppColors.lineupText,
+                    style:  TextStyle(
+                      color: context.appColors.lineupText,
                       fontSize: 12,
                       fontWeight: FontWeight.w800,
                     ),

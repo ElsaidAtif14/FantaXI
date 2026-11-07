@@ -1,7 +1,7 @@
-import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/features/bootstrap/data/models/team_model.dart';
 import 'package:fantasy/features/matches/data/models/fixture_model.dart';
 import 'package:fantasy/features/matches/presentation/widgets/fixture_card.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class FixtureDaySection extends StatelessWidget {
@@ -10,11 +10,13 @@ class FixtureDaySection extends StatelessWidget {
     required this.dateLabel,
     required this.fixtures,
     required this.teams,
+    this.onFixtureTap,
   });
 
   final String dateLabel;
   final List<FixtureModel> fixtures;
   final Map<int, TeamModel> teams;
+  final ValueChanged<FixtureModel>? onFixtureTap;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class FixtureDaySection extends StatelessWidget {
                   child: Text(
                     dateLabel,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.lineupText,
+                      color: context.appColors.lineupText,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -39,7 +41,7 @@ class FixtureDaySection extends StatelessWidget {
                 Text(
                   '${fixtures.length} ${fixtures.length == 1 ? 'MATCH' : 'MATCHES'}',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: context.appColors.textSecondary,
                     letterSpacing: .5,
                   ),
                 ),
@@ -54,6 +56,7 @@ class FixtureDaySection extends StatelessWidget {
                   fixture.homeTeamId == null ? null : teams[fixture.homeTeamId],
               awayTeam:
                   fixture.awayTeamId == null ? null : teams[fixture.awayTeamId],
+              onTap: onFixtureTap == null ? null : () => onFixtureTap!(fixture),
             ),
         ],
       ),

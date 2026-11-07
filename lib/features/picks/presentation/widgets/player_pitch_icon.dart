@@ -1,10 +1,10 @@
-﻿import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fantasy/features/bootstrap/data/models/bootstrap_model.dart';
 import 'package:fantasy/features/bootstrap/data/models/player_model.dart';
 import 'package:fantasy/features/live/data/models/element_live_model.dart';
 import 'package:fantasy/features/picks/data/models/gameweek_picks_model.dart';
 import 'package:fantasy/features/picks/presentation/widgets/player_details_bottom_sheet.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class PlayerPitchIcon extends StatelessWidget {
@@ -37,7 +37,10 @@ class PlayerPitchIcon extends StatelessWidget {
         final portraitSize = (cardWidth - 12).clamp(30.0, 44.0).toDouble();
         final livePlayer = liveData?.getPlayer(player.id);
         final basePoints = livePlayer?.stats.totalPoints ?? player.eventPoints;
-        final points = basePoints * pick.multiplier;
+        // Bench picks normally have a multiplier of 0, which is used when
+        // calculating the squad total. Show their individual gameweek score
+        // here instead of multiplying it by that squad-total multiplier.
+        final points = basePoints * (isBench ? 1 : pick.multiplier);
         final teamShortName = bootstrap?.getTeam(player.team)?.shortName;
 
         return SizedBox(
@@ -60,19 +63,19 @@ class PlayerPitchIcon extends StatelessWidget {
                           child: Container(
                             padding: const EdgeInsets.all(2),
                             decoration: BoxDecoration(
-                              color: AppColors.lineupControl,
+                              color: context.appColors.lineupControl,
                               borderRadius: BorderRadius.circular(13),
                               border: Border.all(
                                 color:
                                     pick.isCaptain || pick.isViceCaptain
-                                        ? AppColors.lineupLavender
-                                        : AppColors.lineupPitchLine,
+                                        ? context.appColors.lineupLavender
+                                        : context.appColors.lineupPitchLine,
                               ),
                               boxShadow:
                                   pick.isCaptain || pick.isViceCaptain
                                       ? [
                                         BoxShadow(
-                                          color: AppColors.lineupPurple
+                                          color: context.appColors.lineupPurple
                                               .withValues(alpha: .32),
                                           blurRadius: 9,
                                         ),
@@ -82,6 +85,7 @@ class PlayerPitchIcon extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: _buildPlayerImage(
+                                context,
                                 player.imageUrls,
                                 portraitSize,
                               ),
@@ -94,7 +98,7 @@ class PlayerPitchIcon extends StatelessWidget {
                             right: 1,
                             child: _MiniBadge(
                               label: pick.isCaptain ? 'C' : 'V',
-                              color: AppColors.lineupPurple,
+                              color: context.appColors.lineupPurple,
                             ),
                           ),
                         if (isBench && benchNumber != null)
@@ -103,7 +107,7 @@ class PlayerPitchIcon extends StatelessWidget {
                             left: 1,
                             child: _MiniBadge(
                               label: '$benchNumber',
-                              color: AppColors.lineupControl,
+                              color: context.appColors.lineupControl,
                             ),
                           ),
                         if (teamShortName != null)
@@ -112,8 +116,8 @@ class PlayerPitchIcon extends StatelessWidget {
                             left: 1,
                             child: _MiniBadge(
                               label: teamShortName,
-                              color: AppColors.lineupMint,
-                              textColor: AppColors.lineupBackground,
+                              color: context.appColors.lineupMint,
+                              textColor: context.appColors.lineupBackground,
                             ),
                           ),
                       ],
@@ -125,8 +129,8 @@ class PlayerPitchIcon extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: AppColors.lineupText,
+                    style:  TextStyle(
+                      color: context.appColors.lineupText,
                       fontSize: 8,
                       fontWeight: FontWeight.w700,
                     ),
@@ -141,8 +145,8 @@ class PlayerPitchIcon extends StatelessWidget {
                     decoration: BoxDecoration(
                       color:
                           isBench
-                              ? AppColors.lineupControl.withValues(alpha: .85)
-                              : AppColors.lineupBackground.withValues(
+                              ? context.appColors.lineupControl.withValues(alpha: .85)
+                              : context.appColors.lineupBackground.withValues(
                                 alpha: .88,
                               ),
                       borderRadius: BorderRadius.circular(5),
@@ -155,8 +159,8 @@ class PlayerPitchIcon extends StatelessWidget {
                       style: TextStyle(
                         color:
                             isBench
-                                ? AppColors.lineupTextSecondary
-                                : AppColors.lineupMint,
+                                ? context.appColors.lineupTextSecondary
+                                : context.appColors.lineupMint,
                         fontSize: 7,
                         fontWeight: FontWeight.w700,
                       ),
@@ -186,15 +190,20 @@ class PlayerPitchIcon extends StatelessWidget {
     );
   }
 
-  Widget _buildPlayerImage(List<String> urls, double size, [int index = 0]) {
+  Widget _buildPlayerImage(
+    BuildContext context,
+    List<String> urls,
+    double size, [
+    int index = 0,
+  ]) {
     if (index >= urls.length) {
       return Container(
         width: size,
         height: size,
-        color: AppColors.lineupControl,
-        child: const Icon(
+        color: context.appColors.lineupControl,
+        child:  Icon(
           Icons.person,
-          color: AppColors.lineupTextSecondary,
+          color: context.appColors.lineupTextSecondary,
           size: 20,
         ),
       );
@@ -205,14 +214,15 @@ class PlayerPitchIcon extends StatelessWidget {
       height: size,
       fit: BoxFit.contain,
       placeholder:
-          (_, _) => const Center(
+          (_, _) =>  Center(
             child: Icon(
               Icons.person,
-              color: AppColors.lineupTextSecondary,
+              color: context.appColors.lineupTextSecondary,
               size: 20,
             ),
           ),
-      errorWidget: (_, _, _) => _buildPlayerImage(urls, size, index + 1),
+      errorWidget: (_, _, _) =>
+          _buildPlayerImage(context, urls, size, index + 1),
     );
   }
 }
@@ -221,12 +231,12 @@ class _MiniBadge extends StatelessWidget {
   const _MiniBadge({
     required this.label,
     required this.color,
-    this.textColor = AppColors.lineupText,
+    this.textColor,
   });
 
   final String label;
   final Color color;
-  final Color textColor;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -236,14 +246,14 @@ class _MiniBadge extends StatelessWidget {
     decoration: BoxDecoration(
       color: color,
       borderRadius: BorderRadius.circular(5),
-      border: Border.all(color: AppColors.lineupBackground),
+      border: Border.all(color: context.appColors.lineupBackground),
     ),
     child: Text(
       label,
       maxLines: 1,
       overflow: TextOverflow.clip,
       style: TextStyle(
-        color: textColor,
+        color: textColor ?? context.appColors.lineupText,
         fontSize: 8,
         fontWeight: FontWeight.w800,
       ),

@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:fantasy/features/history/data/models/event_history.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +22,7 @@ class HistoryQuickStats extends StatelessWidget {
                 : selectedEvent.transfersCost > 0
                     ? '-${selectedEvent.transfersCost} hit pts'
                     : 'No hit points',
-            valueColor: AppColors.lineupText,
+            valueColor: context.appColors.lineupText,
             icon: Icons.swap_horiz_rounded,
           ),
         ),
@@ -36,7 +36,7 @@ class HistoryQuickStats extends StatelessWidget {
             footnote: selectedEvent == null
                 ? 'Selected GW'
                 : '\u00A3${selectedEvent.bank.toStringAsFixed(1)}m in bank',
-            valueColor: AppColors.lineupMint,
+            valueColor: context.appColors.lineupMint,
             icon: Icons.account_balance_wallet_outlined,
           ),
         ),
@@ -75,7 +75,7 @@ class _QuickStat extends StatelessWidget {
     constraints: const BoxConstraints(minHeight: 82),
     padding: const EdgeInsets.all(9),
     decoration: BoxDecoration(
-      color: AppColors.lineupSurface,
+      color: context.appColors.lineupSurface,
       borderRadius: BorderRadius.circular(12),
     ),
     child: Column(
@@ -84,15 +84,15 @@ class _QuickStat extends StatelessWidget {
       children: [
         Row(
           children: [
-            Icon(icon, color: AppColors.lineupTextSecondary, size: 12),
+            Icon(icon, color: context.appColors.lineupTextSecondary, size: 12),
             const SizedBox(width: 4),
             Expanded(
               child: Text(
                 label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: AppColors.lineupTextSecondary,
+                style:  TextStyle(
+                  color: context.appColors.lineupTextSecondary,
                   fontSize: 8,
                   fontWeight: FontWeight.w600,
                   letterSpacing: .2,
@@ -118,8 +118,8 @@ class _QuickStat extends StatelessWidget {
           footnote,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: const TextStyle(
-            color: AppColors.lineupTextSecondary,
+          style:  TextStyle(
+            color: context.appColors.lineupTextSecondary,
             fontSize: 8,
           ),
         ),

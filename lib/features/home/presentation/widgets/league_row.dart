@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:fantasy/features/home/presentation/widgets/league_badge.dart';
 import 'package:fantasy/features/manager/data/models/league_model.dart';
 import 'package:fantasy/shared/widgets/glass_panel.dart';
@@ -25,16 +25,16 @@ class LeagueRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final accent = isGlobal ? AppColors.lineupLavender : AppColors.lineupMint;
+    final accent = isGlobal ? context.appColors.lineupLavender : context.appColors.lineupMint;
     final rank = league.rank;
     final hasMovement = rank != null && league.lastRank != null;
     final movement = hasMovement ? league.rankMovement : 0;
     final movementColor =
         movement > 0
-            ? AppColors.lineupMint
+            ? context.appColors.lineupMint
             : movement < 0
             ? const Color(0xFFFFB4AB)
-            : AppColors.lineupTextSecondary;
+            : context.appColors.lineupTextSecondary;
     final detail = [
       if (rank != null)
         'Rank: ${_formatRank(rank)}  |  ${league.percentile}% percentile',
@@ -47,7 +47,7 @@ class LeagueRow extends StatelessWidget {
       child: GlassPanel(
         padding: EdgeInsets.zero,
         radius: 12,
-        fillColor: AppColors.lineupPanel.withValues(alpha: .92),
+        fillColor: context.appColors.lineupPanel.withValues(alpha: .92),
         child: Material(
           color: Colors.transparent,
           child: InkWell(
@@ -85,8 +85,8 @@ class LeagueRow extends StatelessWidget {
                                 league.name,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  color: AppColors.lineupText,
+                                style:  TextStyle(
+                                  color: context.appColors.lineupText,
                                   fontSize: 11,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -96,7 +96,7 @@ class LeagueRow extends StatelessWidget {
                               const SizedBox(width: 5),
                               LeagueBadge(
                                 label: badgeLabel ?? 'YOU',
-                                color: AppColors.lineupLavender,
+                                color: context.appColors.lineupLavender,
                               ),
                             ],
                           ],
@@ -106,8 +106,8 @@ class LeagueRow extends StatelessWidget {
                           detail.isEmpty ? 'Rank unavailable' : detail,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: AppColors.lineupTextSecondary,
+                          style:  TextStyle(
+                            color: context.appColors.lineupTextSecondary,
                             fontSize: 9,
                           ),
                         ),
@@ -119,7 +119,7 @@ class LeagueRow extends StatelessWidget {
                     _MovementBadge(movement: movement, color: movementColor),
                   Icon(
                     Icons.chevron_right_rounded,
-                    color: AppColors.lineupTextSecondary.withValues(alpha: .7),
+                    color: context.appColors.lineupTextSecondary.withValues(alpha: .7),
                     size: 18,
                   ),
                 ],

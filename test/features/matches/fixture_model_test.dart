@@ -60,4 +60,10 @@ void main() {
     expect(fixture.finished, isNull);
     expect(fixture.minutes, isNull);
   });
+
+  test('preserves FPL code separately from fixture ID', () {
+    final fixture = FixtureModel.fromJson({'id': 73, 'code': 2645267});
+    expect(fixture.id, 73);
+    expect(fixture.code, 2645267);
+  });
 }

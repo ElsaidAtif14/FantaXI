@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class MarketQuickFilters extends StatelessWidget {
@@ -28,7 +28,7 @@ class MarketQuickFilters extends StatelessWidget {
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
-              color: AppColors.marketControl,
+              color: context.appColors.marketControl,
               borderRadius: BorderRadius.circular(18),
             ),
             child: Row(
@@ -37,14 +37,14 @@ class MarketQuickFilters extends StatelessWidget {
                   icon,
                   size: 11,
                   color:
-                      isPrimary ? AppColors.marketMint : AppColors.marketLavender,
+                      isPrimary ? context.appColors.marketMint : context.appColors.marketLavender,
                 ),
                 const SizedBox(width: 5),
                 Text(
                   label,
                   style: TextStyle(
                     color:
-                        isPrimary ? AppColors.marketMint : AppColors.marketText,
+                        isPrimary ? context.appColors.marketMint : context.appColors.marketText,
                     fontSize: 9,
                     fontWeight: FontWeight.w600,
                   ),

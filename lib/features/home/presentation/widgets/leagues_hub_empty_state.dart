@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class LeaguesHubEmptyState extends StatelessWidget {
@@ -9,15 +9,15 @@ class LeaguesHubEmptyState extends StatelessWidget {
     padding: const EdgeInsets.symmetric(vertical: 34),
     child: Column(
       children: [
-        const Icon(
+         Icon(
           Icons.search_off_rounded,
-          color: AppColors.lineupTextSecondary,
+          color: context.appColors.lineupTextSecondary,
           size: 28,
         ),
         const SizedBox(height: 8),
-        const Text(
+         Text(
           'No leagues match this search.',
-          style: TextStyle(color: AppColors.lineupTextSecondary),
+          style: TextStyle(color: context.appColors.lineupTextSecondary),
         ),
       ],
     ),

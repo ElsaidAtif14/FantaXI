@@ -1,9 +1,9 @@
 
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/widgets.dart';
 
 class MetricPill extends StatelessWidget {
-  const MetricPill({super.key, 
+  const MetricPill({super.key,
     required this.icon,
     required this.label,
     required this.value,
@@ -19,18 +19,18 @@ class MetricPill extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
     decoration: BoxDecoration(
-      color: AppColors.lineupControl,
+      color: context.appColors.lineupControl,
       borderRadius: BorderRadius.circular(99),
     ),
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 12, color: AppColors.lineupTextSecondary),
+        Icon(icon, size: 12, color: context.appColors.lineupTextSecondary),
         const SizedBox(width: 5),
         Text(
           '$label:',
-          style: const TextStyle(
-            color: AppColors.lineupTextSecondary,
+          style:  TextStyle(
+            color: context.appColors.lineupTextSecondary,
             fontSize: 9,
           ),
         ),

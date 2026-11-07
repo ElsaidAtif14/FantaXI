@@ -1,6 +1,6 @@
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fantasy/core/theme/app_colors.dart';
 
 class OnboardingCtaButton extends StatelessWidget {
   final bool isLoading;
@@ -17,11 +17,11 @@ class OnboardingCtaButton extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        gradient: AppColors.primaryGradient,
+        gradient: context.appColors.primaryGradient,
         boxShadow: [
           BoxShadow(
             // ignore: deprecated_member_use
-            color: AppColors.primary.withOpacity(0.4),
+            color: context.appColors.primary.withOpacity(0.4),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),

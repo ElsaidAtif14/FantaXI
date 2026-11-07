@@ -1,34 +1,49 @@
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fantasy/core/theme/app_colors.dart';
 
 class AppTheme {
   AppTheme._();
 
-  static ThemeData get dark {
+  static ThemeData get light => _build(AppThemeColors.light, Brightness.light);
+  static ThemeData get dark => _build(AppThemeColors.dark, Brightness.dark);
+
+  static ThemeData _build(AppThemeColors colors, Brightness brightness) {
+    final isLight = brightness == Brightness.light;
     return ThemeData(
       useMaterial3: true,
-      brightness: Brightness.dark,
-      scaffoldBackgroundColor: AppColors.background,
-      colorScheme: const ColorScheme.dark(
-        primary: AppColors.primary,
-        secondary: AppColors.electricBlue,
-        tertiary: AppColors.warmOrange,
-        surface: AppColors.surface,
-        onPrimary: Colors.white,
-        onSecondary: Colors.black,
-        onSurface: AppColors.textPrimary,
-      ),
-      textTheme: GoogleFonts.outfitTextTheme(_baseTextTheme()),
-      appBarTheme: _appBarTheme(),
-      cardTheme: _cardTheme(),
-      inputDecorationTheme: _inputTheme(),
-      elevatedButtonTheme: _buttonTheme(),
+      brightness: brightness,
+      scaffoldBackgroundColor: colors.background,
+      colorScheme:
+          isLight
+              ? ColorScheme.light(
+                primary: colors.primary,
+                secondary: colors.electricBlue,
+                tertiary: colors.warmOrange,
+                surface: colors.surface,
+                onPrimary: Colors.white,
+                onSecondary: Colors.white,
+                onSurface: colors.textPrimary,
+              )
+              : ColorScheme.dark(
+                primary: colors.primary,
+                secondary: colors.electricBlue,
+                tertiary: colors.warmOrange,
+                surface: colors.surface,
+                onPrimary: Colors.white,
+                onSecondary: Colors.black,
+                onSurface: colors.textPrimary,
+              ),
+      textTheme: GoogleFonts.outfitTextTheme(_baseTextTheme(colors)),
+      appBarTheme: _appBarTheme(colors),
+      cardTheme: _cardTheme(colors),
+      inputDecorationTheme: _inputTheme(colors),
+      elevatedButtonTheme: _buttonTheme(colors),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
-        backgroundColor: AppColors.surface,
-        contentTextStyle: const TextStyle(
-          color: AppColors.textPrimary,
+        backgroundColor: colors.surface,
+        contentTextStyle: TextStyle(
+          color: colors.textPrimary,
           fontFamily: 'Outfit',
           fontSize: 14,
           fontWeight: FontWeight.w500,
@@ -36,68 +51,69 @@ class AppTheme {
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(color: AppColors.outline),
+          side: BorderSide(color: colors.outline),
         ),
       ),
-      dividerTheme: const DividerThemeData(
-        color: AppColors.outline,
+      dividerTheme: DividerThemeData(
+        color: colors.outline,
         thickness: 1,
         space: 1,
       ),
-      bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: AppColors.surface,
-        modalBackgroundColor: AppColors.surface,
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: colors.surface,
+        modalBackgroundColor: colors.surface,
         surfaceTintColor: Colors.transparent,
         showDragHandle: true,
-        dragHandleColor: AppColors.textMuted,
+        dragHandleColor: colors.textMuted,
       ),
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: Colors.transparent,
-        selectedItemColor: AppColors.primary,
-        unselectedItemColor: AppColors.textMuted,
+        selectedItemColor: colors.primary,
+        unselectedItemColor: colors.textMuted,
         type: BottomNavigationBarType.fixed,
         elevation: 0,
-        selectedLabelStyle: TextStyle(fontWeight: FontWeight.w700),
+        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w700),
       ),
+      extensions: <ThemeExtension<dynamic>>[colors],
     );
   }
 
-  static TextTheme _baseTextTheme() => const TextTheme(
+  static TextTheme _baseTextTheme(AppThemeColors colors) => TextTheme(
     displayLarge: TextStyle(
       fontSize: 32,
       fontWeight: FontWeight.w800,
-      color: AppColors.textPrimary,
+      color: colors.textPrimary,
       letterSpacing: -0.5,
     ),
     headlineLarge: TextStyle(
       fontSize: 24,
       fontWeight: FontWeight.w700,
-      color: AppColors.textPrimary,
+      color: colors.textPrimary,
     ),
     headlineMedium: TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.w600,
-      color: AppColors.textPrimary,
+      color: colors.textPrimary,
     ),
     titleLarge: TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.w600,
-      color: AppColors.textPrimary,
+      color: colors.textPrimary,
     ),
     bodyLarge: TextStyle(
       fontSize: 15,
       fontWeight: FontWeight.w400,
-      color: AppColors.textPrimary,
+      color: colors.textPrimary,
     ),
     bodyMedium: TextStyle(
       fontSize: 13,
       fontWeight: FontWeight.w400,
-      color: AppColors.textSecondary,
+      color: colors.textSecondary,
     ),
   );
 
-  static AppBarTheme _appBarTheme() => const AppBarTheme(
-    backgroundColor: AppColors.background,
+  static AppBarTheme _appBarTheme(AppThemeColors colors) => AppBarTheme(
+    backgroundColor: colors.background,
     surfaceTintColor: Colors.transparent,
     elevation: 0,
     scrolledUnderElevation: 0,
@@ -106,55 +122,56 @@ class AppTheme {
       fontFamily: 'Outfit',
       fontSize: 20,
       fontWeight: FontWeight.w700,
-      color: AppColors.textPrimary,
+      color: colors.textPrimary,
     ),
-    iconTheme: IconThemeData(color: AppColors.textPrimary),
+    iconTheme: IconThemeData(color: colors.textPrimary),
   );
 
-  static CardThemeData _cardTheme() => CardThemeData(
-    color: AppColors.card,
+  static CardThemeData _cardTheme(AppThemeColors colors) => CardThemeData(
+    color: colors.card,
     surfaceTintColor: Colors.transparent,
     elevation: 0,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(18),
-      side: const BorderSide(color: AppColors.outline),
+      side: BorderSide(color: colors.outline),
     ),
     margin: EdgeInsets.zero,
   );
 
-  static InputDecorationTheme _inputTheme() => InputDecorationTheme(
-    filled: true,
-    fillColor: AppColors.surfaceVariant,
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(16),
-      borderSide: BorderSide.none,
-    ),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(16),
-      borderSide: const BorderSide(color: AppColors.outline, width: 1),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(16),
-      borderSide: const BorderSide(color: AppColors.primaryLight, width: 1.5),
-    ),
-    hintStyle: const TextStyle(
-      color: AppColors.textMuted,
-      fontFamily: 'Outfit',
-    ),
-  );
+  static InputDecorationTheme _inputTheme(AppThemeColors colors) =>
+      InputDecorationTheme(
+        filled: true,
+        fillColor: colors.surfaceVariant,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: colors.outline, width: 1),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: colors.primaryLight, width: 1.5),
+        ),
+        hintStyle: TextStyle(color: colors.textMuted, fontFamily: 'Outfit'),
+      );
 
-  static ElevatedButtonThemeData _buttonTheme() => ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(
-      backgroundColor: AppColors.primary,
-      foregroundColor: Colors.white,
-      minimumSize: const Size(double.infinity, 52),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      elevation: 0,
-      textStyle: const TextStyle(
-        fontFamily: 'Outfit',
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-      ),
-    ),
-  );
+  static ElevatedButtonThemeData _buttonTheme(AppThemeColors colors) =>
+      ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: colors.primary,
+          foregroundColor: Colors.white,
+          minimumSize: const Size(double.infinity, 52),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          elevation: 0,
+          textStyle: const TextStyle(
+            fontFamily: 'Outfit',
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      );
 }

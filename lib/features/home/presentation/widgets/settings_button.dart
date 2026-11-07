@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class SettingsButton extends StatelessWidget {
@@ -10,7 +10,7 @@ class SettingsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.lineupControl.withValues(alpha: .6),
+      color: context.appColors.lineupControl.withValues(alpha: .6),
       borderRadius: BorderRadius.circular(10),
       child: InkWell(
         onTap: onTap,
@@ -22,13 +22,13 @@ class SettingsButton extends StatelessWidget {
           child: Icon(
             icons ?? Icons.account_circle,
             size: 17,
-            color: AppColors.lineupTextSecondary,
+            color: context.appColors.lineupTextSecondary,
           ),
 
           // child: const  Icon(
           //   Icons.account_circle,
           //   size: 17,
-          //   color: AppColors.lineupTextSecondary,
+          //   color: context.appColors.lineupTextSecondary,
           // ),
         ),
       ),

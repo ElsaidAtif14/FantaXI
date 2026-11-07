@@ -1,9 +1,9 @@
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fantasy/core/constants/app_constants.dart';
 import 'package:fantasy/core/router/app_router.dart';
-import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/features/splash/presentation/widgets/splash_background.dart';
 import 'package:fantasy/features/splash/presentation/widgets/splash_logo.dart';
 
@@ -47,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.appColors.background,
       body: SplashBackground(
         child: Center(
           child: Column(
@@ -60,7 +60,7 @@ class _SplashScreenState extends State<SplashScreen>
                 child: SizedBox(
                   width: 40, height: 40,
                   child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary.withOpacity(0.6)),
+                    valueColor: AlwaysStoppedAnimation<Color>(context.appColors.primary.withOpacity(0.6)),
                     strokeWidth: 2,
                   ),
                 ),

@@ -1,5 +1,6 @@
 
 
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class PointsGap extends StatelessWidget {
@@ -10,10 +11,10 @@ class PointsGap extends StatelessWidget {
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.end,
     children: [
-      const Text(
+      Text(
         'POINTS TO #1',
         style: TextStyle(
-          color: Color(0xFF94A3B8),
+          color: context.appColors.leagueSecondaryText,
           fontSize: 10,
           letterSpacing: .5,
         ),
@@ -22,14 +23,16 @@ class PointsGap extends StatelessWidget {
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
         decoration: BoxDecoration(
-          color: const Color(0x1A10B981),
-          border: Border.all(color: const Color(0x3310B981)),
+          color: context.appColors.leagueIconTeal.withValues(alpha: .1),
+          border: Border.all(
+            color: context.appColors.leagueIconTeal.withValues(alpha: .2),
+          ),
           borderRadius: BorderRadius.circular(99),
         ),
         child: Text(
           pointsBehind == null ? '— pts' : '-$pointsBehind pts',
-          style: const TextStyle(
-            color: Color(0xFF34D399),
+          style: TextStyle(
+            color: context.appColors.leagueIconTeal,
             fontSize: 13,
             fontWeight: FontWeight.w800,
           ),

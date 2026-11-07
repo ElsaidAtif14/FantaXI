@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -59,7 +59,7 @@ class SquadLoadingView extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
             decoration: BoxDecoration(
-              color: AppColors.lineupPitchMiddle,
+              color: context.appColors.lineupPitchMiddle,
               borderRadius: BorderRadius.circular(16),
             ),
             child: const Column(
@@ -78,7 +78,7 @@ class SquadLoadingView extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.lineupPanel,
+              color: context.appColors.lineupPanel,
               borderRadius: BorderRadius.circular(16),
             ),
             child: const Row(
@@ -116,7 +116,7 @@ class _SummaryBone extends StatelessWidget {
     height: 70,
     padding: const EdgeInsets.all(8),
     decoration: BoxDecoration(
-      color: AppColors.lineupPanel,
+      color: context.appColors.lineupPanel,
       borderRadius: BorderRadius.circular(12),
     ),
     child: const Column(
@@ -186,7 +186,7 @@ class _ChipBone extends StatelessWidget {
     height: 78,
     padding: const EdgeInsets.all(8),
     decoration: BoxDecoration(
-      color: AppColors.lineupPanel,
+      color: context.appColors.lineupPanel,
       borderRadius: BorderRadius.circular(12),
     ),
     child: const Column(

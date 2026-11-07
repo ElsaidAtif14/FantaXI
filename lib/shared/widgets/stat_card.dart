@@ -1,5 +1,5 @@
-import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/shared/widgets/glass_panel.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class StatCard extends StatelessWidget {
@@ -24,7 +24,7 @@ class StatCard extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       radius: 12,
       glowColor: color,
-      fillColor: AppColors.lineupPanel.withValues(alpha: .88),
+      fillColor: context.appColors.lineupPanel.withValues(alpha: .88),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -47,7 +47,9 @@ class StatCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.end,
                   style: TextStyle(
-                    color: AppColors.lineupTextSecondary.withValues(alpha: .8),
+                    color: context.appColors.lineupTextSecondary.withValues(
+                      alpha: .8,
+                    ),
                     fontSize: 8,
                     fontWeight: FontWeight.w600,
                     letterSpacing: .35,
@@ -64,7 +66,7 @@ class StatCard extends StatelessWidget {
               value,
               maxLines: 1,
               style: TextStyle(
-                color: AppColors.lineupText,
+                color: context.appColors.lineupText,
                 fontSize: 23,
                 height: 1,
                 fontWeight: FontWeight.w800,
@@ -77,8 +79,8 @@ class StatCard extends StatelessWidget {
             subtitle,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: AppColors.lineupTextSecondary,
+            style: TextStyle(
+              color: context.appColors.lineupTextSecondary,
               fontSize: 9,
             ),
           ),

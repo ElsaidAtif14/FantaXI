@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:fantasy/features/history/data/models/manager_history_model.dart';
 import 'package:fantasy/features/history/presentation/widgets/history_chart.dart';
 import 'package:fantasy/features/history/presentation/widgets/history_list.dart';
@@ -42,11 +42,11 @@ class HistoryContent extends StatelessWidget {
           const SizedBox(height: 24),
           Row(
             children: [
-              const Expanded(
+               Expanded(
                 child: Text(
                   'Gameweek Performance',
                   style: TextStyle(
-                    color: AppColors.lineupText,
+                    color: context.appColors.lineupText,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
@@ -54,8 +54,8 @@ class HistoryContent extends StatelessWidget {
               ),
               Text(
                 '${history.currentSeason.length} played',
-                style: const TextStyle(
-                  color: AppColors.lineupTextSecondary,
+                style:  TextStyle(
+                  color: context.appColors.lineupTextSecondary,
                   fontSize: 10,
                 ),
               ),

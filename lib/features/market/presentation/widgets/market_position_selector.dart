@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class MarketPositionSelector extends StatelessWidget {
@@ -22,7 +22,7 @@ class MarketPositionSelector extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: AppColors.marketBackground,
+        color: context.appColors.marketBackground,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -37,14 +37,14 @@ class MarketPositionSelector extends StatelessWidget {
                   decoration: BoxDecoration(
                     color:
                         selected == values[i]
-                            ? AppColors.marketLavender
+                            ? context.appColors.marketLavender
                             : Colors.transparent,
                     borderRadius: BorderRadius.circular(8),
                     boxShadow:
                         selected == values[i]
                             ? [
                               BoxShadow(
-                                color: AppColors.marketLavender.withValues(
+                                color: context.appColors.marketLavender.withValues(
                                   alpha: .35,
                                 ),
                                 blurRadius: 8,
@@ -60,8 +60,8 @@ class MarketPositionSelector extends StatelessWidget {
                         style: TextStyle(
                           color:
                               selected == values[i]
-                                  ? AppColors.marketSelectedText
-                                  : AppColors.marketText,
+                                  ? context.appColors.marketSelectedText
+                                  : context.appColors.marketText,
                           fontSize: 10,
                           fontWeight: FontWeight.w700,
                         ),
@@ -73,8 +73,8 @@ class MarketPositionSelector extends StatelessWidget {
                           style: TextStyle(
                             color:
                                 selected == values[i]
-                                    ? AppColors.marketSelectedText
-                                    : AppColors.marketText,
+                                    ? context.appColors.marketSelectedText
+                                    : context.appColors.marketText,
                             fontSize: 8,
                             fontWeight: FontWeight.w700,
                           ),

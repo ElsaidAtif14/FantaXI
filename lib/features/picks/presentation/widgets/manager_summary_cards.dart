@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class ManagerSummaryCards extends StatelessWidget {
@@ -21,7 +21,7 @@ class ManagerSummaryCards extends StatelessWidget {
           label: 'Gameweek Pts',
           value: points?.toString() ?? '—',
           suffix: 'pts',
-          valueColor: AppColors.lineupMint,
+          valueColor: context.appColors.lineupMint,
         ),
       ),
       const SizedBox(width: 8),
@@ -30,7 +30,7 @@ class ManagerSummaryCards extends StatelessWidget {
           label: 'Overall Total',
           value: overallTotal?.toString() ?? '—',
           suffix: 'pts',
-          valueColor: AppColors.lineupText,
+          valueColor: context.appColors.lineupText,
         ),
       ),
       const SizedBox(width: 8),
@@ -39,7 +39,7 @@ class ManagerSummaryCards extends StatelessWidget {
           label: 'GW $gameweek Deadline',
           value: '—',
           suffix: 'Deadline unavailable',
-          valueColor: AppColors.lineupLavender,
+          valueColor: context.appColors.lineupLavender,
           icon: Icons.schedule_rounded,
         ),
       ),
@@ -67,7 +67,7 @@ class _SummaryCard extends StatelessWidget {
     constraints: const BoxConstraints(minHeight: 70),
     padding: const EdgeInsets.all(8),
     decoration: BoxDecoration(
-      color: AppColors.lineupPanel.withValues(alpha: .86),
+      color: context.appColors.lineupPanel.withValues(alpha: .86),
       borderRadius: BorderRadius.circular(12),
     ),
     child: Column(
@@ -79,7 +79,7 @@ class _SummaryCard extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            color: AppColors.lineupTextSecondary,
+            color: context.appColors.lineupTextSecondary,
             fontSize: 9,
             fontWeight: FontWeight.w600,
           ),
@@ -125,7 +125,7 @@ class _SummaryCard extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: AppColors.textPrimary,
+              color: context.appColors.textPrimary,
               fontSize: 9,
             ),
           ),

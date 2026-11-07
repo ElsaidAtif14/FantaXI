@@ -1,10 +1,10 @@
 import 'package:fantasy/features/onboarding/presentation/widgets/build_badge.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fantasy/core/constants/app_constants.dart';
 import 'package:fantasy/core/router/app_router.dart';
-import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/features/onboarding/presentation/widgets/onboarding_form_card.dart';
 import 'package:fantasy/features/onboarding/presentation/widgets/onboarding_cta_button.dart';
 
@@ -51,7 +51,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.appColors.background,
       body: SafeArea(
         child: FadeTransition(
           opacity: CurvedAnimation(parent: _anim, curve: Curves.easeOut),
@@ -63,22 +63,22 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                 const Spacer(flex: 2),
                 BuildBadge(),
                 const SizedBox(height: 24),
-                const Text(
+                 Text(
                   'Track Your\nFPL Journey',
                   style: TextStyle(
                     fontSize: 42,
                     fontWeight: FontWeight.w800,
-                    color: AppColors.textPrimary,
+                    color: context.appColors.textPrimary,
                     height: 1.15,
                     letterSpacing: -1,
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text(
+                 Text(
                   'Enter your Manager ID to see live points,\noverall rank, league standings and more.',
                   style: TextStyle(
                     fontSize: 15,
-                    color: AppColors.textSecondary,
+                    color: context.appColors.textSecondary,
                     height: 1.6,
                   ),
                 ),

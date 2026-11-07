@@ -38,6 +38,27 @@ void main() {
       'Unavailable',
     );
   });
+
+  test('resolves a fixture by ID for direct detail routes', () async {
+    final client = _FakeDioClient([
+      {'id': 15, 'event': 3, 'team_h': 1, 'team_a': 2},
+      {'id': 16, 'event': 3, 'team_h': 2, 'team_a': 1},
+    ]);
+    final repository = MatchesRepositoryImpl(client);
+
+    final result = await repository.getFixtureById(16);
+
+    expect(result.fold((_) => null, (fixture) => fixture?.id), 16);
+    expect(client.lastQuery, isNull);
+  });
+
+  test('returns null when a fixture ID does not exist', () async {
+    final repository = MatchesRepositoryImpl(_FakeDioClient([]));
+
+    final result = await repository.getFixtureById(999);
+
+    expect(result.fold((_) => 'failure', (fixture) => fixture), isNull);
+  });
 }
 
 class _FakeDioClient extends DioClient {

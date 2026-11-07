@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 enum AppSnackBarType { info, success, warning, error }
@@ -13,10 +13,10 @@ class AppSnackBar {
     Duration duration = const Duration(seconds: 4),
   }) {
     final color = switch (type) {
-      AppSnackBarType.info => AppColors.electricBlue,
-      AppSnackBarType.success => AppColors.secondary,
-      AppSnackBarType.warning => AppColors.warmOrange,
-      AppSnackBarType.error => AppColors.rankDown,
+      AppSnackBarType.info => context.appColors.electricBlue,
+      AppSnackBarType.success => context.appColors.secondary,
+      AppSnackBarType.warning => context.appColors.warmOrange,
+      AppSnackBarType.error => context.appColors.rankDown,
     };
     final icon = switch (type) {
       AppSnackBarType.info => Icons.info_outline,
@@ -44,13 +44,13 @@ class AppSnackBar {
         ),
         duration: duration,
         behavior: SnackBarBehavior.floating,
-        backgroundColor: AppColors.surface,
+        backgroundColor: context.appColors.surface,
         elevation: 0,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(color: AppColors.outline),
+          side:  BorderSide(color: context.appColors.outline),
         ),
       ),
     );

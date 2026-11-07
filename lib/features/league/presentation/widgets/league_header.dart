@@ -1,3 +1,4 @@
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:fantasy/features/league/presentation/widgets/league_type_badge.dart';
 import 'package:fantasy/features/league/presentation/widgets/round_action.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +36,8 @@ class LeagueHeader extends StatelessWidget {
                         name,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: context.appColors.leagueText,
                           fontSize: 17,
                           fontWeight: FontWeight.w800,
                           letterSpacing: -.35,
@@ -52,8 +53,8 @@ class LeagueHeader extends StatelessWidget {
                   '$managerCount Managers • League Standings',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Color(0xFF94A3B8),
+                  style: TextStyle(
+                    color: context.appColors.leagueSecondaryText,
                     fontSize: 10,
                     fontWeight: FontWeight.w500,
                   ),
