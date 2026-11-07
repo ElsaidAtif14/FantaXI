@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:fantasy/features/manager/data/models/fantasy_manager_model.dart';
 import 'package:flutter/material.dart';
 
@@ -39,11 +39,27 @@ class _RankCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(children: [
-            const _IconBadge(icon: Icons.military_tech_rounded, color: AppColors.primaryLight),
-            const SizedBox(width: 9),
-            Expanded(child: Text('GLOBAL POS', maxLines: 1, overflow: TextOverflow.ellipsis, style: textTheme.labelMedium?.copyWith(color: AppColors.textSecondary, letterSpacing: .6, fontWeight: FontWeight.w700))),
-          ]),
+          Row(
+            children: [
+              _IconBadge(
+                icon: Icons.military_tech_rounded,
+                color: context.appColors.primaryLight,
+              ),
+              const SizedBox(width: 9),
+              Expanded(
+                child: Text(
+                  'GLOBAL POS',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: textTheme.labelMedium?.copyWith(
+                    color: context.appColors.textSecondary,
+                    letterSpacing: .6,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ],
+          ),
           const Spacer(),
           Row(
             children: [
@@ -51,21 +67,54 @@ class _RankCard extends StatelessWidget {
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
                   alignment: Alignment.centerLeft,
-                  child: Text(manager.rankFormatted, style: textTheme.displayLarge?.copyWith(fontSize: compact ? 27 : 34, height: 1, fontWeight: FontWeight.w800)),
+                  child: Text(
+                    manager.rankFormatted,
+                    style: textTheme.displayLarge?.copyWith(
+                      fontSize: compact ? 27 : 34,
+                      height: 1,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(width: 6),
-              _RankIndicator(color: AppColors.primaryLight, size: compact ? 48 : 58),
+              _RankIndicator(
+                color: context.appColors.primaryLight,
+                size: compact ? 48 : 58,
+              ),
             ],
           ),
           const SizedBox(height: 5),
-          Text('Overall rank', maxLines: 1, overflow: TextOverflow.ellipsis, style: textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary)),
+          Text(
+            'Overall rank',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: textTheme.bodyMedium?.copyWith(
+              color: context.appColors.textSecondary,
+            ),
+          ),
           const SizedBox(height: 10),
-          Row(children: [
-            const Icon(Icons.sports_soccer_rounded, size: 14, color: AppColors.homeMint),
-            const SizedBox(width: 5),
-            Expanded(child: Text('${_formatPoints(manager.eventPoints)} pts this gameweek', maxLines: 1, overflow: TextOverflow.ellipsis, style: textTheme.labelSmall?.copyWith(color: AppColors.homeMint, fontWeight: FontWeight.w700))),
-          ]),
+          Row(
+            children: [
+              Icon(
+                Icons.sports_soccer_rounded,
+                size: 14,
+                color: context.appColors.homeMint,
+              ),
+              const SizedBox(width: 5),
+              Expanded(
+                child: Text(
+                  '${_formatPoints(manager.eventPoints)} pts this gameweek',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: textTheme.labelSmall?.copyWith(
+                    color: context.appColors.homeMint,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -84,27 +133,74 @@ class _ValueCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(children: [
-            const _IconBadge(icon: Icons.account_balance_wallet_rounded, color: AppColors.homeMint),
-            const SizedBox(width: 9),
-            Expanded(child: Text('SQUAD VALUE', maxLines: 1, overflow: TextOverflow.ellipsis, style: textTheme.labelMedium?.copyWith(color: AppColors.textSecondary, letterSpacing: .6, fontWeight: FontWeight.w700))),
-          ]),
-          const Spacer(),
-          Row(children: [
-            Expanded(
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.centerLeft,
-                child: Text('\u00A3${manager.teamValue.toStringAsFixed(1)}m', style: textTheme.displayLarge?.copyWith(fontSize: compact ? 25 : 32, height: 1, fontWeight: FontWeight.w800)),
+          Row(
+            children: [
+              _IconBadge(
+                icon: Icons.account_balance_wallet_rounded,
+                color: context.appColors.homeMint,
               ),
-            ),
-            const SizedBox(width: 4),
-            SizedBox(width: compact ? 38 : 52, height: 32, child: const CustomPaint(painter: _SparklinePainter())),
-          ]),
-          const SizedBox(height: 8),
-          Text('Bank: \u00A3${manager.bank.toStringAsFixed(1)}m', maxLines: 1, overflow: TextOverflow.ellipsis, style: textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
+              const SizedBox(width: 9),
+              Expanded(
+                child: Text(
+                  'SQUAD VALUE',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: textTheme.labelMedium?.copyWith(
+                    color: context.appColors.textSecondary,
+                    letterSpacing: .6,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ],
+          ),
           const Spacer(),
-          Text('Total points: ${_formatPoints(manager.totalPoints)}', maxLines: 1, overflow: TextOverflow.ellipsis, style: textTheme.labelMedium?.copyWith(color: AppColors.homeMint, fontWeight: FontWeight.w700)),
+          Row(
+            children: [
+              Expanded(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    '\u00A3${manager.teamValue.toStringAsFixed(1)}m',
+                    style: textTheme.displayLarge?.copyWith(
+                      fontSize: compact ? 25 : 32,
+                      height: 1,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 4),
+              SizedBox(
+                width: compact ? 38 : 52,
+                height: 32,
+                child: CustomPaint(
+                  painter: _SparklinePainter(context.appColors.homeMint),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Bank: \u00A3${manager.bank.toStringAsFixed(1)}m',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: textTheme.bodyMedium?.copyWith(
+              color: context.appColors.textSecondary,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const Spacer(),
+          Text(
+            'Total points: ${_formatPoints(manager.totalPoints)}',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: textTheme.labelMedium?.copyWith(
+              color: context.appColors.homeMint,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
         ],
       ),
     );
@@ -119,9 +215,11 @@ class _CardShell extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
-      color: AppColors.surface,
+      color: context.appColors.surface,
       borderRadius: BorderRadius.circular(22),
-      border: Border.all(color: AppColors.outline.withValues(alpha: .55)),
+      border: Border.all(
+        color: context.appColors.outline.withValues(alpha: .55),
+      ),
     ),
     child: child,
   );
@@ -136,7 +234,10 @@ class _IconBadge extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     width: 36,
     height: 36,
-    decoration: BoxDecoration(color: color.withValues(alpha: .15), borderRadius: BorderRadius.circular(12)),
+    decoration: BoxDecoration(
+      color: color.withValues(alpha: .15),
+      borderRadius: BorderRadius.circular(12),
+    ),
     child: Icon(icon, color: color, size: 19),
   );
 }
@@ -162,21 +263,36 @@ class _RankIndicator extends StatelessWidget {
 }
 
 class _SparklinePainter extends CustomPainter {
-  const _SparklinePainter();
+  const _SparklinePainter(this.color);
+
+  final Color color;
 
   @override
   void paint(Canvas canvas, Size size) {
-    final path = Path()
-      ..moveTo(0, size.height * .78)
-      ..lineTo(size.width * .25, size.height * .62)
-      ..lineTo(size.width * .52, size.height * .7)
-      ..lineTo(size.width * .75, size.height * .35)
-      ..lineTo(size.width, size.height * .18);
-    canvas.drawPath(path, Paint()..color = AppColors.homeMint..style = PaintingStyle.stroke..strokeWidth = 2.5..strokeCap = StrokeCap.round..strokeJoin = StrokeJoin.round);
+    final path =
+        Path()
+          ..moveTo(0, size.height * .78)
+          ..lineTo(size.width * .25, size.height * .62)
+          ..lineTo(size.width * .52, size.height * .7)
+          ..lineTo(size.width * .75, size.height * .35)
+          ..lineTo(size.width, size.height * .18);
+    canvas.drawPath(
+      path,
+      Paint()
+        ..color = color
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2.5
+        ..strokeCap = StrokeCap.round
+        ..strokeJoin = StrokeJoin.round,
+    );
   }
 
   @override
-  bool shouldRepaint(covariant _SparklinePainter oldDelegate) => false;
+  bool shouldRepaint(covariant _SparklinePainter oldDelegate) =>
+      color != oldDelegate.color;
 }
 
-String _formatPoints(int points) => points.abs().toString().replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (_) => ',');
+String _formatPoints(int points) => points.abs().toString().replaceAllMapped(
+  RegExp(r'\B(?=(\d{3})+(?!\d))'),
+  (_) => ',',
+);

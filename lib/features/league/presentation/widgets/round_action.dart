@@ -1,4 +1,5 @@
 
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class RoundAction extends StatelessWidget {
@@ -10,9 +11,9 @@ class RoundAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: const Color(0xA6161B2E),
-      shape: const CircleBorder(
-        side: BorderSide(color: Color(0x1AFFFFFF)),
+      color: context.appColors.leagueBadgeBackground,
+      shape: CircleBorder(
+        side: BorderSide(color: context.appColors.leagueCardBorder),
       ),
       child: InkWell(
         customBorder: const CircleBorder(),
@@ -20,7 +21,11 @@ class RoundAction extends StatelessWidget {
         child: SizedBox(
           width: 40,
           height: 40,
-          child: Icon(icon, color: const Color(0xFFCBD5E1), size: 20),
+          child: Icon(
+            icon,
+            color: context.appColors.leagueText,
+            size: 20,
+          ),
         ),
       ),
     );

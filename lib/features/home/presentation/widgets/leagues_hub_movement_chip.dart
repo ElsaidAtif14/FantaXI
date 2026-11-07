@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class LeaguesHubMovementChip extends StatelessWidget {
@@ -12,9 +12,9 @@ class LeaguesHubMovementChip extends StatelessWidget {
     final isUp = movement > 0;
     final color =
         unchanged
-            ? AppColors.lineupTextSecondary
+            ? context.appColors.lineupTextSecondary
             : isUp
-            ? AppColors.lineupMint
+            ? context.appColors.lineupMint
             : const Color(0xFFFF6B78);
     final icon =
         unchanged

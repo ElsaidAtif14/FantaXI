@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class MatchweekNavigation extends StatelessWidget {
@@ -29,7 +29,7 @@ class MatchweekNavigation extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       decoration: BoxDecoration(
-        color: AppColors.lineupSurface,
+        color: context.appColors.lineupSurface,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -59,7 +59,7 @@ class MatchweekNavigation extends StatelessWidget {
                   Text(
                     subtitle ?? 'Premier League',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
+                      color: context.appColors.textSecondary,
                     ),
                   ),
               ],

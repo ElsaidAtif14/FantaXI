@@ -1,4 +1,5 @@
 
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class PositionInfo extends StatelessWidget {
@@ -13,8 +14,8 @@ class PositionInfo extends StatelessWidget {
     children: [
       Text(
         label,
-        style: const TextStyle(
-          color: Color(0xFF94A3B8),
+        style: TextStyle(
+          color: context.appColors.leagueSecondaryText,
           fontSize: 10,
           letterSpacing: .5,
         ),
@@ -24,8 +25,8 @@ class PositionInfo extends StatelessWidget {
         children: [
           Text(
             value,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: context.appColors.leagueText,
               fontSize: 23,
               fontWeight: FontWeight.w800,
             ),
@@ -37,8 +38,8 @@ class PositionInfo extends StatelessWidget {
                 detail!,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Color(0xFF8B5CF6),
+                style: TextStyle(
+                  color: context.appColors.primary,
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                 ),

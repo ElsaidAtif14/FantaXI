@@ -1,8 +1,6 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:fantasy/features/home/data/model/league_metric.dart';
 import 'package:flutter/widgets.dart';
-
-
 
 class LeagueMetricBlock extends StatelessWidget {
   final LeagueMetric metric;
@@ -14,9 +12,11 @@ class LeagueMetricBlock extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 8),
       decoration: BoxDecoration(
-        color: AppColors.background.withValues(alpha: 0.42),
+        color: context.appColors.background.withValues(alpha: 0.42),
         borderRadius: BorderRadius.circular(11),
-        border: Border.all(color: AppColors.outline.withValues(alpha: 0.72)),
+        border: Border.all(
+          color: context.appColors.outline.withValues(alpha: 0.72),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,8 +25,8 @@ class LeagueMetricBlock extends StatelessWidget {
             metric.label,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: AppColors.textMuted,
+            style: TextStyle(
+              color: context.appColors.textMuted,
               fontSize: 8,
               fontWeight: FontWeight.w700,
               letterSpacing: 0.45,

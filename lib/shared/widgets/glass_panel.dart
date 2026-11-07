@@ -1,8 +1,8 @@
 
 import 'dart:ui';
 
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:fantasy/core/theme/app_colors.dart';
 
 class GlassPanel extends StatelessWidget {
   final Widget child;
@@ -49,10 +49,10 @@ class GlassPanel extends StatelessWidget {
           filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
           child: DecoratedBox(
             decoration: BoxDecoration(
-              color: fillColor ?? AppColors.surface.withValues(alpha: 0.78),
+              color: fillColor ?? context.appColors.surface.withValues(alpha: 0.78),
               borderRadius: cornerRadius,
               border: Border.all(
-                color: borderColor ?? AppColors.outline.withValues(alpha: 0.88),
+                color: borderColor ?? context.appColors.outline.withValues(alpha: 0.88),
               ),
             ),
             child: Padding(padding: padding, child: child),

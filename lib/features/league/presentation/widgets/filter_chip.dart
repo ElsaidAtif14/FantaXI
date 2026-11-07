@@ -1,4 +1,5 @@
 
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:fantasy/features/league/presentation/widgets/league_view_body.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,10 @@ class FilterChip extends StatelessWidget {
     final active = selected == value;
     final label = count == null ? title : '$title ($count)';
     return Material(
-      color: active ? Colors.white : const Color(0xE6101423),
+      color:
+          active
+              ? context.appColors.primary
+              : context.appColors.leagueBadgeBackground,
       borderRadius: BorderRadius.circular(9),
       child: InkWell(
         borderRadius: BorderRadius.circular(9),
@@ -32,13 +36,19 @@ class FilterChip extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(9),
             border: Border.all(
-              color: active ? Colors.white : const Color(0xFF283343),
+              color:
+                  active
+                      ? context.appColors.primary
+                      : context.appColors.leagueBadgeBorder,
             ),
           ),
           child: Text(
             label,
             style: TextStyle(
-              color: active ? const Color(0xFF111827) : const Color(0xFFCBD5E1),
+              color:
+                  active
+                      ? context.appColors.leagueWhite
+                      : context.appColors.leagueBadgeText,
               fontSize: 11,
               fontWeight: active ? FontWeight.w700 : FontWeight.w500,
             ),

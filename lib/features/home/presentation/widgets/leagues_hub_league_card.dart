@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:fantasy/features/home/presentation/widgets/leagues_hub_models.dart';
 import 'package:fantasy/features/home/presentation/widgets/leagues_hub_movement_chip.dart';
 import 'package:flutter/material.dart';
@@ -24,26 +24,25 @@ class LeaguesHubLeagueCard extends StatelessWidget {
     final league = item.league;
     final rank = league.rank;
     final hasMovement = rank != null && league.lastRank != null;
-    final accent = item.isGlobal ? AppColors.lineupMint : AppColors.lineupLavender;
+    final accent =
+        item.isGlobal
+            ? context.appColors.lineupMint
+            : context.appColors.lineupLavender;
     final highlighted = isFeatured && !item.isGlobal;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 9),
       child: Material(
-        color: Colors.transparent,
+        color: context.appColors.leagueTransparent,
         borderRadius: BorderRadius.circular(16),
         child: Ink(
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Color(0xD91D2232), Color(0xF2121520)],
-            ),
-            border: Border.all(color: Colors.white.withValues(alpha: .07)),
+            gradient: context.appColors.leagueCardGradient,
+            border: Border.all(color: context.appColors.leagueCardBorder),
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: .4),
+                color: context.appColors.leagueCardShadow,
                 blurRadius: 20,
                 offset: const Offset(0, 4),
               ),
@@ -66,16 +65,18 @@ class LeaguesHubLeagueCard extends StatelessWidget {
                         end: Alignment.bottomRight,
                         colors: [
                           accent.withValues(alpha: .25),
-                          const Color(0xFF0F766E).withValues(alpha: .2),
-                          const Color(0xFF0F172A),
+                          context.appColors.leagueIconTeal.withValues(alpha: .2),
+                          context.appColors.leagueIconBackground,
                         ],
                       ),
                       border: Border.all(color: accent.withValues(alpha: .4)),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(
-                      item.isGlobal ? Icons.public_rounded : Icons.diamond_rounded,
-                      color: const Color(0xFFF1F5F9),
+                      item.isGlobal
+                          ? Icons.public_rounded
+                          : Icons.diamond_rounded,
+                      color: context.appColors.leagueIconForeground,
                       size: 22,
                     ),
                   ),
@@ -92,8 +93,8 @@ class LeaguesHubLeagueCard extends StatelessWidget {
                                 league.name,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  color: Colors.white,
+                                style:  TextStyle(
+                                  color: context.appColors.leagueText,
                                   fontSize: 15,
                                   fontWeight: FontWeight.w700,
                                   letterSpacing: -.375,
@@ -101,7 +102,10 @@ class LeaguesHubLeagueCard extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(width: 8),
-                            _AccessBadge(label: _badgeLabel(item), color: accent),
+                            _AccessBadge(
+                              label: _badgeLabel(item),
+                              color: accent,
+                            ),
                           ],
                         ),
                         const SizedBox(height: 2),
@@ -111,8 +115,8 @@ class LeaguesHubLeagueCard extends StatelessWidget {
                               : 'Rank: ${_formatRank(rank)}${league.percentile > 0 ? ' • Top ${league.percentile}% Percentile' : ''}',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: Color(0xFF94A3B8),
+                          style:  TextStyle(
+                            color: context.appColors.leagueSecondaryText,
                             fontSize: 12,
                             height: 1.5,
                           ),
@@ -125,11 +129,13 @@ class LeaguesHubLeagueCard extends StatelessWidget {
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
                               if (hasMovement)
-                                LeaguesHubMovementChip(movement: league.rankMovement),
+                                LeaguesHubMovementChip(
+                                  movement: league.rankMovement,
+                                ),
                               Text(
                                 '$managerPoints pts',
-                                style: const TextStyle(
-                                  color: Color(0xFF94A3B8),
+                                style:  TextStyle(
+                                  color: context.appColors.leagueSecondaryText,
                                   fontSize: 12,
                                   height: 1.5,
                                 ),
@@ -150,7 +156,9 @@ class LeaguesHubLeagueCard extends StatelessWidget {
                         Icon(
                           Icons.chevron_right_rounded,
                           size: 16,
-                          color: AppColors.lineupTextSecondary.withValues(alpha: .75),
+                          color: context.appColors.lineupTextSecondary.withValues(
+                            alpha: .75,
+                          ),
                         ),
                         Text(
                           highlighted
@@ -159,7 +167,10 @@ class LeaguesHubLeagueCard extends StatelessWidget {
                               ? '—'
                               : '#${_formatRank(rank)}',
                           style: TextStyle(
-                            color: highlighted ? AppColors.lineupMint : Colors.white,
+                            color:
+                                highlighted
+                                    ? context.appColors.lineupMint
+                                    : context.appColors.leagueText,
                             fontSize: highlighted ? 10 : 16,
                             fontWeight: FontWeight.w700,
                             letterSpacing: highlighted ? 0 : -.4,
@@ -180,7 +191,9 @@ class LeaguesHubLeagueCard extends StatelessWidget {
   String _badgeLabel(LeaguesHubLeagueItem item) {
     final name = item.league.name.toLowerCase();
     if (item.isGlobal) {
-      return name.contains('overall') || name.contains('world') ? 'WORLDWIDE' : 'NATIONAL';
+      return name.contains('overall') || name.contains('world')
+          ? 'WORLDWIDE'
+          : 'NATIONAL';
     }
     if (name.contains('invitational')) return 'INVITATIONAL';
     if (isFeatured && item.league.rank != null) {
@@ -207,15 +220,18 @@ class _AccessBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
       decoration: BoxDecoration(
-        color: const Color(0xFF242B3D),
-        border: Border.all(color: const Color(0x80334155)),
+        color: context.appColors.leagueBadgeBackground,
+        border: Border.all(color: context.appColors.leagueBadgeBorder),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(
         label,
         maxLines: 1,
         style: TextStyle(
-          color: color == AppColors.lineupMint ? const Color(0xFFCBD5E1) : color,
+          color:
+              color == context.appColors.lineupMint
+                  ? context.appColors.leagueBadgeText
+                  : color,
           fontSize: 9,
           fontWeight: FontWeight.w700,
           letterSpacing: .5,

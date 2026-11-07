@@ -1,5 +1,5 @@
-import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/features/manager/data/models/fantasy_manager_model.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class SquadHeader extends StatelessWidget {
@@ -28,12 +28,12 @@ class SquadHeader extends StatelessWidget {
           width: 28,
           height: 28,
           decoration: BoxDecoration(
-            color: AppColors.lineupControl,
+            color: context.appColors.lineupControl,
             borderRadius: BorderRadius.circular(8),
           ),
-          child: const Icon(
+          child:  Icon(
             Icons.shield_outlined,
-            color: AppColors.lineupLavender,
+            color: context.appColors.lineupLavender,
             size: 15,
           ),
         ),
@@ -46,8 +46,8 @@ class SquadHeader extends StatelessWidget {
                 manager.teamName,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: AppColors.lineupText,
+                style:  TextStyle(
+                  color: context.appColors.lineupText,
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                 ),
@@ -56,8 +56,8 @@ class SquadHeader extends StatelessWidget {
                 'MANAGER: ${manager.fullName.toUpperCase()}',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: AppColors.lineupTextSecondary,
+                style:  TextStyle(
+                  color: context.appColors.lineupTextSecondary,
                   fontSize: 8,
                   fontWeight: FontWeight.w600,
                   letterSpacing: .35,
@@ -68,7 +68,7 @@ class SquadHeader extends StatelessWidget {
         ),
         Container(
           decoration: BoxDecoration(
-            color: AppColors.lineupControl.withValues(alpha: .9),
+            color: context.appColors.lineupControl.withValues(alpha: .9),
             borderRadius: BorderRadius.circular(24),
           ),
           child: Row(
@@ -83,8 +83,8 @@ class SquadHeader extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 2),
                 child: Text(
                   'GW $gameweek',
-                  style: const TextStyle(
-                    color: AppColors.lineupText,
+                  style:  TextStyle(
+                    color: context.appColors.lineupText,
                     fontSize: 10,
                     fontWeight: FontWeight.w700,
                   ),
@@ -121,7 +121,7 @@ class _GameweekArrow extends StatelessWidget {
     padding: EdgeInsets.zero,
     onPressed: enabled ? onPressed : null,
     icon: Icon(icon, size: 16),
-    color: AppColors.lineupTextSecondary,
-    disabledColor: AppColors.lineupTextSecondary.withValues(alpha: .35),
+    color: context.appColors.lineupTextSecondary,
+    disabledColor: context.appColors.lineupTextSecondary.withValues(alpha: .35),
   );
 }

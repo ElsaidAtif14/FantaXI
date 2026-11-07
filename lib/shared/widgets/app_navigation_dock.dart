@@ -2,8 +2,8 @@ import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:fantasy/core/router/app_router.dart';
-import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/shared/widgets/dock_items.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -72,10 +72,10 @@ class AppNavigationDock extends StatelessWidget {
                     filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: AppColors.surface.withValues(alpha: 0.6),
+                        color: context.appColors.surface.withValues(alpha: 0.6),
                         borderRadius: BorderRadius.circular(999),
                         border: Border.all(
-                          color: AppColors.outline.withValues(alpha: 0.6),
+                          color: context.appColors.outline.withValues(alpha: 0.6),
                         ),
                       ),
                       child: Padding(

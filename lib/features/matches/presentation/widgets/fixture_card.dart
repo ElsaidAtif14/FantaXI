@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fantasy/core/constants/app_constants.dart';
-import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/features/bootstrap/data/models/team_model.dart';
 import 'package:fantasy/features/matches/data/models/fixture_model.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class FixtureCard extends StatelessWidget {
@@ -11,11 +11,13 @@ class FixtureCard extends StatelessWidget {
     required this.fixture,
     required this.homeTeam,
     required this.awayTeam,
+    this.onTap,
   });
 
   final FixtureModel fixture;
   final TeamModel? homeTeam;
   final TeamModel? awayTeam;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +27,18 @@ class FixtureCard extends StatelessWidget {
     final hasScore = fixture.homeScore != null && fixture.awayScore != null;
     final status = _status(isFinished, isLive);
 
-    return Container(
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.lineupSurface,
+        color: context.appColors.lineupSurface,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.outline.withValues(alpha: .5)),
+        border: Border.all(color: context.appColors.outline.withValues(alpha: .5)),
       ),
       child: Column(
         children: [
@@ -39,7 +46,7 @@ class FixtureCard extends StatelessWidget {
             status,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: isLive ? AppColors.lineupMint : AppColors.textSecondary,
+              color: isLive ? context.appColors.lineupMint : context.appColors.textSecondary,
               fontWeight: FontWeight.w700,
               letterSpacing: .5,
             ),
@@ -71,8 +78,8 @@ class FixtureCard extends StatelessWidget {
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color:
                               isLive
-                                  ? AppColors.lineupMint
-                                  : AppColors.lineupText,
+                                  ? context.appColors.lineupMint
+                                  : context.appColors.lineupText,
                           fontWeight: FontWeight.w800,
                           letterSpacing: isFinished || isLive ? 1.1 : 0,
                         ),
@@ -83,7 +90,7 @@ class FixtureCard extends StatelessWidget {
                           style: Theme.of(
                             context,
                           ).textTheme.labelSmall?.copyWith(
-                            color: AppColors.textSecondary,
+                            color: context.appColors.textSecondary,
                             fontSize: 9,
                           ),
                         ),
@@ -102,7 +109,7 @@ class FixtureCard extends StatelessWidget {
           ),
         ],
       ),
-    );
+    )));
   }
 
   String _status(bool isFinished, bool isLive) {
@@ -142,7 +149,7 @@ class _TeamLabel extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           textAlign: textAlign,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: AppColors.lineupText,
+            color: context.appColors.lineupText,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -162,13 +169,13 @@ class _TeamBadge extends StatelessWidget {
     final fallback = Container(
       width: size,
       height: size,
-      decoration: const BoxDecoration(
-        color: AppColors.lineupPanel,
+      decoration:  BoxDecoration(
+        color: context.appColors.lineupPanel,
         shape: BoxShape.circle,
       ),
-      child: const Icon(
+      child:  Icon(
         Icons.shield_rounded,
-        color: AppColors.lineupLavender,
+        color: context.appColors.lineupLavender,
         size: 21,
       ),
     );

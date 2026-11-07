@@ -1,8 +1,8 @@
-import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/features/bootstrap/data/models/bootstrap_model.dart';
 import 'package:fantasy/features/live/data/models/element_live_model.dart';
 import 'package:fantasy/features/picks/data/models/gameweek_picks_model.dart';
 import 'package:fantasy/features/picks/presentation/widgets/player_pitch_icon.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 /// Bench summary and player cards for the currently selected gameweek.
@@ -25,10 +25,10 @@ class SubstitutesBench extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(9, 9, 9, 10),
       decoration: BoxDecoration(
-        color: AppColors.lineupPanel.withValues(alpha: .88),
+        color: context.appColors.lineupPanel.withValues(alpha: .88),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.lineupControl.withValues(alpha: .8),
+          color: context.appColors.lineupControl.withValues(alpha: .8),
         ),
         boxShadow: const [
           BoxShadow(
@@ -42,17 +42,17 @@ class SubstitutesBench extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(
+               Icon(
                 Icons.chair_alt_rounded,
-                color: AppColors.lineupLavender,
+                color: context.appColors.lineupLavender,
                 size: 15,
               ),
               const SizedBox(width: 6),
-              const Expanded(
+               Expanded(
                 child: Text(
                   'Substitutes Bench',
                   style: TextStyle(
-                    color: AppColors.lineupText,
+                    color: context.appColors.lineupText,
                     fontSize: 10,
                     fontWeight: FontWeight.w700,
                   ),
@@ -61,7 +61,7 @@ class SubstitutesBench extends StatelessWidget {
               Text(
                 'Bench points: $benchPoints',
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: AppColors.lineupTextSecondary,
+                  color: context.appColors.lineupTextSecondary,
                   fontSize: 9,
                   fontWeight: FontWeight.w600,
                 ),
@@ -69,7 +69,7 @@ class SubstitutesBench extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 6),
-          const Divider(height: 1, color: AppColors.lineupControl),
+           Divider(height: 1, color: context.appColors.lineupControl),
           const SizedBox(height: 8),
           Row(
             children: [

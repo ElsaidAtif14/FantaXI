@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class BuildBadge extends StatelessWidget {
@@ -9,14 +9,14 @@ class BuildBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.15),
+        color: context.appColors.primary.withOpacity(0.15),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.primary.withOpacity(0.3)),
+        border: Border.all(color: context.appColors.primary.withOpacity(0.3)),
       ),
-      child: const Text(
+      child:  Text(
         '🏆  Fantasy Premier League',
         style: TextStyle(
-          color: AppColors.primaryLight,
+          color: context.appColors.primaryLight,
           fontSize: 12,
           fontWeight: FontWeight.w600,
           letterSpacing: 0.5,

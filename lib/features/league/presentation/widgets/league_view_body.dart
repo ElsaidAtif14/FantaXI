@@ -1,5 +1,5 @@
 import 'package:fantasy/core/constants/app_constants.dart';
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:fantasy/features/league/data/models/league_response_model.dart';
 import 'package:fantasy/features/league/presentation/cubit/league_cubit.dart';
 import 'package:fantasy/features/league/presentation/widgets/battle_summary.dart';
@@ -73,7 +73,7 @@ class _LeagueViewBodyState extends State<LeagueViewBody> {
                   child: Text(
                     state.message,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(color: AppColors.textPrimary),
+                    style:  TextStyle(color: context.appColors.textPrimary),
                   ),
                 ),
               );
@@ -120,12 +120,12 @@ class _LeagueViewBodyState extends State<LeagueViewBody> {
                 const SizedBox(height: 10),
                 const StandingsColumnHeader(),
                 if (visible.isEmpty)
-                  const Padding(
+                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 32),
                     child: Text(
                       'No managers match your search.',
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: AppColors.textSecondary),
+                      style: TextStyle(color: context.appColors.textSecondary),
                     ),
                   )
                 else
@@ -137,11 +137,11 @@ class _LeagueViewBodyState extends State<LeagueViewBody> {
                     ),
                   ),
                 if (state.isLoadingMore)
-                  const Padding(
+                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 16),
                     child: Center(
                       child:CupertinoActivityIndicator(
-                        color: AppColors.primary,
+                        color: context.appColors.primary,
                       )
                     ),
                   )

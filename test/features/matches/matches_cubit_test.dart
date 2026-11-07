@@ -117,6 +117,10 @@ class _FakeMatchesRepository implements MatchesRepository {
     requestedGameweeks.add(gameweek);
     return responses[gameweek] ?? Right([_fixture(gameweek * 10)]);
   }
+
+  @override
+  Future<Either<Failure, FixtureModel?>> getFixtureById(int fixtureId) async =>
+      Right(_fixture(fixtureId));
 }
 
 class _DeferredMatchesRepository implements MatchesRepository {
@@ -128,4 +132,8 @@ class _DeferredMatchesRepository implements MatchesRepository {
     pending[gameweek] = completer;
     return completer.future;
   }
+
+  @override
+  Future<Either<Failure, FixtureModel?>> getFixtureById(int fixtureId) async =>
+      Right(_fixture(fixtureId));
 }

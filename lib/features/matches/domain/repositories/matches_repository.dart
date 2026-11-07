@@ -4,4 +4,6 @@ import 'package:fantasy/features/matches/data/models/fixture_model.dart';
 
 abstract class MatchesRepository {
   Future<Either<Failure, List<FixtureModel>>> getFixtures(int gameweek);
+
+  Future<Either<Failure, FixtureModel?>> getFixtureById(int fixtureId);
 }

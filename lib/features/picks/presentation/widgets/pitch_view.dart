@@ -1,9 +1,9 @@
-import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/features/bootstrap/data/models/bootstrap_model.dart';
 import 'package:fantasy/features/live/data/models/element_live_model.dart';
 import 'package:fantasy/features/picks/data/models/gameweek_picks_model.dart';
 import 'package:fantasy/features/picks/presentation/widgets/substitutes_bench.dart';
 import 'package:fantasy/features/picks/presentation/widgets/tactical_pitch_field.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 /// Composes the starting XI pitch and substitutes for the selected gameweek.
@@ -53,22 +53,22 @@ class _EmptyPitch extends StatelessWidget {
     width: double.infinity,
     padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
     decoration: BoxDecoration(
-      color: AppColors.lineupPitchBottom,
+      color: context.appColors.lineupPitchBottom,
       borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: AppColors.lineupPitchLine),
+      border: Border.all(color: context.appColors.lineupPitchLine),
     ),
-    child: const Column(
+    child:  Column(
       children: [
         Icon(
           Icons.sports_soccer_rounded,
-          color: AppColors.lineupMint,
+          color: context.appColors.lineupMint,
           size: 28,
         ),
         SizedBox(height: 8),
         Text(
           'No squad picks for this gameweek',
           textAlign: TextAlign.center,
-          style: TextStyle(color: AppColors.lineupTextSecondary, fontSize: 11),
+          style: TextStyle(color: context.appColors.lineupTextSecondary, fontSize: 11),
         ),
       ],
     ),

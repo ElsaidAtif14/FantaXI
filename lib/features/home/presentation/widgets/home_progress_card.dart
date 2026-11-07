@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:fantasy/features/manager/data/models/fantasy_manager_model.dart';
 import 'package:fantasy/shared/widgets/glass_panel.dart';
 import 'package:flutter/material.dart';
@@ -17,16 +17,16 @@ class HomeProgressCard extends StatelessWidget {
     return GlassPanel(
       padding: const EdgeInsets.all(12),
       radius: 12,
-      fillColor: AppColors.lineupSurface,
+      fillColor: context.appColors.lineupSurface,
       child: Column(
         children: [
           Row(
             children: [
-              const Expanded(
+               Expanded(
                 child: Text(
                   'Gameweek Progress',
                   style: TextStyle(
-                    color: AppColors.lineupText,
+                    color: context.appColors.lineupText,
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                   ),
@@ -34,8 +34,8 @@ class HomeProgressCard extends StatelessWidget {
               ),
               Text(
                 'GW ${manager.activeGW} of 38',
-                style: const TextStyle(
-                  color: AppColors.lineupTextSecondary,
+                style:  TextStyle(
+                  color: context.appColors.lineupTextSecondary,
                   fontSize: 9,
                 ),
               ),
@@ -46,8 +46,8 @@ class HomeProgressCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(99),
             child: LinearProgressIndicator(
               value: manager.seasonCompletion,
-              backgroundColor: AppColors.lineupBackground,
-              valueColor: const AlwaysStoppedAnimation(AppColors.lineupMint),
+              backgroundColor: context.appColors.lineupBackground,
+              valueColor:  AlwaysStoppedAnimation(context.appColors.lineupMint),
               minHeight: 6,
             ),
           ),
@@ -59,8 +59,8 @@ class HomeProgressCard extends StatelessWidget {
                   '$completedPercent% Completed  |  ${manager.totalPlayedGWs}/38 played',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: AppColors.lineupTextSecondary,
+                  style:  TextStyle(
+                    color: context.appColors.lineupTextSecondary,
                     fontSize: 9,
                   ),
                 ),
@@ -91,7 +91,7 @@ class _PlayedStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isPositive ? AppColors.lineupMint : AppColors.lineupLavender;
+    final color = isPositive ? context.appColors.lineupMint : context.appColors.lineupLavender;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),

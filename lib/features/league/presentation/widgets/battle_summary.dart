@@ -1,3 +1,4 @@
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:fantasy/features/league/data/models/league_response_model.dart';
 import 'package:fantasy/features/league/presentation/widgets/points_gap.dart';
 import 'package:fantasy/features/league/presentation/widgets/position_info.dart';
@@ -6,7 +7,8 @@ import 'package:fantasy/features/league/presentation/widgets/summary_tab.dart';
 import 'package:flutter/material.dart';
 
 class BattleSummary extends StatelessWidget {
-  const BattleSummary({super.key, 
+  const BattleSummary({
+    super.key,
     required this.standings,
     required this.current,
     required this.selectedTab,
@@ -22,30 +24,28 @@ class BattleSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     final ordered = [...standings]..sort((a, b) => a.rank.compareTo(b.rank));
     final leader = ordered.isEmpty ? null : ordered.first;
-    final average = standings.isEmpty
-        ? 0
-        : (standings.fold<int>(0, (sum, item) => sum + item.eventTotal) /
-                  standings.length)
-              .round();
-    final pointsBehind = current == null || leader == null
-        ? null
-        : (leader.totalPoints - current!.totalPoints)
-              .clamp(0, 1 << 30)
-              .toInt();
+    final average =
+        standings.isEmpty
+            ? 0
+            : (standings.fold<int>(0, (sum, item) => sum + item.eventTotal) /
+                    standings.length)
+                .round();
+    final pointsBehind =
+        current == null || leader == null
+            ? null
+            : (leader.totalPoints - current!.totalPoints)
+                .clamp(0, 1 << 30)
+                .toInt();
 
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF161B2E), Color(0xFF101423), Color(0xFF0B0E17)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        gradient: context.appColors.leagueCardGradient,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withValues(alpha: .1)),
-        boxShadow: const [
+        border: Border.all(color: context.appColors.leagueCardBorder),
+        boxShadow: [
           BoxShadow(
-            color: Color(0x41000000),
+            color: context.appColors.leagueCardShadow,
             blurRadius: 28,
             offset: Offset(0, 8),
           ),
@@ -58,17 +58,17 @@ class BattleSummary extends StatelessWidget {
               Container(
                 width: 9,
                 height: 9,
-                decoration: const BoxDecoration(
-                  color: Color(0xFF10B981),
+                decoration: BoxDecoration(
+                  color: context.appColors.standingCurrentGameweek,
                   shape: BoxShape.circle,
                 ),
               ),
               const SizedBox(width: 8),
-              const Expanded(
+              Expanded(
                 child: Text(
                   'LEAGUE STANDINGS',
                   style: TextStyle(
-                    color: Color(0xFF34D399),
+                    color: context.appColors.standingCurrentGameweek,
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                     letterSpacing: .3,
@@ -78,9 +78,12 @@ class BattleSummary extends StatelessWidget {
               StatPill(label: 'AVG: $average pts'),
             ],
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 12),
-            child: Divider(height: 1, color: Color(0x1AFFFFFF)),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            child: Divider(
+              height: 1,
+              color: context.appColors.leagueCardBorder,
+            ),
           ),
           Row(
             children: [
@@ -99,9 +102,9 @@ class BattleSummary extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
-              color: const Color(0xCC07090E),
+              color: context.appColors.leagueBadgeBackground,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.white.withValues(alpha: .05)),
+              border: Border.all(color: context.appColors.leagueCardBorder),
             ),
             child: Row(
               children: [

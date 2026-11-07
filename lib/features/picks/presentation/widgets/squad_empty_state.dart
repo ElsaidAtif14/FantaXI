@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class SquadEmptyState extends StatelessWidget {
@@ -14,14 +14,14 @@ class SquadEmptyState extends StatelessWidget {
     width: double.infinity,
     padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
     decoration: BoxDecoration(
-      color: AppColors.lineupPanel,
+      color: context.appColors.lineupPanel,
       borderRadius: BorderRadius.circular(12),
     ),
     child: Text(
       message,
       textAlign: TextAlign.center,
-      style: const TextStyle(
-        color: AppColors.lineupTextSecondary,
+      style:  TextStyle(
+        color: context.appColors.lineupTextSecondary,
         fontSize: 11,
       ),
     ),

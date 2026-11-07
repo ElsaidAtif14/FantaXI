@@ -1,5 +1,5 @@
 
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/widgets.dart';
 
 class Tag extends StatelessWidget {
@@ -10,13 +10,13 @@ class Tag extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
     decoration: BoxDecoration(
-      color: AppColors.lineupLavender.withValues(alpha: .1),
+      color: context.appColors.lineupLavender.withValues(alpha: .1),
       borderRadius: BorderRadius.circular(99),
     ),
     child: Text(
       text,
-      style: const TextStyle(
-        color: AppColors.lineupLavender,
+      style:  TextStyle(
+        color: context.appColors.lineupLavender,
         fontSize: 9,
         fontWeight: FontWeight.w600,
       ),

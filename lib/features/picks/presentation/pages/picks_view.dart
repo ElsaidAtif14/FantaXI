@@ -1,5 +1,4 @@
 import 'package:fantasy/core/router/app_router.dart';
-import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/features/bootstrap/presentation/cubit/bootstrap_cubit.dart';
 import 'package:fantasy/shared/widgets/custom_app_bar.dart';
 import 'package:fantasy/features/live/presentation/cubit/live_cubit.dart';
@@ -10,6 +9,7 @@ import 'package:fantasy/features/picks/presentation/widgets/squad_content_view.d
 import 'package:fantasy/shared/widgets/squad_loading_view.dart';
 import 'package:fantasy/features/picks/presentation/widgets/error_message_view.dart';
 import 'package:fantasy/shared/widgets/app_navigation_dock.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -45,7 +45,7 @@ class _PicksViewState extends State<PicksView> {
       builder: (context, managerState) {
         return Scaffold(
           extendBody: true,
-          backgroundColor: AppColors.lineupBackground,
+          backgroundColor: context.appColors.lineupBackground,
           appBar: CustomAppBar(title: 'Squad', showActions: false),
 
           bottomNavigationBar: const AppNavigationDock(
@@ -53,11 +53,11 @@ class _PicksViewState extends State<PicksView> {
             showLive: true,
           ),
           body: DecoratedBox(
-            decoration: const BoxDecoration(
+            decoration:  BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.lineupBackground,
-                  AppColors.lineupBackground,
+                  context.appColors.lineupBackground,
+                  context.appColors.lineupBackground,
                   Color(0xFF161B2E),
                 ],
                 begin: Alignment.topCenter,

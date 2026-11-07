@@ -1,4 +1,3 @@
-import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/features/bootstrap/data/models/bootstrap_model.dart';
 import 'package:fantasy/features/bootstrap/data/models/player_model.dart';
 import 'package:fantasy/features/bootstrap/presentation/cubit/bootstrap_cubit.dart';
@@ -7,11 +6,14 @@ import 'package:fantasy/features/market/presentation/widgets/market_player_tile.
 import 'package:fantasy/features/market/presentation/widgets/market_position_selector.dart';
 import 'package:fantasy/features/market/presentation/widgets/market_quick_filters.dart';
 import 'package:fantasy/features/market/presentation/widgets/market_sort.dart';
-import 'package:fantasy/features/market/presentation/widgets/market_search_bar.dart';
+import 'package:fantasy/features/market/presentation/widgets/market_sort_sheet.dart';
+import 'package:fantasy/features/market/presentation/widgets/market_square_button.dart';
 import 'package:fantasy/features/picks/presentation/widgets/error_message_view.dart';
 import 'package:fantasy/shared/widgets/app_navigation_dock.dart';
 import 'package:fantasy/shared/widgets/app_snack_bar.dart';
 import 'package:fantasy/shared/widgets/custom_app_bar.dart';
+import 'package:fantasy/shared/widgets/custom_search_bar.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -41,7 +43,7 @@ class _MarketViewBodyState extends State<MarketViewBody> {
     return Scaffold(
       extendBody: true,
       appBar: CustomAppBar(title: 'Market', showActions: false),
-      backgroundColor: AppColors.marketBackground,
+      backgroundColor: context.appColors.marketBackground,
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -101,10 +103,25 @@ class _MarketViewBodyState extends State<MarketViewBody> {
             bottom: false,
             child: Column(
               children: [
-                MarketSearchBar(
-                  controller: _searchController,
-                  onSearchChanged: () => setState(() {}),
-                  onSortPressed: () => _showSortMenu(context),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: CustomSearchBar(
+                          controller: _searchController,
+                          hintText: 'Search players, clubs...',
+                          onChanged: (_) => setState(() {}),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      MarketSquareButton(
+                        icon: Icons.tune_rounded,
+                        tooltip: 'Sort players',
+                        onPressed: () => _showSortMenu(context),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 12),
                 MarketPositionSelector(
@@ -121,8 +138,8 @@ class _MarketViewBodyState extends State<MarketViewBody> {
                     children: [
                       Text(
                         'AVAILABLE PLAYERS (${players.length})',
-                        style: const TextStyle(
-                          color: AppColors.textSecondary,
+                        style:  TextStyle(
+                          color: context.appColors.textSecondary,
                           fontSize: 10,
                           fontWeight: FontWeight.w800,
                           letterSpacing: .55,
@@ -132,8 +149,8 @@ class _MarketViewBodyState extends State<MarketViewBody> {
                       if (_comparisonIds.isNotEmpty)
                         Text(
                           'Comparing ${_comparisonIds.length}/2',
-                          style: const TextStyle(
-                            color: AppColors.marketLavender,
+                          style:  TextStyle(
+                            color: context.appColors.marketLavender,
                             fontSize: 11,
                             fontWeight: FontWeight.w700,
                           ),
@@ -144,10 +161,10 @@ class _MarketViewBodyState extends State<MarketViewBody> {
                 Expanded(
                   child:
                       players.isEmpty
-                          ? const Center(
+                          ?  Center(
                             child: Text(
                               'No players match your search',
-                              style: TextStyle(color: AppColors.textSecondary),
+                              style: TextStyle(color: context.appColors.textSecondary),
                             ),
                           )
                           : ListView.builder(
@@ -189,7 +206,7 @@ class _MarketViewBodyState extends State<MarketViewBody> {
   void _showSortMenu(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: AppColors.marketSurface,
+      backgroundColor: context.appColors.marketSurface,
       builder:
           (context) => MarketSortSheet(
             selected: _sort,
@@ -297,7 +314,7 @@ class _MarketLoadingView extends StatelessWidget {
                   (_, _) => Container(
                     padding: const EdgeInsets.all(11),
                     decoration: BoxDecoration(
-                      color: AppColors.marketSurface,
+                      color: context.appColors.marketSurface,
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: const Row(

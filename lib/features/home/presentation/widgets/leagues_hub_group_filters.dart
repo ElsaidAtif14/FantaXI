@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:fantasy/features/home/presentation/widgets/leagues_hub_models.dart';
 import 'package:flutter/material.dart';
 
@@ -65,7 +65,7 @@ class _LeaguesHubGroupChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final active = group == selected;
     return Material(
-      color: active ? const Color(0xFF2B1E4A) : AppColors.lineupControl,
+      color: active ? const Color(0xFF2B1E4A) : context.appColors.lineupControl,
       borderRadius: BorderRadius.circular(99),
       child: InkWell(
         borderRadius: BorderRadius.circular(99),
@@ -77,8 +77,8 @@ class _LeaguesHubGroupChip extends StatelessWidget {
             style: TextStyle(
               color:
                   active
-                      ? AppColors.lineupLavender
-                      : AppColors.lineupTextSecondary,
+                      ? context.appColors.lineupLavender
+                      : context.appColors.lineupTextSecondary,
               fontSize: 11,
               fontWeight: FontWeight.w600,
             ),

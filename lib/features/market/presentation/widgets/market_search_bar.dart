@@ -1,6 +1,6 @@
-import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/features/market/presentation/widgets/market_sort.dart';
 import 'package:fantasy/features/market/presentation/widgets/market_square_button.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class MarketSearchBar extends StatelessWidget {
@@ -26,8 +26,8 @@ class MarketSearchBar extends StatelessWidget {
               controller: controller,
               onChanged: (_) => onSearchChanged(),
               textInputAction: TextInputAction.search,
-              style: const TextStyle(
-                color: AppColors.textPrimary,
+              style:  TextStyle(
+                color: context.appColors.textPrimary,
                 fontSize: 14,
               ),
               decoration: InputDecoration(
@@ -46,14 +46,14 @@ class MarketSearchBar extends StatelessWidget {
                         ),
                 contentPadding: const EdgeInsets.symmetric(vertical: 11),
                 filled: true,
-                fillColor: AppColors.marketInput,
+                fillColor: context.appColors.marketInput,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: AppColors.marketInput),
+                  borderSide: BorderSide(color: context.appColors.marketInput),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: AppColors.marketLavender),
+                  borderSide:  BorderSide(color: context.appColors.marketLavender),
                 ),
               ),
             ),
@@ -91,7 +91,7 @@ class MarketSortSheet extends StatelessWidget {
               title: Text(option.label),
               trailing:
                   selected == option
-                      ? const Icon(Icons.check, color: AppColors.marketLavender)
+                      ?  Icon(Icons.check, color: context.appColors.marketLavender)
                       : null,
               onTap: () {
                 onSelected(option);

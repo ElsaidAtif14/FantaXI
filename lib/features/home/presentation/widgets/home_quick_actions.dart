@@ -1,7 +1,7 @@
 import 'package:fantasy/features/home/data/model/action_item.dart';
 import 'package:fantasy/features/home/presentation/widgets/action_btn.dart';
 import 'package:flutter/material.dart';
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 
 class HomeQuickActions extends StatelessWidget {
   final List<ActionItem> actions;
@@ -12,12 +12,12 @@ class HomeQuickActions extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+         Text(
           'Quick Access',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w700,
-            color: AppColors.textPrimary,
+            color: context.appColors.textPrimary,
           ),
         ),
         const SizedBox(height: 12),

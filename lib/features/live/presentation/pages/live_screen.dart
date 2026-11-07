@@ -1,9 +1,9 @@
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fantasy/core/constants/app_constants.dart';
 import 'package:fantasy/core/di/injection.dart';
-import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/features/bootstrap/presentation/cubit/bootstrap_cubit.dart';
 import 'package:fantasy/features/picks/presentation/cubit/picks_cubit.dart';
 import 'package:fantasy/features/live/presentation/cubit/live_cubit.dart';
@@ -98,7 +98,7 @@ class _LiveView extends StatelessWidget {
                       return Center(
                         child: Text(
                           liveState.message,
-                          style: const TextStyle(color: AppColors.rankDown),
+                          style:  TextStyle(color: context.appColors.rankDown),
                         ),
                       );
                     }

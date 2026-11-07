@@ -1,14 +1,16 @@
 import 'package:fantasy/core/di/injection.dart';
-import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/features/matches/data/models/fixture_model.dart';
 import 'package:fantasy/features/matches/presentation/cubit/matches_cubit.dart';
+import 'package:fantasy/features/matches/presentation/pages/match_details_screen.dart';
 import 'package:fantasy/features/matches/presentation/widgets/fixture_day_section.dart';
 import 'package:fantasy/features/matches/presentation/widgets/matchweek_navigation.dart';
 import 'package:fantasy/features/picks/presentation/widgets/error_message_view.dart';
 import 'package:fantasy/shared/widgets/app_navigation_dock.dart';
 import 'package:fantasy/shared/widgets/custom_app_bar.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class MatchesScreen extends StatelessWidget {
@@ -32,7 +34,7 @@ class _MatchesView extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           extendBody: true,
-          backgroundColor: AppColors.lineupBackground,
+          backgroundColor: context.appColors.lineupBackground,
           appBar: CustomAppBar(
             title: 'Matches',
             icons: Icons.refresh_rounded,
@@ -91,7 +93,7 @@ class _MatchesView extends StatelessWidget {
       );
     }
     if (state is MatchesError) {
-      Center(
+      return Center(
         child: ErrorMessageView(
           icon: Icons.cloud_off_outlined,
           message: state.message,
@@ -102,11 +104,11 @@ class _MatchesView extends StatelessWidget {
     }
     if (state is MatchesLoaded) {
       if (state.fixtures.isEmpty) {
-        return const Center(
+        return  Center(
           child: Text(
             'No fixtures are scheduled for this matchweek.',
             textAlign: TextAlign.center,
-            style: TextStyle(color: AppColors.textSecondary),
+            style: TextStyle(color: context.appColors.textSecondary),
           ),
         );
       }
@@ -121,6 +123,14 @@ class _MatchesView extends StatelessWidget {
             dateLabel: section.label,
             fixtures: section.fixtures,
             teams: state.teams,
+            onFixtureTap:
+                (fixture) => context.push(
+                  '/matches/${fixture.id}',
+                  extra: MatchDetailsArguments(
+                    fixture: fixture,
+                    teams: state.teams,
+                  ),
+                ),
           );
         },
       );

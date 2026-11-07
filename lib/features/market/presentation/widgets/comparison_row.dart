@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class ComparisonRow extends StatelessWidget {
@@ -28,18 +28,18 @@ class ComparisonRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 3),
       child: Column(children: [
         Row(children: [
-          Text(firstValue, style: const TextStyle(color: AppColors.marketMint, fontSize: 9, fontWeight: FontWeight.w700)),
+          Text(firstValue, style:  TextStyle(color: context.appColors.marketMint, fontSize: 9, fontWeight: FontWeight.w700)),
           const Spacer(),
-          Text(label, style: const TextStyle(color: AppColors.marketText, fontSize: 7, fontWeight: FontWeight.w700, letterSpacing: .25)),
+          Text(label, style:  TextStyle(color: context.appColors.marketText, fontSize: 7, fontWeight: FontWeight.w700, letterSpacing: .25)),
           const Spacer(),
-          Text(secondValue, style: const TextStyle(color: AppColors.marketLavender, fontSize: 9, fontWeight: FontWeight.w700)),
+          Text(secondValue, style:  TextStyle(color: context.appColors.marketLavender, fontSize: 9, fontWeight: FontWeight.w700)),
         ]),
         if (first + second > 0) ...[
           const SizedBox(height: 3),
           ClipRRect(borderRadius: BorderRadius.circular(4), child: Row(children: [
-            Expanded(flex: firstFlex, child: Container(height: 4, color: AppColors.marketMint)),
+            Expanded(flex: firstFlex, child: Container(height: 4, color: context.appColors.marketMint)),
             const SizedBox(width: 2),
-            Expanded(flex: 1000 - firstFlex, child: Container(height: 4, color: AppColors.marketLavender)),
+            Expanded(flex: 1000 - firstFlex, child: Container(height: 4, color: context.appColors.marketLavender)),
           ])),
         ],
       ]),

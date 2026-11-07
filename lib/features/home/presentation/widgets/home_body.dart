@@ -1,6 +1,9 @@
 import 'package:fantasy/core/constants/app_constants.dart';
 import 'package:fantasy/core/router/app_router.dart';
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
+import 'package:fantasy/core/theme/theme_cubit.dart';
+import 'package:fantasy/features/home/presentation/widgets/home_feedback.dart';
+import 'package:fantasy/features/home/presentation/widgets/theme_mode_selector.dart';
 import 'package:fantasy/shared/widgets/custom_app_bar.dart';
 import 'package:fantasy/features/home/presentation/widgets/leagues_hub_content.dart';
 import 'package:fantasy/features/home/presentation/widgets/home_manager_card.dart';
@@ -47,7 +50,7 @@ class HomeBody extends StatelessWidget {
 
         return Scaffold(
           extendBody: true,
-          backgroundColor: AppColors.marketBackground,
+          backgroundColor: context.appColors.marketBackground,
           appBar: CustomAppBar(
             title: 'Home',
             onSettingsTap:
@@ -56,11 +59,11 @@ class HomeBody extends StatelessWidget {
           ),
           bottomNavigationBar: const AppNavigationDock(currentIndex: 0),
           body: DecoratedBox(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.marketBackground,
-                  AppColors.marketBackground,
+                  context.appColors.marketBackground,
+                  context.appColors.marketBackground,
                   Color(0xFF161B2E),
                 ],
                 begin: Alignment.topCenter,
@@ -110,7 +113,7 @@ class HomeBody extends StatelessWidget {
                 else if (entryIdError != null)
                   SliverFillRemaining(
                     hasScrollBody: false,
-                    child: _HomeFeedback(
+                    child: HomeFeedback(
                       icon: Icons.storage_rounded,
                       title: 'Could not read your manager ID',
                       message: entryIdError!,
@@ -122,7 +125,7 @@ class HomeBody extends StatelessWidget {
                 else if (state is ManagerError)
                   SliverFillRemaining(
                     hasScrollBody: false,
-                    child: _HomeFeedback(
+                    child: HomeFeedback(
                       icon: Icons.cloud_off_rounded,
                       title: 'Could not load your manager',
                       message: state.message,
@@ -144,7 +147,7 @@ class HomeBody extends StatelessWidget {
                 else if (managerId == null || managerId! <= 0)
                   SliverFillRemaining(
                     hasScrollBody: false,
-                    child: _HomeFeedback(
+                    child: HomeFeedback(
                       icon: Icons.person_add_alt_1_rounded,
                       title: 'Add your manager ID',
                       message:
@@ -155,11 +158,11 @@ class HomeBody extends StatelessWidget {
                     ),
                   )
                 else
-                  const SliverFillRemaining(
+                  SliverFillRemaining(
                     hasScrollBody: false,
                     child: Center(
                       child: CircularProgressIndicator(
-                        color: AppColors.lineupMint,
+                        color: context.appColors.lineupMint,
                         strokeWidth: 2,
                       ),
                     ),
@@ -175,29 +178,63 @@ class HomeBody extends StatelessWidget {
   void _showSettings(BuildContext context, {required bool hasManagerId}) {
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: AppColors.lineupSurface,
+      backgroundColor: Colors.transparent,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder:
-          (sheetContext) => Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-            child: ListTile(
-              leading: const Icon(
-                Icons.person_outline_rounded,
-                color: AppColors.lineupLavender,
-              ),
-              title: Text(
-                hasManagerId ? 'Change Manager ID' : 'Set Manager ID',
-                style: const TextStyle(color: AppColors.lineupText),
-              ),
-              onTap: () async {
-                Navigator.of(sheetContext).pop();
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.remove(AppConstants.entryIdKey);
-                if (context.mounted) context.go(AppRouter.onboarding);
-              },
-            ),
+          (sheetContext) => BlocBuilder<ThemeCubit, ThemeMode>(
+            builder:
+                (sheetContext, themeMode) => Container(
+                  decoration: BoxDecoration(
+                    color: sheetContext.appColors.lineupSurface,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(24),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ThemeModeSelector(
+                          selectedMode: themeMode,
+                          onChanged: (mode) {
+                            sheetContext.read<ThemeCubit>().setThemeMode(mode);
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        Divider(color: sheetContext.appColors.outline),
+                        ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          leading: Icon(
+                            Icons.person_outline_rounded,
+                            color: sheetContext.appColors.lineupLavender,
+                          ),
+                          title: Text(
+                            hasManagerId
+                                ? 'Change Manager ID'
+                                : 'Set Manager ID',
+                            style: TextStyle(
+                              color: sheetContext.appColors.lineupText,
+                            ),
+                          ),
+                          onTap: () async {
+                            Navigator.of(sheetContext).pop();
+
+                            final prefs = await SharedPreferences.getInstance();
+                            await prefs.remove(AppConstants.entryIdKey);
+
+                            if (context.mounted) {
+                              context.go(AppRouter.onboarding);
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
           ),
     );
   }
@@ -285,95 +322,4 @@ class _HomeLoadingContent extends StatelessWidget {
       LeaguesHubContent(manager: manager),
     ],
   );
-}
-
-class _HomeFeedback extends StatelessWidget {
-  const _HomeFeedback({
-    required this.icon,
-    required this.title,
-    required this.message,
-    required this.actionLabel,
-    this.onAction,
-    this.secondaryActionLabel,
-    this.onSecondaryAction,
-  });
-
-  final IconData icon;
-  final String title;
-  final String message;
-  final String actionLabel;
-  final VoidCallback? onAction;
-  final String? secondaryActionLabel;
-  final VoidCallback? onSecondaryAction;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 340),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 52,
-                height: 52,
-                decoration: BoxDecoration(
-                  color: AppColors.lineupLavender.withValues(alpha: .12),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(icon, color: AppColors.lineupLavender, size: 23),
-              ),
-              const SizedBox(height: 14),
-              Text(
-                title,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: AppColors.lineupText,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: 7),
-              Text(
-                message,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: AppColors.lineupTextSecondary,
-                  fontSize: 12,
-                  height: 1.45,
-                ),
-              ),
-              const SizedBox(height: 18),
-              if (onAction != null)
-                FilledButton(
-                  onPressed: onAction,
-                  style: FilledButton.styleFrom(
-                    backgroundColor: AppColors.lineupPurple,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 11,
-                    ),
-                  ),
-                  child: Text(actionLabel),
-                ),
-              if (onSecondaryAction != null &&
-                  secondaryActionLabel != null) ...[
-                const SizedBox(height: 4),
-                TextButton(
-                  onPressed: onSecondaryAction,
-                  child: Text(
-                    secondaryActionLabel!,
-                    style: const TextStyle(color: AppColors.lineupLavender),
-                  ),
-                ),
-              ],
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }

@@ -1,6 +1,6 @@
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/features/bootstrap/data/models/player_model.dart';
 import 'package:fantasy/features/bootstrap/data/models/bootstrap_model.dart';
 import 'package:fantasy/features/picks/data/models/gameweek_picks_model.dart';
@@ -32,9 +32,9 @@ class PlayerDetailsBottomSheet extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        gradient: AppColors.cardGradient,
+        gradient: context.appColors.cardGradient,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-        border: const Border(top: BorderSide(color: AppColors.outline)),
+        border:  Border(top: BorderSide(color: context.appColors.outline)),
       ),
       child: SafeArea(
         top: false,
@@ -46,7 +46,7 @@ class PlayerDetailsBottomSheet extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  _buildPlayerImage(player.imageUrls),
+                  _buildPlayerImage(context, player.imageUrls),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Column(
@@ -54,8 +54,8 @@ class PlayerDetailsBottomSheet extends StatelessWidget {
                       children: [
                         Text(
                           player.webName,
-                          style: const TextStyle(
-                            color: AppColors.textPrimary,
+                          style:  TextStyle(
+                            color: context.appColors.textPrimary,
                             fontSize: 20,
                             fontWeight: FontWeight.w800,
                           ),
@@ -64,8 +64,8 @@ class PlayerDetailsBottomSheet extends StatelessWidget {
                         const SizedBox(height: 5),
                         Text(
                           '${player.positionName}  ·  $teamName',
-                          style: const TextStyle(
-                            color: AppColors.electricBlue,
+                          style:  TextStyle(
+                            color: context.appColors.electricBlue,
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
                           ),
@@ -74,8 +74,8 @@ class PlayerDetailsBottomSheet extends StatelessWidget {
                         const SizedBox(height: 5),
                         Text(
                           player.formattedPrice,
-                          style: const TextStyle(
-                            color: AppColors.textSecondary,
+                          style:  TextStyle(
+                            color: context.appColors.textSecondary,
                             fontSize: 12,
                           ),
                         ),
@@ -88,26 +88,26 @@ class PlayerDetailsBottomSheet extends StatelessWidget {
                       vertical: 9,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.15),
+                      color: context.appColors.primary.withOpacity(0.15),
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
-                        color: AppColors.primary.withOpacity(0.42),
+                        color: context.appColors.primary.withOpacity(0.42),
                       ),
                     ),
                     child: Column(
                       children: [
-                        const Text(
+                         Text(
                           'GW PTS',
                           style: TextStyle(
-                            color: AppColors.textSecondary,
+                            color: context.appColors.textSecondary,
                             fontSize: 9,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
                         Text(
                           '$points',
-                          style: const TextStyle(
-                            color: AppColors.primaryLight,
+                          style:  TextStyle(
+                            color: context.appColors.primaryLight,
                             fontSize: 24,
                             fontWeight: FontWeight.w800,
                           ),
@@ -118,10 +118,10 @@ class PlayerDetailsBottomSheet extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 22),
-              const Text(
+               Text(
                 'SEASON SNAPSHOT',
                 style: TextStyle(
-                  color: AppColors.textMuted,
+                  color: context.appColors.textMuted,
                   fontSize: 10,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.8,
@@ -132,13 +132,18 @@ class PlayerDetailsBottomSheet extends StatelessWidget {
                 children: [
                   Expanded(
                     child: _buildMetric(
+                      context,
                       'TOTAL POINTS',
                       '${player.totalPoints}',
                     ),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: _buildMetric('FORM', player.form.toStringAsFixed(1)),
+                    child: _buildMetric(
+                      context,
+                      'FORM',
+                      player.form.toStringAsFixed(1),
+                    ),
                   ),
                 ],
               ),
@@ -147,19 +152,22 @@ class PlayerDetailsBottomSheet extends StatelessWidget {
                 children: [
                   Expanded(
                     child: _buildMetric(
+                      context,
                       'OWNERSHIP',
                       '${player.selectedByPercent}%',
                     ),
                   ),
                   const SizedBox(width: 10),
-                  Expanded(child: _buildMetric('PRICE', player.formattedPrice)),
+                  Expanded(
+                    child: _buildMetric(context, 'PRICE', player.formattedPrice),
+                  ),
                 ],
               ),
               const SizedBox(height: 22),
-              const Text(
+               Text(
                 'GAMEWEEK PERFORMANCE',
                 style: TextStyle(
-                  color: AppColors.textMuted,
+                  color: context.appColors.textMuted,
                   fontSize: 10,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.8,
@@ -167,19 +175,30 @@ class PlayerDetailsBottomSheet extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               _buildStatRow(
+                context,
                 'Minutes played',
                 liveStats?.minutes.toString() ?? '0',
               ),
               _buildStatRow(
+                context,
                 'Goals scored',
                 liveStats?.goalsScored.toString() ?? '0',
               ),
-              _buildStatRow('Assists', liveStats?.assists.toString() ?? '0'),
               _buildStatRow(
+                context,
+                'Assists',
+                liveStats?.assists.toString() ?? '0',
+              ),
+              _buildStatRow(
+                context,
                 'Clean sheets',
                 liveStats?.cleanSheets.toString() ?? '0',
               ),
-              _buildStatRow('Bonus points', liveStats?.bonus.toString() ?? '0'),
+              _buildStatRow(
+                context,
+                'Bonus points',
+                liveStats?.bonus.toString() ?? '0',
+              ),
               const SizedBox(height: 14),
               SizedBox(
                 width: double.infinity,
@@ -188,9 +207,9 @@ class PlayerDetailsBottomSheet extends StatelessWidget {
                   icon: const Icon(Icons.close_rounded, size: 18),
                   label: const Text('Close'),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.textSecondary,
+                    foregroundColor: context.appColors.textSecondary,
                     minimumSize: const Size.fromHeight(48),
-                    side: const BorderSide(color: AppColors.outline),
+                    side:  BorderSide(color: context.appColors.outline),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
                     ),
@@ -204,21 +223,21 @@ class PlayerDetailsBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildMetric(String label, String value) {
+  Widget _buildMetric(BuildContext context, String label, String value) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
       decoration: BoxDecoration(
-        color: AppColors.surface.withOpacity(0.72),
+        color: context.appColors.surface.withOpacity(0.72),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.outline),
+        border: Border.all(color: context.appColors.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
-            style: const TextStyle(
-              color: AppColors.textMuted,
+            style:  TextStyle(
+              color: context.appColors.textMuted,
               fontSize: 9,
               fontWeight: FontWeight.w700,
             ),
@@ -226,8 +245,8 @@ class PlayerDetailsBottomSheet extends StatelessWidget {
           const SizedBox(height: 5),
           Text(
             value,
-            style: const TextStyle(
-              color: AppColors.textPrimary,
+            style:  TextStyle(
+              color: context.appColors.textPrimary,
               fontSize: 16,
               fontWeight: FontWeight.w800,
             ),
@@ -237,7 +256,7 @@ class PlayerDetailsBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildStatRow(String label, String value) {
+  Widget _buildStatRow(BuildContext context, String label, String value) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -245,8 +264,8 @@ class PlayerDetailsBottomSheet extends StatelessWidget {
         children: [
           Text(
             label,
-            style: const TextStyle(
-              color: AppColors.textSecondary,
+            style:  TextStyle(
+              color: context.appColors.textSecondary,
               fontSize: 14,
             ),
           ),
@@ -263,7 +282,11 @@ class PlayerDetailsBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildPlayerImage(List<String> urls, [int index = 0]) {
+  Widget _buildPlayerImage(
+    BuildContext context,
+    List<String> urls, [
+    int index = 0,
+  ]) {
     if (index >= urls.length) {
       return const Icon(Icons.sports_soccer, size: 40, color: Colors.white54);
     }
@@ -276,7 +299,8 @@ class PlayerDetailsBottomSheet extends StatelessWidget {
       placeholder:
           (context, url) =>
               const Icon(Icons.sports_soccer, size: 40, color: Colors.white54),
-      errorWidget: (context, url, error) => _buildPlayerImage(urls, index + 1),
+      errorWidget: (context, url, error) =>
+          _buildPlayerImage(context, urls, index + 1),
     );
   }
 }

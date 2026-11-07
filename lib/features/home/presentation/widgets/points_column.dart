@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:fantasy/features/manager/data/models/fantasy_manager_model.dart';
 import 'package:flutter/material.dart';
 
@@ -28,8 +28,8 @@ class PointsColumn extends StatelessWidget {
           children: [
             Text(
               _formatPoints(manager.totalPoints),
-              style: const TextStyle(
-                color: AppColors.lineupText,
+              style:  TextStyle(
+                color: context.appColors.lineupText,
                 fontSize: 28,
                 fontWeight: FontWeight.w800,
                 height: 1,
@@ -37,10 +37,10 @@ class PointsColumn extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 6),
-            const Text(
+             Text(
               'PTS',
               style: TextStyle(
-                color: AppColors.lineupTextSecondary,
+                color: context.appColors.lineupTextSecondary,
                 fontSize: 10,
                 fontWeight: FontWeight.w600,
               ),

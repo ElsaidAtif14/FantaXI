@@ -11,6 +11,7 @@ class FixtureModel {
     required this.finished,
     required this.finishedProvisional,
     required this.minutes,
+    this.code,
   });
 
   final int id;
@@ -24,6 +25,9 @@ class FixtureModel {
   final bool? finished;
   final bool? finishedProvisional;
   final int? minutes;
+
+  /// FPL's cross-reference code. This is not the FPL fixture [id].
+  final int? code;
 
   factory FixtureModel.fromJson(Map<String, dynamic> json) {
     return FixtureModel(
@@ -41,6 +45,7 @@ class FixtureModel {
               ? json['finished_provisional'] as bool
               : null,
       minutes: _intValue(json['minutes']),
+      code: _intValue(json['code']),
     );
   }
 
@@ -62,6 +67,7 @@ class FixtureModel {
       finished: false,
       finishedProvisional: false,
       minutes: null,
+      code: null,
     );
   }
 }

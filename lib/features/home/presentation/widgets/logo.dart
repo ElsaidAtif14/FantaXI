@@ -1,4 +1,4 @@
-import 'package:fantasy/core/theme/app_colors.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class Logo extends StatelessWidget {
@@ -16,15 +16,15 @@ class Logo extends StatelessWidget {
         children: [
           DecoratedBox(
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [AppColors.lineupControl, Color(0xFF32343F)],
+              gradient:  LinearGradient(
+                colors: [context.appColors.lineupControl, Color(0xFF32343F)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               borderRadius: BorderRadius.circular(size * .25),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.lineupLavender.withValues(alpha: .12),
+                  color: context.appColors.lineupLavender.withValues(alpha: .12),
                   blurRadius: 14,
                 ),
               ],
@@ -39,14 +39,14 @@ class Logo extends StatelessWidget {
             child: Container(
               width: size * .3,
               height: size * .3,
-              decoration: const BoxDecoration(
-                color: AppColors.lineupMint,
+              decoration:  BoxDecoration(
+                color: context.appColors.lineupMint,
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.check_rounded,
                 size: size * .18,
-                color: AppColors.lineupBackground,
+                color: context.appColors.lineupBackground,
               ),
             ),
           ),

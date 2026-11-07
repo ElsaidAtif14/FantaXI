@@ -1,5 +1,5 @@
-import 'package:fantasy/core/theme/app_colors.dart';
 import 'package:fantasy/features/market/presentation/widgets/market_sort.dart';
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class MarketViewHeader extends StatelessWidget {
@@ -28,21 +28,21 @@ class MarketViewHeader extends StatelessWidget {
                 width: 27,
                 height: 27,
                 decoration: BoxDecoration(
-                  color: AppColors.marketMint.withValues(alpha: .13),
+                  color: context.appColors.marketMint.withValues(alpha: .13),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Icon(
+                child:  Icon(
                   Icons.sports_soccer_rounded,
-                  color: AppColors.marketMint,
+                  color: context.appColors.marketMint,
                   size: 16,
                 ),
               ),
               const SizedBox(width: 9),
-              const Expanded(
+               Expanded(
                 child: Text(
                   'Market',
                   style: TextStyle(
-                    color: AppColors.textPrimary,
+                    color: context.appColors.textPrimary,
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                   ),
@@ -52,10 +52,10 @@ class MarketViewHeader extends StatelessWidget {
                 tooltip: 'Sort players',
                 initialValue: sort,
                 onSelected: onSort,
-                icon: const Icon(
+                icon:  Icon(
                   Icons.settings_outlined,
                   size: 20,
-                  color: AppColors.textSecondary,
+                  color: context.appColors.textSecondary,
                 ),
                 itemBuilder:
                     (_) => MarketSort.values
@@ -67,13 +67,13 @@ class MarketViewHeader extends StatelessWidget {
                         )
                         .toList(),
               ),
-              const CircleAvatar(
+               CircleAvatar(
                 radius: 14,
-                backgroundColor: AppColors.marketLavender,
+                backgroundColor: context.appColors.marketLavender,
                 child: Icon(
                   Icons.person,
                   size: 17,
-                  color: AppColors.marketBackground,
+                  color: context.appColors.marketBackground,
                 ),
               ),
             ],
@@ -83,12 +83,12 @@ class MarketViewHeader extends StatelessWidget {
               Container(
                 width: 7,
                 height: 7,
-                decoration: const BoxDecoration(
-                  color: AppColors.marketMint,
+                decoration:  BoxDecoration(
+                  color: context.appColors.marketMint,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.marketMint,
+                      color: context.appColors.marketMint,
                       blurRadius: 7,
                     ),
                   ],
@@ -97,8 +97,8 @@ class MarketViewHeader extends StatelessWidget {
               const SizedBox(width: 5),
               Text(
                 'GAMEWEEK ${gameweek ?? '—'} MARKET OPEN',
-                style: const TextStyle(
-                  color: AppColors.marketText,
+                style:  TextStyle(
+                  color: context.appColors.marketText,
                   fontSize: 9,
                   fontWeight: FontWeight.w700,
                   letterSpacing: .45,
@@ -108,22 +108,22 @@ class MarketViewHeader extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.marketControl,
+                  color: context.appColors.marketControl,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
+                     Icon(
                       Icons.account_balance_wallet_outlined,
                       size: 11,
-                      color: AppColors.marketMint,
+                      color: context.appColors.marketMint,
                     ),
                     const SizedBox(width: 4),
-                    const Text(
+                     Text(
                       'BANK',
                       style: TextStyle(
-                        color: AppColors.marketText,
+                        color: context.appColors.marketText,
                         fontSize: 8,
                         fontWeight: FontWeight.w700,
                       ),
@@ -131,8 +131,8 @@ class MarketViewHeader extends StatelessWidget {
                     const SizedBox(width: 5),
                     Text(
                       bank == null ? '—' : '£${bank!.toStringAsFixed(1)}m',
-                      style: const TextStyle(
-                        color: AppColors.marketMint,
+                      style:  TextStyle(
+                        color: context.appColors.marketMint,
                         fontSize: 13,
                         fontWeight: FontWeight.w800,
                       ),

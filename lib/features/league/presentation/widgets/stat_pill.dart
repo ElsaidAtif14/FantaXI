@@ -1,4 +1,5 @@
 
+import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 
 class StatPill extends StatelessWidget {
@@ -9,13 +10,16 @@ class StatPill extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
     decoration: BoxDecoration(
-      color: Colors.white.withValues(alpha: .05),
-      border: Border.all(color: Colors.white.withValues(alpha: .1)),
+      color: context.appColors.leagueBadgeBackground,
+      border: Border.all(color: context.appColors.leagueBadgeBorder),
       borderRadius: BorderRadius.circular(99),
     ),
     child: Text(
       label,
-      style: const TextStyle(color: Color(0xFFCBD5E1), fontSize: 10),
+      style: TextStyle(
+        color: context.appColors.leagueBadgeText,
+        fontSize: 10,
+      ),
     ),
   );
 }
