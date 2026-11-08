@@ -7,6 +7,7 @@ import 'package:fantasy/features/matches/presentation/widgets/matchweek_navigati
 import 'package:fantasy/features/picks/presentation/widgets/error_message_view.dart';
 import 'package:fantasy/shared/widgets/app_navigation_dock.dart';
 import 'package:fantasy/shared/widgets/custom_app_bar.dart';
+import 'package:fantasy/shared/cubit/dock_cubit.dart';
 import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,8 +26,44 @@ class MatchesScreen extends StatelessWidget {
   }
 }
 
-class _MatchesView extends StatelessWidget {
+class _MatchesView extends StatefulWidget {
   const _MatchesView();
+
+  @override
+  State<_MatchesView> createState() => _MatchesViewState();
+}
+
+class _MatchesViewState extends State<_MatchesView> {
+  late final ScrollController _scrollController;
+  bool _isCurrentRoute = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()..addListener(_handleScroll);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _isCurrentRoute = ModalRoute.of(context)?.isCurrent ?? true;
+    if (_isCurrentRoute) context.read<DockCubit>().show();
+  }
+
+  void _handleScroll() {
+    if (!_scrollController.hasClients || !_isCurrentRoute) return;
+    context.read<DockCubit>().handleScroll(
+      _scrollController.position.userScrollDirection,
+    );
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_handleScroll)
+      ..dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +114,7 @@ class _MatchesView extends StatelessWidget {
       return Skeletonizer(
         enabled: true,
         child: ListView(
+          controller: _scrollController,
           padding: const EdgeInsets.fromLTRB(16, 4, 16, 20),
           children: [
             FixtureDaySection(
@@ -115,6 +153,7 @@ class _MatchesView extends StatelessWidget {
 
       final sections = _groupFixtures(context, state.fixtures);
       return ListView.builder(
+        controller: _scrollController,
         padding: const EdgeInsets.fromLTRB(16, 4, 16, 20),
         itemCount: sections.length,
         itemBuilder: (context, index) {

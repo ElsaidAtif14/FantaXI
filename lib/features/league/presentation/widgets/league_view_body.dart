@@ -11,6 +11,7 @@ import 'package:fantasy/features/league/presentation/widgets/load_more_standings
 import 'package:fantasy/features/league/presentation/widgets/search_field.dart';
 import 'package:fantasy/features/league/presentation/widgets/standings_column_header.dart';
 import 'package:fantasy/shared/widgets/app_navigation_dock.dart';
+import 'package:fantasy/shared/cubit/dock_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,15 +28,32 @@ class LeagueViewBody extends StatefulWidget {
 
 class _LeagueViewBodyState extends State<LeagueViewBody> {
   final TextEditingController _searchController = TextEditingController();
+  late final ScrollController _scrollController;
   int? _entryId;
   bool _showGameweek = false;
   LeagueFilter _filter = LeagueFilter.all;
+  bool _isCurrentRoute = false;
 
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController()..addListener(_handleScroll);
     _loadEntryId();
     _searchController.addListener(_refresh);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _isCurrentRoute = ModalRoute.of(context)?.isCurrent ?? true;
+    if (_isCurrentRoute) context.read<DockCubit>().show();
+  }
+
+  void _handleScroll() {
+    if (!_scrollController.hasClients || !_isCurrentRoute) return;
+    context.read<DockCubit>().handleScroll(
+      _scrollController.position.userScrollDirection,
+    );
   }
 
   Future<void> _loadEntryId() async {
@@ -50,6 +68,9 @@ class _LeagueViewBodyState extends State<LeagueViewBody> {
 
   @override
   void dispose() {
+    _scrollController
+      ..removeListener(_handleScroll)
+      ..dispose();
     _searchController
       ..removeListener(_refresh)
       ..dispose();
@@ -64,7 +85,10 @@ class _LeagueViewBodyState extends State<LeagueViewBody> {
         child: BlocBuilder<LeagueCubit, LeagueState>(
           builder: (context, state) {
             if (state is LeagueLoading || state is LeagueInitial) {
-              return LeagueLoadingView(controller: _searchController);
+              return LeagueLoadingView(
+                controller: _searchController,
+                scrollController: _scrollController,
+              );
             }
             if (state is LeagueError) {
               return Center(
@@ -92,6 +116,7 @@ class _LeagueViewBodyState extends State<LeagueViewBody> {
             final visible = _applyFilters(sorted, standings, current);
 
             return ListView(
+              controller: _scrollController,
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 20),
               children: [
                 LeagueHeader(

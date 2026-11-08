@@ -11,9 +11,14 @@ import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class LeagueLoadingView extends StatelessWidget {
-  const LeagueLoadingView({super.key, required this.controller});
+  const LeagueLoadingView({
+    super.key,
+    required this.controller,
+    required this.scrollController,
+  });
 
   final TextEditingController controller;
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +36,7 @@ class LeagueLoadingView extends StatelessWidget {
           highlightColor: context.appColors.surfaceVariant,
         ),
         child: ListView(
+          controller: scrollController,
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 20),
           children: [
             LeagueHeader(

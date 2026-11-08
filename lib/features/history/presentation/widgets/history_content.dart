@@ -10,11 +10,13 @@ class HistoryContent extends StatelessWidget {
   const HistoryContent({
     super.key,
     required this.history,
+    required this.controller,
     required this.selectedGameweek,
     required this.onGameweekSelected,
   });
 
   final ManagerHistoryModel history;
+  final ScrollController controller;
   final int? selectedGameweek;
   final ValueChanged<int> onGameweekSelected;
 
@@ -26,6 +28,7 @@ class HistoryContent extends StatelessWidget {
     final selectedEvent = matchingEvents.isEmpty ? null : matchingEvents.first;
 
     return SingleChildScrollView(
+      controller: controller,
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -14,6 +14,7 @@ import 'package:fantasy/features/bootstrap/data/models/player_model.dart';
 import 'package:fantasy/features/bootstrap/data/models/bootstrap_model.dart';
 import 'package:fantasy/features/live/data/models/element_live_model.dart';
 import 'package:fantasy/shared/widgets/app_navigation_dock.dart';
+import 'package:fantasy/shared/cubit/dock_cubit.dart';
 
 class LiveScreen extends StatelessWidget {
   const LiveScreen({super.key});
@@ -38,8 +39,44 @@ class LiveScreen extends StatelessWidget {
   }
 }
 
-class _LiveView extends StatelessWidget {
+class _LiveView extends StatefulWidget {
   const _LiveView();
+
+  @override
+  State<_LiveView> createState() => _LiveViewState();
+}
+
+class _LiveViewState extends State<_LiveView> {
+  late final ScrollController _scrollController;
+  bool _isCurrentRoute = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()..addListener(_handleScroll);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _isCurrentRoute = ModalRoute.of(context)?.isCurrent ?? true;
+    if (_isCurrentRoute) context.read<DockCubit>().show();
+  }
+
+  void _handleScroll() {
+    if (!_scrollController.hasClients || !_isCurrentRoute) return;
+    context.read<DockCubit>().handleScroll(
+      _scrollController.position.userScrollDirection,
+    );
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_handleScroll)
+      ..dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +119,7 @@ class _LiveView extends StatelessWidget {
                       return Skeletonizer(
                         enabled: true,
                         child: ListView.builder(
+                          controller: _scrollController,
                           itemCount: 11,
                           padding: const EdgeInsets.all(16),
                           itemBuilder:
@@ -98,7 +136,7 @@ class _LiveView extends StatelessWidget {
                       return Center(
                         child: Text(
                           liveState.message,
-                          style:  TextStyle(color: context.appColors.rankDown),
+                          style: TextStyle(color: context.appColors.rankDown),
                         ),
                       );
                     }
@@ -107,6 +145,7 @@ class _LiveView extends StatelessWidget {
                         liveState is LiveLoaded) {
                       final picks = picksState.picks.picks;
                       return ListView.builder(
+                        controller: _scrollController,
                         padding: const EdgeInsets.all(16),
                         itemCount: picks.length,
                         itemBuilder: (context, i) {
