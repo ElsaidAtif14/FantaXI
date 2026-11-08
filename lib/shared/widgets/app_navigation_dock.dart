@@ -5,7 +5,9 @@ import 'package:fantasy/core/router/app_router.dart';
 import 'package:fantasy/shared/widgets/dock_items.dart';
 import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:fantasy/shared/cubit/dock_cubit.dart';
 
 class AppNavigationDock extends StatelessWidget {
   const AppNavigationDock({
@@ -44,77 +46,98 @@ class AppNavigationDock extends StatelessWidget {
                 .where((destination) => destination.label != 'Live')
                 .toList();
 
-    return SafeArea(
-      top: false,
-      minimum: const EdgeInsets.only(bottom: 8),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, _bottomGap),
-        child: SizedBox(
-          height: dockHeight,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              const horizontalPadding = 16.0; // 8 left + 8 right
-              const gap = 4.0;
-              final gaps =
-                  gap * math.max(0, destinations.length - 1).toDouble();
-              final widthPerItem =
-                  destinations.isEmpty
-                      ? 0.0
-                      : (constraints.maxWidth - horizontalPadding - gaps) /
-                          destinations.length;
-              final itemWidth =
-                  math.min(56.0, math.max(0.0, widthPerItem)).toDouble();
+    return BlocBuilder<DockCubit, bool>(
+      builder:
+          (context, isVisible) => AnimatedSlide(
+            offset: isVisible ? Offset.zero : const Offset(0, 1),
+            duration: const Duration(milliseconds: 300),
+            child: IgnorePointer(
+              ignoring: !isVisible,
+              child: SafeArea(
+                top: false,
+                minimum: const EdgeInsets.only(bottom: 8),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, _bottomGap),
+                  child: SizedBox(
+                    height: dockHeight,
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        const horizontalPadding = 16.0; // 8 left + 8 right
+                        const gap = 4.0;
+                        final gaps =
+                            gap *
+                            math.max(0, destinations.length - 1).toDouble();
+                        final widthPerItem =
+                            destinations.isEmpty
+                                ? 0.0
+                                : (constraints.maxWidth -
+                                        horizontalPadding -
+                                        gaps) /
+                                    destinations.length;
+                        final itemWidth =
+                            math
+                                .min(56.0, math.max(0.0, widthPerItem))
+                                .toDouble();
 
-              return Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(999),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: context.appColors.surface.withValues(alpha: 0.6),
-                        borderRadius: BorderRadius.circular(999),
-                        border: Border.all(
-                          color: context.appColors.outline.withValues(alpha: 0.6),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            for (
-                              var index = 0;
-                              index < destinations.length;
-                              index++
-                            ) ...[
-                              if (index > 0) const SizedBox(width: gap),
-                              SizedBox(
-                                width: itemWidth,
-                                height: 48,
-                                child: DockItem(
-                                  destination: destinations[index],
-                                  selected: currentIndex == index,
-                                  onTap:
-                                      () =>
-                                          context.go(destinations[index].route),
+                        return Center(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(999),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: context.appColors.surface.withValues(
+                                    alpha: 0.6,
+                                  ),
+                                  borderRadius: BorderRadius.circular(999),
+                                  border: Border.all(
+                                    color: context.appColors.outline.withValues(
+                                      alpha: 0.6,
+                                    ),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      for (
+                                        var index = 0;
+                                        index < destinations.length;
+                                        index++
+                                      ) ...[
+                                        if (index > 0)
+                                          const SizedBox(width: gap),
+                                        SizedBox(
+                                          width: itemWidth,
+                                          height: 48,
+                                          child: DockItem(
+                                            destination: destinations[index],
+                                            selected: currentIndex == index,
+                                            onTap:
+                                                () => context.go(
+                                                  destinations[index].route,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ],
-                          ],
-                        ),
-                      ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),
-              );
-            },
+              ),
+            ),
           ),
-        ),
-      ),
     );
   }
 }

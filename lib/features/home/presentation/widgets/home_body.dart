@@ -17,6 +17,7 @@ import 'package:fantasy/features/manager/presentation/cubit/manager_cubit.dart';
 import 'package:fantasy/features/picks/presentation/cubit/picks_cubit.dart';
 import 'package:fantasy/shared/widgets/app_navigation_dock.dart';
 import 'package:fantasy/shared/widgets/app_snack_bar.dart';
+import 'package:fantasy/shared/cubit/dock_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +25,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class HomeBody extends StatelessWidget {
+class HomeBody extends StatefulWidget {
   const HomeBody({
     super.key,
     this.managerId,
@@ -39,12 +40,48 @@ class HomeBody extends StatelessWidget {
   final String? entryIdError;
 
   @override
+  State<HomeBody> createState() => _HomeBodyState();
+}
+
+class _HomeBodyState extends State<HomeBody> {
+  late final ScrollController _scrollController;
+  bool _isCurrentRoute = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()..addListener(_handleScroll);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _isCurrentRoute = ModalRoute.of(context)?.isCurrent ?? true;
+    if (_isCurrentRoute) context.read<DockCubit>().show();
+  }
+
+  void _handleScroll() {
+    if (!_scrollController.hasClients || !_isCurrentRoute) return;
+    context.read<DockCubit>().handleScroll(
+      _scrollController.position.userScrollDirection,
+    );
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_handleScroll)
+      ..dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<ManagerCubit, ManagerState>(
       builder: (context, state) {
-        final hasManagerId = managerId != null && managerId! > 0;
+        final hasManagerId = widget.managerId != null && widget.managerId! > 0;
         final managerLoading =
-            isEntryIdLoading ||
+            widget.isEntryIdLoading ||
             state is ManagerLoading ||
             (state is ManagerInitial && hasManagerId);
 
@@ -71,6 +108,7 @@ class HomeBody extends StatelessWidget {
               ),
             ),
             child: CustomScrollView(
+              controller: _scrollController,
               slivers: [
                 if (managerLoading)
                   SliverPadding(
@@ -94,7 +132,9 @@ class HomeBody extends StatelessWidget {
                         HomeManagerCard(
                           manager: state.manager,
                           onRefresh:
-                              () => onRefreshManager?.call(state.manager.id),
+                              () => widget.onRefreshManager?.call(
+                                state.manager.id,
+                              ),
                           onShare:
                               () => _copyManagerSummary(context, state.manager),
                         ),
@@ -110,13 +150,13 @@ class HomeBody extends StatelessWidget {
                       ]),
                     ),
                   )
-                else if (entryIdError != null)
+                else if (widget.entryIdError != null)
                   SliverFillRemaining(
                     hasScrollBody: false,
                     child: HomeFeedback(
                       icon: Icons.storage_rounded,
                       title: 'Could not read your manager ID',
-                      message: entryIdError!,
+                      message: widget.entryIdError!,
                       actionLabel: 'Open setup',
                       onAction:
                           () => _showSettings(context, hasManagerId: false),
@@ -133,7 +173,7 @@ class HomeBody extends StatelessWidget {
                       onAction:
                           hasManagerId
                               ? () => context.read<ManagerCubit>().loadManager(
-                                managerId!,
+                                widget.managerId!,
                               )
                               : null,
                       secondaryActionLabel: 'Change Manager ID',
@@ -144,7 +184,7 @@ class HomeBody extends StatelessWidget {
                           ),
                     ),
                   )
-                else if (managerId == null || managerId! <= 0)
+                else if (widget.managerId == null || widget.managerId! <= 0)
                   SliverFillRemaining(
                     hasScrollBody: false,
                     child: HomeFeedback(

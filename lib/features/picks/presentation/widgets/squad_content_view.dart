@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 class SquadContentView extends StatelessWidget {
   const SquadContentView({
     super.key,
+    required this.controller,
     required this.gameweek,
     required this.manager,
     required this.bootstrap,
@@ -23,6 +24,7 @@ class SquadContentView extends StatelessWidget {
     required this.onNextGameweek,
   });
 
+  final ScrollController controller;
   final int gameweek;
   final FantasyManagerModel manager;
   final BootstrapModel bootstrap;
@@ -39,6 +41,7 @@ class SquadContentView extends StatelessWidget {
     final played = _playedCount(startingXI);
 
     return CustomScrollView(
+      controller: controller,
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       slivers: [
         SliverPadding(

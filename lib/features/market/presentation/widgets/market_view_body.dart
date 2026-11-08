@@ -13,6 +13,7 @@ import 'package:fantasy/shared/widgets/app_navigation_dock.dart';
 import 'package:fantasy/shared/widgets/app_snack_bar.dart';
 import 'package:fantasy/shared/widgets/custom_app_bar.dart';
 import 'package:fantasy/shared/widgets/custom_search_bar.dart';
+import 'package:fantasy/shared/cubit/dock_cubit.dart';
 import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,13 +28,38 @@ class MarketViewBody extends StatefulWidget {
 
 class _MarketViewBodyState extends State<MarketViewBody> {
   final _searchController = TextEditingController();
+  late final ScrollController _scrollController;
   final Set<int> _comparisonIds = {};
   int? _positionFilter;
   MarketSort _sort = MarketSort.points;
   bool _comparisonExpanded = true;
+  bool _isCurrentRoute = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()..addListener(_handleScroll);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _isCurrentRoute = ModalRoute.of(context)?.isCurrent ?? true;
+    if (_isCurrentRoute) context.read<DockCubit>().show();
+  }
+
+  void _handleScroll() {
+    if (!_scrollController.hasClients || !_isCurrentRoute) return;
+    context.read<DockCubit>().handleScroll(
+      _scrollController.position.userScrollDirection,
+    );
+  }
 
   @override
   void dispose() {
+    _scrollController
+      ..removeListener(_handleScroll)
+      ..dispose();
     _searchController.dispose();
     super.dispose();
   }
@@ -81,7 +107,7 @@ class _MarketViewBodyState extends State<MarketViewBody> {
       body: BlocBuilder<BootstrapCubit, BootstrapState>(
         builder: (context, state) {
           if (state is BootstrapLoading || state is BootstrapInitial) {
-            return const _MarketLoadingView();
+            return _MarketLoadingView(controller: _scrollController);
           }
           if (state is BootstrapError) {
             return Center(
@@ -168,6 +194,7 @@ class _MarketViewBodyState extends State<MarketViewBody> {
                             ),
                           )
                           : ListView.builder(
+                            controller: _scrollController,
                             padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
                             keyboardDismissBehavior:
                                 ScrollViewKeyboardDismissBehavior.onDrag,
@@ -261,7 +288,9 @@ class _MarketViewBodyState extends State<MarketViewBody> {
 }
 
 class _MarketLoadingView extends StatelessWidget {
-  const _MarketLoadingView();
+  const _MarketLoadingView({required this.controller});
+
+  final ScrollController controller;
 
   @override
   Widget build(BuildContext context) => SafeArea(
@@ -307,6 +336,7 @@ class _MarketLoadingView extends StatelessWidget {
           const SizedBox(height: 16),
           Expanded(
             child: ListView.separated(
+              controller: controller,
               padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
               itemCount: 8,
               separatorBuilder: (_, _) => const SizedBox(height: 8),

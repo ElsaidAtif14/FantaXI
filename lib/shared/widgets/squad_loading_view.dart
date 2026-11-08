@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class SquadLoadingView extends StatelessWidget {
-  const SquadLoadingView({super.key});
+  const SquadLoadingView({super.key, required this.controller});
+
+  final ScrollController controller;
 
   @override
   Widget build(BuildContext context) => Skeletonizer(
     enabled: true,
     child: SingleChildScrollView(
+      controller: controller,
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 26),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

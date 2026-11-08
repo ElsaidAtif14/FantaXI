@@ -9,6 +9,7 @@ import 'package:fantasy/features/picks/presentation/widgets/squad_content_view.d
 import 'package:fantasy/shared/widgets/squad_loading_view.dart';
 import 'package:fantasy/features/picks/presentation/widgets/error_message_view.dart';
 import 'package:fantasy/shared/widgets/app_navigation_dock.dart';
+import 'package:fantasy/shared/cubit/dock_cubit.dart';
 import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,12 +32,37 @@ class PicksView extends StatefulWidget {
 }
 
 class _PicksViewState extends State<PicksView> {
+  late final ScrollController _scrollController;
   int? _currentGw;
+  bool _isCurrentRoute = false;
 
   @override
   void initState() {
     super.initState();
     _currentGw = widget.initialGw;
+    _scrollController = ScrollController()..addListener(_handleScroll);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _isCurrentRoute = ModalRoute.of(context)?.isCurrent ?? true;
+    if (_isCurrentRoute) context.read<DockCubit>().show();
+  }
+
+  void _handleScroll() {
+    if (!_scrollController.hasClients || !_isCurrentRoute) return;
+    context.read<DockCubit>().handleScroll(
+      _scrollController.position.userScrollDirection,
+    );
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_handleScroll)
+      ..dispose();
+    super.dispose();
   }
 
   @override
@@ -144,12 +170,12 @@ class _PicksViewState extends State<PicksView> {
                     picksState is PicksLoading ||
                     liveState is LiveInitial ||
                     liveState is LiveLoading) {
-                  return const SquadLoadingView();
+                  return SquadLoadingView(controller: _scrollController);
                 }
 
                 if (managerState is! ManagerLoaded ||
                     bootstrapState is! BootstrapLoaded) {
-                  return const SquadLoadingView();
+                  return SquadLoadingView(controller: _scrollController);
                 }
 
                 final picks =
@@ -158,6 +184,7 @@ class _PicksViewState extends State<PicksView> {
                 final gameweek =
                     _currentGw ?? managerState.manager.currentEvent;
                 return SquadContentView(
+                  controller: _scrollController,
                   gameweek: gameweek,
                   manager: managerState.manager,
                   bootstrap: bootstrapState.data,

@@ -1,5 +1,6 @@
 import 'package:fantasy/core/services/custom_bloc_observer.dart';
 import 'package:fantasy/core/theme/theme_cubit.dart';
+import 'package:fantasy/shared/cubit/dock_cubit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fantasy/core/di/injection.dart';
@@ -29,8 +30,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => ThemeCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => DockCubit()),
+        BlocProvider(create: (_) => ThemeCubit()),
+      ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder:
             (context, themeMode) => MaterialApp.router(
