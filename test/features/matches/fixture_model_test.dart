@@ -66,4 +66,46 @@ void main() {
     expect(fixture.id, 73);
     expect(fixture.code, 2645267);
   });
+
+  test('treats a provisionally finished fixture as finished, not live', () {
+    final fixture = FixtureModel.fromJson({
+      'id': 94,
+      'event': 10,
+      'started': true,
+      'finished': false,
+      'finished_provisional': true,
+      'minutes': 90,
+    });
+
+    expect(fixture.isFinished, isTrue);
+    expect(fixture.isLive, isFalse);
+  });
+
+  test('treats a started fixture without finish flags as live', () {
+    final fixture = FixtureModel.fromJson({
+      'id': 95,
+      'event': 10,
+      'started': true,
+      'finished': false,
+      'finished_provisional': false,
+      'minutes': 55,
+    });
+
+    expect(fixture.isFinished, isFalse);
+    expect(fixture.isLive, isTrue);
+  });
+
+  test('does not treat an unstarted fixture as live or finished', () {
+    final fixture = FixtureModel.fromJson({
+      'id': 96,
+      'event': 10,
+      'started': false,
+      'finished': false,
+      'finished_provisional': false,
+      'minutes': 0,
+    });
+
+    expect(fixture.isFinished, isFalse);
+    expect(fixture.isLive, isFalse);
+  });
 }

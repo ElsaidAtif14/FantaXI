@@ -2,6 +2,18 @@ import 'package:fantasy/core/theme/app_theme_colors.dart';
 import 'package:fantasy/features/manager/data/models/fantasy_manager_model.dart';
 import 'package:flutter/material.dart';
 
+/// Two equal-height stat cards side by side.
+///
+/// Layout note (root cause of two historical defects, measured in tests):
+/// - Tile height from `childAspectRatio` is independent of content and clipped
+///   card content at narrow widths / large text scales.
+/// - A shrinkWrap [GridView] is a *scrollable*; under a [Scaffold] with
+///   `extendBody: true` it reserved the exposed viewport bottom inset (dock
+///   height) as empty trailing space inside its own box, leaving a large gap
+///   directly below the two cards.
+/// The [IntrinsicHeight] + stretch [Row] keeps equal card heights derived
+/// from real content (the [Spacer]s absorb the slack) and is not scrollable,
+/// so neither defect can occur.
 class HomeStatsGrid extends StatelessWidget {
   const HomeStatsGrid({super.key, required this.manager});
 
@@ -11,17 +23,15 @@ class HomeStatsGrid extends StatelessWidget {
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) {
       final compact = constraints.maxWidth < 360;
-      return GridView.count(
-        crossAxisCount: 2,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-        childAspectRatio: compact ? .78 : .86,
-        children: [
-          _RankCard(manager: manager, compact: compact),
-          _ValueCard(manager: manager, compact: compact),
-        ],
+      return IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          spacing: 12,
+          children: [
+            Expanded(child: _RankCard(manager: manager, compact: compact)),
+            Expanded(child: _ValueCard(manager: manager, compact: compact)),
+          ],
+        ),
       );
     },
   );
@@ -38,6 +48,7 @@ class _RankCard extends StatelessWidget {
     return _CardShell(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             children: [

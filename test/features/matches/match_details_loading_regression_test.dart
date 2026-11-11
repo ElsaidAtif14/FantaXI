@@ -24,7 +24,7 @@ void main() {
 
     expect(find.byType(CircularProgressIndicator), findsNothing);
     expect(find.text('0 - 2'), findsOneWidget);
-    expect(find.textContaining('Half-time  0 - 0'), findsOneWidget);
+    expect(find.textContaining('Half-time 0 - 0'), findsOneWidget);
     expect(find.textContaining('Own goal'), findsOneWidget);
     expect(
       find.text('Some match detail sections could not be loaded.'),
@@ -70,6 +70,10 @@ void _register(MatchDetailsRepository repository, {Duration? timeout}) {
 }
 
 Future<void> _pump(WidgetTester tester) async {
+  tester.view.physicalSize = const Size(390, 2048);
+  tester.view.devicePixelRatio = 1;
+  addTearDown(tester.view.resetPhysicalSize);
+  addTearDown(tester.view.resetDevicePixelRatio);
   await tester.pumpWidget(
     MaterialApp(
       home: MatchDetailsScreen(

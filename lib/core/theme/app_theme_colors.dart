@@ -56,6 +56,11 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       'lineupPitchMiddle': AppColors.lightLineupPitchMiddle,
       'lineupPitchBottom': AppColors.lightLineupPitchBottom,
       'lineupPitchLine': AppColors.lightLineupPitchLine,
+      'matchHome': AppColors.lightMatchHome,
+      'matchAway': AppColors.lightMatchAway,
+      'matchLive': AppColors.lightMatchLive,
+      'matchDraw': AppColors.lightMatchDraw,
+      'matchPitchLine': AppColors.lightMatchPitchLine,
       'primaryGradient': AppColors.lightPrimaryGradient,
       'cardGradient': AppColors.lightCardGradient,
       'greenGradient': AppColors.lightGreenGradient,
@@ -150,6 +155,11 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       'lineupPitchMiddle': AppColors.darkLineupPitchMiddle,
       'lineupPitchBottom': AppColors.darkLineupPitchBottom,
       'lineupPitchLine': AppColors.darkLineupPitchLine,
+      'matchHome': AppColors.darkMatchHome,
+      'matchAway': AppColors.darkMatchAway,
+      'matchLive': AppColors.darkMatchLive,
+      'matchDraw': AppColors.darkMatchDraw,
+      'matchPitchLine': AppColors.darkMatchPitchLine,
       'primaryGradient': AppColors.darkPrimaryGradient,
       'cardGradient': AppColors.darkCardGradient,
       'greenGradient': AppColors.darkGreenGradient,
@@ -242,6 +252,11 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   Color get lineupPitchMiddle => values['lineupPitchMiddle']! as Color;
   Color get lineupPitchBottom => values['lineupPitchBottom']! as Color;
   Color get lineupPitchLine => values['lineupPitchLine']! as Color;
+  Color get matchHome => values['matchHome']! as Color;
+  Color get matchAway => values['matchAway']! as Color;
+  Color get matchLive => values['matchLive']! as Color;
+  Color get matchDraw => values['matchDraw']! as Color;
+  Color get matchPitchLine => values['matchPitchLine']! as Color;
   Gradient get primaryGradient => values['primaryGradient']! as Gradient;
   Gradient get cardGradient => values['cardGradient']! as Gradient;
   Gradient get greenGradient => values['greenGradient']! as Gradient;

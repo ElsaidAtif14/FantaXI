@@ -85,15 +85,28 @@ class PremierLeagueMatchDetails {
 }
 
 class MatchTeamDetail {
-  const MatchTeamDetail({this.id, this.name, this.score, this.halfTimeScore});
+  const MatchTeamDetail({
+    this.id,
+    this.name,
+    this.shortName,
+    this.score,
+    this.halfTimeScore,
+  });
   final int? id;
+
+  /// Official club name, e.g. `Tottenham Hotspur`.
   final String? name;
+
+  /// Short club name, e.g. `Spurs` or `Man Utd`. FPL's `team.name` uses these
+  /// short forms, so they are part of the match validation.
+  final String? shortName;
   final int? score;
   final int? halfTimeScore;
 
   factory MatchTeamDetail.fromJson(JsonMap json) => MatchTeamDetail(
     id: _int(json['id']),
     name: _string(json['name']),
+    shortName: _string(json['shortName']),
     score: _int(json['score']),
     halfTimeScore: _int(json['halfTimeScore']),
   );
@@ -156,13 +169,59 @@ class MatchPlayer {
 }
 
 class MatchLineup {
-  const MatchLineup({this.players = const [], this.formation});
+  const MatchLineup({
+    this.players = const [],
+    this.formation,
+    this.formationRows = const [],
+    this.substituteIds = const [],
+    this.teamId,
+    this.managers = const [],
+  });
   final List<MatchPlayer> players;
+
+  /// Human formation such as `4-2-3-1`.
   final String? formation;
+
+  /// Player-ID rows from the nested formation object, ordered goalkeeper to
+  /// attack. Empty when the API only provides a legacy string formation.
+  final List<List<int>> formationRows;
+  final List<int> substituteIds;
+  final int? teamId;
+  final List<MatchManager> managers;
+
   factory MatchLineup.fromJson(JsonMap json) {
     final players = json['players'];
+    final teamId = _int(json['teamId']);
+    final formationRaw = json['formation'];
+    String? formationName;
+    List<List<int>> rows = const [];
+    List<int> subs = const [];
+    int? nestedTeamId;
+    if (formationRaw is Map) {
+      final formation = Map<String, dynamic>.from(formationRaw);
+      formationName = _string(formation['formation']);
+      rows = _idRowList(formation['lineup']);
+      subs = _idList(formation['subs']);
+      nestedTeamId = _int(formation['teamId']);
+    } else if (formationRaw is String) {
+      // Legacy shape: a bare formation string.
+      formationName = _string(formationRaw);
+    }
+    final managers = json['managers'];
     return MatchLineup(
-      formation: _string(json['formation']),
+      formation: formationName,
+      formationRows: rows,
+      substituteIds: subs,
+      teamId: teamId ?? nestedTeamId,
+      managers:
+          managers is List
+              ? managers
+                  .whereType<Map>()
+                  .map(
+                    (e) => MatchManager.fromJson(Map<String, dynamic>.from(e)),
+                  )
+                  .toList()
+              : const [],
       players:
           players is List
               ? players
@@ -183,6 +242,51 @@ class MatchLineup {
       players
           .where((player) => player.position?.toLowerCase() == 'substitute')
           .toList();
+
+  MatchPlayer? playerById(int? id) =>
+      id == null
+          ? null
+          : players.where((player) => player.id == id).firstOrNull;
+}
+
+class MatchManager {
+  const MatchManager({this.id, this.name, this.type});
+  final int? id;
+  final String? name;
+  final String? type;
+
+  factory MatchManager.fromJson(JsonMap json) => MatchManager(
+    id: _int(json['id']),
+    name:
+        _string(json['knownName']) ??
+        [
+          _string(json['firstName']),
+          _string(json['lastName']),
+        ].whereType<String>().where((s) => s.isNotEmpty).join(' '),
+    type: _string(json['type']),
+  );
+}
+
+List<List<int>> _idRowList(dynamic raw) {
+  if (raw is! List) return const [];
+  final rows = <List<int>>[];
+  for (final row in raw.whereType<List>()) {
+    final ids = _idList(row);
+    // A row without resolvable IDs is kept empty so players are not shifted
+    // into the wrong formation line.
+    rows.add(ids);
+  }
+  return rows;
+}
+
+List<int> _idList(dynamic raw) {
+  if (raw is! List) return const [];
+  final ids = <int>[];
+  for (final value in raw) {
+    final id = _int(value);
+    if (id != null) ids.add(id);
+  }
+  return ids;
 }
 
 class MatchCommentary {
@@ -252,15 +356,19 @@ MatchLineup? _parseLineup(JsonMap? json) =>
 List<MatchCommentary> _parseCommentary(JsonMap? json) {
   final rows = json?['data'];
   if (rows is! List) return const [];
-  return rows.whereType<Map>().take(20).map((raw) {
-    final row = Map<String, dynamic>.from(raw);
-    return MatchCommentary(
-      text: _string(row['comment']),
-      time: _string(row['time']),
-      type: _string(row['type']),
-      timestamp: DateTime.tryParse(row['timestamp']?.toString() ?? ''),
-    );
-  }).toList();
+  return rows
+      .whereType<Map>()
+      .take(120) // Enough for a full match page; keeps payload parsing bounded.
+      .map((raw) {
+        final row = Map<String, dynamic>.from(raw);
+        return MatchCommentary(
+          text: _string(row['comment']),
+          time: _string(row['time']),
+          type: _string(row['type']),
+          timestamp: DateTime.tryParse(row['timestamp']?.toString() ?? ''),
+        );
+      })
+      .toList();
 }
 
 JsonMap? _map(dynamic value) =>
@@ -273,8 +381,20 @@ int? _int(dynamic value) =>
 DateTime? _parseKickoff(JsonMap? match) {
   final parsed = DateTime.tryParse(match?['kickoff']?.toString() ?? '');
   if (parsed == null) return null;
+  if (parsed.isUtc) return parsed;
+  // The API sends a wall-clock time without an offset, so it must not inherit
+  // the device's timezone; rebuild it as UTC before applying the zone label.
+  final wallClock = DateTime.utc(
+    parsed.year,
+    parsed.month,
+    parsed.day,
+    parsed.hour,
+    parsed.minute,
+    parsed.second,
+    parsed.millisecond,
+    parsed.microsecond,
+  );
   final zone = match?['kickoffTimezone']?.toString().toUpperCase();
-  if (zone == 'BST') return parsed.subtract(const Duration(hours: 1)).toUtc();
-  if (zone == 'GMT' || zone == 'UTC') return parsed.toUtc();
-  return parsed;
+  if (zone == 'BST') return wallClock.subtract(const Duration(hours: 1));
+  return wallClock;
 }

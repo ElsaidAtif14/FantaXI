@@ -29,6 +29,15 @@ class FixtureModel {
   /// FPL's cross-reference code. This is not the FPL fixture [id].
   final int? code;
 
+  /// Whether the match is over.
+  ///
+  /// FPL keeps [finished] false until bonus points are confirmed, while
+  /// [finishedProvisional] flips as soon as the final whistle goes, so both
+  /// flags must be considered before treating a fixture as still live.
+  bool get isFinished => finished == true || finishedProvisional == true;
+
+  bool get isLive => started == true && !isFinished;
+
   factory FixtureModel.fromJson(Map<String, dynamic> json) {
     return FixtureModel(
       id: _intValue(json['id']) ?? 0,
