@@ -22,7 +22,7 @@ class HomeProgressCard extends StatelessWidget {
         children: [
           Row(
             children: [
-               Expanded(
+              Expanded(
                 child: Text(
                   'Gameweek Progress',
                   style: TextStyle(
@@ -34,7 +34,7 @@ class HomeProgressCard extends StatelessWidget {
               ),
               Text(
                 'GW ${manager.activeGW} of 38',
-                style:  TextStyle(
+                style: TextStyle(
                   color: context.appColors.lineupTextSecondary,
                   fontSize: 9,
                 ),
@@ -47,7 +47,7 @@ class HomeProgressCard extends StatelessWidget {
             child: LinearProgressIndicator(
               value: manager.seasonCompletion,
               backgroundColor: context.appColors.lineupBackground,
-              valueColor:  AlwaysStoppedAnimation(context.appColors.lineupMint),
+              valueColor: AlwaysStoppedAnimation(context.appColors.lineupMint),
               minHeight: 6,
             ),
           ),
@@ -59,7 +59,7 @@ class HomeProgressCard extends StatelessWidget {
                   '$completedPercent% Completed  |  ${manager.totalPlayedGWs}/38 played',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style:  TextStyle(
+                  style: TextStyle(
                     color: context.appColors.lineupTextSecondary,
                     fontSize: 9,
                   ),
@@ -91,7 +91,10 @@ class _PlayedStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isPositive ? context.appColors.lineupMint : context.appColors.lineupLavender;
+    final color =
+        isPositive
+            ? context.appColors.lineupMint
+            : context.appColors.lineupLavender;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),

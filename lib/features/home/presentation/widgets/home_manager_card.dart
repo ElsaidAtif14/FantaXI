@@ -17,9 +17,10 @@ class HomeManagerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final average = manager.totalPlayedGWs == 0
-        ? 0.0
-        : manager.totalPoints / manager.totalPlayedGWs;
+    final average =
+        manager.totalPlayedGWs == 0
+            ? 0.0
+            : manager.totalPoints / manager.totalPlayedGWs;
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -30,11 +31,13 @@ class HomeManagerCard extends StatelessWidget {
           colors: [
             context.appColors.surface,
             context.appColors.surface,
-            context.appColors.homeMint.withValues(alpha: .13),
+            // context.appColors.homeMint.withValues(alpha: .13),
           ],
         ),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: context.appColors.outline.withValues(alpha: .8)),
+        border: Border.all(
+          color: context.appColors.outline.withValues(alpha: .8),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,9 +50,15 @@ class HomeManagerCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: context.appColors.primary.withValues(alpha: .18),
                   borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: context.appColors.primaryLight.withValues(alpha: .4)),
+                  border: Border.all(
+                    color: context.appColors.primaryLight.withValues(alpha: .4),
+                  ),
                 ),
-                child:  Icon(Icons.shield_rounded, color: context.appColors.primaryLight, size: 30),
+                child: Icon(
+                  Icons.shield_rounded,
+                  color: context.appColors.primaryLight,
+                  size: 30,
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -63,11 +72,16 @@ class HomeManagerCard extends StatelessWidget {
                             manager.teamName,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+                            style: theme.textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                         const SizedBox(width: 8),
-                        _Pill(label: 'GW${manager.activeGW}', color: context.appColors.primaryLight),
+                        _Pill(
+                          label: 'GW${manager.activeGW}',
+                          color: context.appColors.primaryLight,
+                        ),
                       ],
                     ),
                     const SizedBox(height: 4),
@@ -75,17 +89,27 @@ class HomeManagerCard extends StatelessWidget {
                       manager.fullName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodyMedium?.copyWith(color: context.appColors.textSecondary),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: context.appColors.textSecondary,
+                      ),
                     ),
                   ],
                 ),
               ),
-              _IconAction(icon: Icons.refresh_rounded, onPressed: onRefresh, label: 'Refresh manager'),
+              _IconAction(
+                icon: Icons.refresh_rounded,
+                onPressed: onRefresh,
+                label: 'Refresh manager',
+              ),
               const SizedBox(width: 8),
-              _IconAction(icon: Icons.share_rounded, onPressed: onShare, label: 'Share manager'),
+              _IconAction(
+                icon: Icons.share_rounded,
+                onPressed: onShare,
+                label: 'Share manager',
+              ),
             ],
           ),
-           Padding(
+          Padding(
             padding: EdgeInsets.symmetric(vertical: 18),
             child: Divider(height: 1, color: context.appColors.outline),
           ),
@@ -110,7 +134,10 @@ class HomeManagerCard extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 9),
-                        _Pill(label: 'Rank ${manager.rankFormatted}', color: context.appColors.warmOrange),
+                        _Pill(
+                          label: 'Rank ${manager.rankFormatted}',
+                          color: context.appColors.warmOrange,
+                        ),
                       ],
                     ),
                     const SizedBox(height: 5),
@@ -124,12 +151,22 @@ class HomeManagerCard extends StatelessWidget {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               _formatPoints(manager.totalPoints),
-                              style: theme.textTheme.displayLarge?.copyWith(fontSize: 46, height: 1, color: context.appColors.primaryLight),
+                              style: theme.textTheme.displayLarge?.copyWith(
+                                fontSize: 46,
+                                height: 1,
+                                color: context.appColors.primaryLight,
+                              ),
                             ),
                           ),
                         ),
                         const SizedBox(width: 7),
-                        Text('PTS', style: theme.textTheme.titleMedium?.copyWith(color: context.appColors.textSecondary, fontWeight: FontWeight.w700)),
+                        Text(
+                          'PTS',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: context.appColors.textSecondary,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -137,7 +174,8 @@ class HomeManagerCard extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               _Pill(
-                label: '${manager.eventPoints >= 0 ? '+' : ''}${manager.eventPoints} PTS (GW${manager.activeGW})',
+                label:
+                    '${manager.eventPoints >= 0 ? '+' : ''}${manager.eventPoints} PTS (GW${manager.activeGW})',
                 color: context.appColors.homeMint,
                 prominent: true,
               ),
@@ -146,11 +184,26 @@ class HomeManagerCard extends StatelessWidget {
           const SizedBox(height: 12),
           Row(
             children: [
-              Text('Avg: ${average.toStringAsFixed(1)}/GW', style: theme.textTheme.bodyMedium?.copyWith(color: context.appColors.textSecondary)),
+              Text(
+                'Avg: ${average.toStringAsFixed(1)}/GW',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: context.appColors.textSecondary,
+                ),
+              ),
               const SizedBox(width: 12),
-               Icon(Icons.trending_up_rounded, size: 17, color: context.appColors.homeMint),
+              Icon(
+                Icons.trending_up_rounded,
+                size: 17,
+                color: context.appColors.homeMint,
+              ),
               const SizedBox(width: 3),
-              Text('Form', style: theme.textTheme.bodyMedium?.copyWith(color: context.appColors.homeMint, fontWeight: FontWeight.w700)),
+              Text(
+                'Form',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: context.appColors.homeMint,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
             ],
           ),
         ],
@@ -159,13 +212,20 @@ class HomeManagerCard extends StatelessWidget {
   }
 
   static String _formatPoints(int points) {
-    final digits = points.abs().toString().replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (_) => ',');
+    final digits = points.abs().toString().replaceAllMapped(
+      RegExp(r'\B(?=(\d{3})+(?!\d))'),
+      (_) => ',',
+    );
     return points < 0 ? '-$digits' : digits;
   }
 }
 
 class _Pill extends StatelessWidget {
-  const _Pill({required this.label, required this.color, this.prominent = false});
+  const _Pill({
+    required this.label,
+    required this.color,
+    this.prominent = false,
+  });
 
   final String label;
   final Color color;
@@ -173,18 +233,33 @@ class _Pill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-    padding: EdgeInsets.symmetric(horizontal: prominent ? 12 : 9, vertical: prominent ? 9 : 5),
+    padding: EdgeInsets.symmetric(
+      horizontal: prominent ? 12 : 9,
+      vertical: prominent ? 9 : 5,
+    ),
     decoration: BoxDecoration(
       color: color.withValues(alpha: prominent ? .16 : .13),
       borderRadius: BorderRadius.circular(99),
-      border: prominent ? Border.all(color: color.withValues(alpha: .55)) : null,
+      border:
+          prominent ? Border.all(color: color.withValues(alpha: .55)) : null,
     ),
-    child: Text(label, style: TextStyle(color: color, fontSize: prominent ? 12 : 10, fontWeight: FontWeight.w700)),
+    child: Text(
+      label,
+      style: TextStyle(
+        color: color,
+        fontSize: prominent ? 12 : 10,
+        fontWeight: FontWeight.w700,
+      ),
+    ),
   );
 }
 
 class _IconAction extends StatelessWidget {
-  const _IconAction({required this.icon, required this.onPressed, required this.label});
+  const _IconAction({
+    required this.icon,
+    required this.onPressed,
+    required this.label,
+  });
 
   final IconData icon;
   final VoidCallback? onPressed;
