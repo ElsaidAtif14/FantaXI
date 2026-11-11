@@ -115,6 +115,18 @@ class AppColors {
   static const Color lightLineupPitchLine = Color(0xFF70A984);
   static const Color darkLineupPitchLine = Color(0xFF164A3B);
 
+  // Match details
+  static const Color lightMatchHome = Color(0xFF079B70);
+  static const Color darkMatchHome = Color(0xFF4EDEA3);
+  static const Color lightMatchAway = Color(0xFFC2453F);
+  static const Color darkMatchAway = Color(0xFFFFB3AD);
+  static const Color lightMatchLive = Color(0xFF079B70);
+  static const Color darkMatchLive = Color(0xFF4EDEA3);
+  static const Color lightMatchDraw = Color(0xFF686D82);
+  static const Color darkMatchDraw = Color(0xFFCBC3D7);
+  static const Color lightMatchPitchLine = Color(0xFF70A984);
+  static const Color darkMatchPitchLine = Color(0xFF2E8060);
+
   // Gradients
   static const Gradient lightPrimaryGradient = LinearGradient(
     colors: [Color(0xFF8055ED), Color(0xFF6035D0)],

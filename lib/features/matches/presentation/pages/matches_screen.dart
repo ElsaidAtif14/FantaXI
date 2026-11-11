@@ -33,14 +33,23 @@ class _MatchesView extends StatefulWidget {
   State<_MatchesView> createState() => _MatchesViewState();
 }
 
-class _MatchesViewState extends State<_MatchesView> {
+class _MatchesViewState extends State<_MatchesView>
+    with WidgetsBindingObserver {
   late final ScrollController _scrollController;
   bool _isCurrentRoute = false;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _scrollController = ScrollController()..addListener(_handleScroll);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && _isCurrentRoute) {
+      context.read<MatchesCubit>().refresh();
+    }
   }
 
   @override
@@ -59,6 +68,7 @@ class _MatchesViewState extends State<_MatchesView> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _scrollController
       ..removeListener(_handleScroll)
       ..dispose();
@@ -142,7 +152,7 @@ class _MatchesViewState extends State<_MatchesView> {
     }
     if (state is MatchesLoaded) {
       if (state.fixtures.isEmpty) {
-        return  Center(
+        return Center(
           child: Text(
             'No fixtures are scheduled for this matchweek.',
             textAlign: TextAlign.center,
@@ -152,26 +162,30 @@ class _MatchesViewState extends State<_MatchesView> {
       }
 
       final sections = _groupFixtures(context, state.fixtures);
-      return ListView.builder(
-        controller: _scrollController,
-        padding: const EdgeInsets.fromLTRB(16, 4, 16, 20),
-        itemCount: sections.length,
-        itemBuilder: (context, index) {
-          final section = sections[index];
-          return FixtureDaySection(
-            dateLabel: section.label,
-            fixtures: section.fixtures,
-            teams: state.teams,
-            onFixtureTap:
-                (fixture) => context.push(
-                  '/matches/${fixture.id}',
-                  extra: MatchDetailsArguments(
-                    fixture: fixture,
-                    teams: state.teams,
+      return RefreshIndicator(
+        onRefresh: () => context.read<MatchesCubit>().refresh(),
+        child: ListView.builder(
+          controller: _scrollController,
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.fromLTRB(16, 4, 16, 20),
+          itemCount: sections.length,
+          itemBuilder: (context, index) {
+            final section = sections[index];
+            return FixtureDaySection(
+              dateLabel: section.label,
+              fixtures: section.fixtures,
+              teams: state.teams,
+              onFixtureTap:
+                  (fixture) => context.push(
+                    '/matches/${fixture.id}',
+                    extra: MatchDetailsArguments(
+                      fixture: fixture,
+                      teams: state.teams,
+                    ),
                   ),
-                ),
-          );
-        },
+            );
+          },
+        ),
       );
     }
     return const SizedBox.shrink();

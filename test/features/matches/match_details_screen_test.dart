@@ -49,10 +49,31 @@ void main() {
         teams,
       );
 
-      expect(find.text('FULL TIME'), findsNWidgets(2));
+      expect(find.text('FULL TIME'), findsOneWidget);
       expect(find.text('2 - 1'), findsOneWidget);
     },
   );
+
+  testWidgets('shows full-time status when only the provisional flag is set', (
+    tester,
+  ) async {
+    await _pumpDetails(
+      tester,
+      _fixture(
+        started: true,
+        finished: false,
+        finishedProvisional: true,
+        homeScore: 3,
+        awayScore: 1,
+        minutes: 90,
+      ),
+      teams,
+    );
+
+    expect(find.text('FULL TIME'), findsOneWidget);
+    expect(find.textContaining('LIVE'), findsNothing);
+    expect(find.text('3 - 1'), findsOneWidget);
+  });
 
   testWidgets('handles invalid fixture IDs without making a request', (
     tester,
@@ -74,17 +95,16 @@ void main() {
     addTearDown(tester.view.resetDevicePixelRatio);
     await _pumpDetails(tester, _fixture(started: false), teams);
 
-    expect(find.text('MATCH REPORT'), findsOneWidget);
-    expect(find.text('Match report unavailable'), findsOneWidget);
-    expect(find.text('Match Dynamics'), findsOneWidget);
-    expect(find.text('Possession'), findsOneWidget);
-    expect(find.text('Total Shots'), findsOneWidget);
-    expect(find.text('On Target'), findsOneWidget);
+    expect(find.text('MATCH FACTS'), findsOneWidget);
+    expect(find.text('DATE'), findsOneWidget);
+    expect(find.text('MATCH DYNAMICS'), findsOneWidget);
+    expect(find.text('Statistics unavailable'), findsOneWidget);
     expect(find.text('Match timeline unavailable'), findsOneWidget);
-    expect(find.text('Manager Quotes'), findsOneWidget);
+    // Removed permanently: the section never contained real data.
+    expect(find.text('Manager Quotes'), findsNothing);
     expect(
       find.text('No verified manager quote is available for this team.'),
-      findsNWidgets(2),
+      findsNothing,
     );
     expect(find.text('Erling Haaland'), findsNothing);
     expect(find.text('Pep Guardiola'), findsNothing);
@@ -115,6 +135,7 @@ Future<void> _pumpDetails(
 FixtureModel _fixture({
   bool started = false,
   bool finished = false,
+  bool? finishedProvisional,
   int? homeScore,
   int? awayScore,
   int minutes = 0,
@@ -128,6 +149,6 @@ FixtureModel _fixture({
   awayScore: awayScore,
   started: started,
   finished: finished,
-  finishedProvisional: finished,
+  finishedProvisional: finishedProvisional ?? finished,
   minutes: minutes,
 );
