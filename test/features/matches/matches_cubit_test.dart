@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dartz/dartz.dart';
+import 'package:fake_async/fake_async.dart';
 import 'package:fantasy/core/error/failure.dart';
 import 'package:fantasy/features/bootstrap/data/models/gameweek_model.dart';
 import 'package:fantasy/features/bootstrap/data/models/team_model.dart';
@@ -67,6 +68,60 @@ void main() {
     expect(deferredCubit.state.gameweek, 8);
     expect((deferredCubit.state as MatchesLoaded).fixtures.single.id, 80);
   });
+
+  test('refresh updates scores without emitting a loading state', () async {
+    matches.responses[7] = Right([_fixture(70)]);
+    await cubit.loadInitial();
+
+    final states = <MatchesState>[];
+    final subscription = cubit.stream.listen(states.add);
+
+    matches.responses[7] = Right([_fixture(70, started: true, minutes: 62)]);
+    await cubit.refresh();
+    await subscription.cancel();
+
+    expect(states.whereType<MatchesLoading>(), isEmpty);
+    final loaded = cubit.state as MatchesLoaded;
+    expect(loaded.fixtures.single.isLive, isTrue);
+    expect(loaded.fixtures.single.minutes, 62);
+  });
+
+  test('polls live matchweeks and stops once every match finishes', () {
+    fakeAsync((async) {
+      final liveMatches = _FakeMatchesRepository();
+      final liveCubit = MatchesCubit(
+        liveMatches,
+        _FakeBootstrapRepository(_bootstrapData()),
+        liveRefreshInterval: const Duration(seconds: 60),
+      );
+      liveMatches.responses[7] = Right([
+        _fixture(70, started: true, minutes: 55),
+      ]);
+
+      unawaited(liveCubit.loadInitial());
+      async.flushMicrotasks();
+      expect(liveCubit.state, isA<MatchesLoaded>());
+      expect(liveMatches.requestedGameweeks.length, 1);
+
+      async.elapse(const Duration(seconds: 60));
+      async.flushMicrotasks();
+      expect(liveMatches.requestedGameweeks.length, 2);
+
+      liveMatches.responses[7] = Right([
+        _fixture(70, started: true, finished: true, minutes: 90),
+      ]);
+      async.elapse(const Duration(seconds: 60));
+      async.flushMicrotasks();
+      expect(liveMatches.requestedGameweeks.length, 3);
+
+      async.elapse(const Duration(minutes: 10));
+      async.flushMicrotasks();
+      expect(liveMatches.requestedGameweeks.length, 3);
+
+      unawaited(liveCubit.close());
+      async.flushMicrotasks();
+    });
+  });
 }
 
 BootstrapModel _bootstrapData() {
@@ -83,7 +138,13 @@ BootstrapModel _bootstrapData() {
   );
 }
 
-FixtureModel _fixture(int id) => FixtureModel(
+FixtureModel _fixture(
+  int id, {
+  bool started = false,
+  bool finished = false,
+  bool finishedProvisional = false,
+  int minutes = 0,
+}) => FixtureModel(
   id: id,
   gameweek: id == 70 ? 7 : 8,
   kickoffTime: DateTime.utc(2026, 10, 20),
@@ -91,10 +152,10 @@ FixtureModel _fixture(int id) => FixtureModel(
   awayTeamId: 2,
   homeScore: null,
   awayScore: null,
-  started: false,
-  finished: false,
-  finishedProvisional: false,
-  minutes: 0,
+  started: started,
+  finished: finished,
+  finishedProvisional: finishedProvisional,
+  minutes: minutes,
 );
 
 class _FakeBootstrapRepository implements BootstrapRepository {

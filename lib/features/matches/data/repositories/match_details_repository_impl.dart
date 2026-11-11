@@ -78,7 +78,11 @@ class MatchDetailsRepositoryImpl implements MatchDetailsRepository {
             );
           },
         )
-        .whenComplete(() => _pending.remove(candidate));
+        .whenComplete(() {
+          if (identical(_pending[candidate], request)) {
+            _pending.remove(candidate);
+          }
+        });
     _pending[candidate] = request;
     return request;
   }
@@ -173,10 +177,23 @@ class MatchDetailsRepositoryImpl implements MatchDetailsRepository {
     }
     final expectedHome = _normalize(home);
     final expectedAway = _normalize(away);
-    if (expectedHome.isEmpty ||
-        expectedAway.isEmpty ||
-        expectedHome != _normalize(d.homeTeam?.name) ||
-        expectedAway != _normalize(d.awayTeam?.name)) {
+    final homeMatches = _teamMatches(expectedHome, d.homeTeam);
+    final awayMatches = _teamMatches(expectedAway, d.awayTeam);
+    _logTeamComparison(
+      side: 'home',
+      fplId: f.homeTeamId,
+      expected: expectedHome,
+      pl: d.homeTeam,
+      matches: homeMatches,
+    );
+    _logTeamComparison(
+      side: 'away',
+      fplId: f.awayTeamId,
+      expected: expectedAway,
+      pl: d.awayTeam,
+      matches: awayMatches,
+    );
+    if (!homeMatches || !awayMatches) {
       return 'home/away team names did not match';
     }
     final fixtureKickoff = f.kickoffTime;
@@ -195,6 +212,31 @@ class MatchDetailsRepositoryImpl implements MatchDetailsRepository {
       return 'kickoff differed by more than three hours';
     }
     return null;
+  }
+
+  /// FPL exposes short display names (`Spurs`, `Man City`, `Leeds`) where the
+  /// PL API also carries the official name (`Tottenham Hotspur`). A team is
+  /// considered the same club when either PL name form normalizes to the FPL
+  /// name; orientation still matters because each side is checked separately.
+  bool _teamMatches(String expected, MatchTeamDetail? team) {
+    if (expected.isEmpty || team == null) return false;
+    return _normalize(team.name) == expected ||
+        _normalize(team.shortName) == expected;
+  }
+
+  void _logTeamComparison({
+    required String side,
+    required int? fplId,
+    required String expected,
+    required MatchTeamDetail? pl,
+    required bool matches,
+  }) {
+    developer.log(
+      'team check side=$side fpl_id=$fplId fpl_name=$expected '
+      'pl_id=${pl?.id} pl_name=${_normalize(pl?.name)} '
+      'pl_short_name=${_normalize(pl?.shortName)} match=$matches',
+      name: 'match_details.repository',
+    );
   }
 
   String _normalize(String? value) =>
