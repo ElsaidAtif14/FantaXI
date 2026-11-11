@@ -27,3 +27,6 @@ flutter_*.log
 Thumbs.db
 
 *.iml
+
+# Design reference assets (not part of the app source)
+design_references/match_details/
