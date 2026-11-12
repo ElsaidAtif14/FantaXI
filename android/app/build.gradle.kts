@@ -36,6 +36,20 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
         }
+}
+
+    flavorDimensions += "default"
+    productFlavors {
+        create("production") {
+            dimension = "default"
+            // applicationIdSuffix = ".staging"
+            resValue("string", "app_name", "FantaXI Production")
+        }
+        create("development") {
+            dimension = "default"
+            applicationIdSuffix = ".dev"
+            resValue("string", "app_name", "FantaXI Development")
+        }
     }
 }
 
