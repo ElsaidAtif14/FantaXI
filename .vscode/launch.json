@@ -10,7 +10,8 @@
       "program": "lib/main.dart",
       "args": [
         "--flavor",
-        "development"
+        "development",
+        "--dart-define=APP_ENV=development"
       ]
     },
     {
@@ -21,7 +22,8 @@
       "program": "lib/main.dart",
       "args": [
         "--flavor",
-        "production"
+        "production",
+        "--dart-define=APP_ENV=production"
       ]
     }
   ]
