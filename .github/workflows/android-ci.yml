@@ -1,4 +1,4 @@
-name: FantaXI Android CI
+name: FantaXI Android CI/CD
 
 on:
   push:
@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   android-build:
-    name: Analyze and Build Android
+    name: Analyze, Build and Distribute
     runs-on: ubuntu-latest
 
     steps:
@@ -36,22 +36,26 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Install dependencies
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Install Flutter dependencies
         run: flutter pub get
 
       - name: Analyze project
         run: flutter analyze
 
-      - name: Build Development APK
-        run: |
-          flutter build apk --release \
-            --flavor development \
-            --dart-define=APP_ENV=development
-
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4
+      - name: Authenticate with Google Cloud
+        if: github.event_name != 'pull_request'
+        uses: google-github-actions/auth@v2
         with:
-          name: fantaxi-development-apk
-          path: build/app/outputs/flutter-apk/app-development-release.apk
-          if-no-files-found: error
-          retention-days: 7
+          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          create_credentials_file: true
+          export_environment_variables: true
+
+      - name: Distribute Development to Firebase
+        if: github.event_name != 'pull_request'
+        run: bundle exec fastlane android distribute_development
