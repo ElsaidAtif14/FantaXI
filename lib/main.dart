@@ -14,16 +14,24 @@ import 'package:path_provider/path_provider.dart';
 import 'package:fantasy/firebase_options.dart';
 import 'package:fantasy/firebase_options_development.dart'
     as development_firebase;
+import 'package:fantasy/firebase_options_ios_development.dart'
+    as ios_development_firebase;
+import 'package:fantasy/firebase_options_ios_production.dart'
+    as ios_production_firebase;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options:
-        AppConfig.isDevelopment
-            ? development_firebase.DefaultFirebaseOptions.currentPlatform
-            : DefaultFirebaseOptions.currentPlatform,
-  );
+  final firebaseOptions =
+      defaultTargetPlatform == TargetPlatform.iOS
+          ? (AppConfig.isDevelopment
+              ? ios_development_firebase.DefaultFirebaseOptions.currentPlatform
+              : ios_production_firebase.DefaultFirebaseOptions.currentPlatform)
+          : (AppConfig.isDevelopment
+              ? development_firebase.DefaultFirebaseOptions.currentPlatform
+              : DefaultFirebaseOptions.currentPlatform);
+
+  await Firebase.initializeApp(options: firebaseOptions);
 
   Bloc.observer = CustomBlocObserver();
 
