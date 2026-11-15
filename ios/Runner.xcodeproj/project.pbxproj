@@ -663,7 +663,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug-development;
-		}
+		};
 		C30000000000000000000001 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A10000010000000000000001 /* Debug-development.xcconfig */;
@@ -686,7 +686,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug-development;
-		}
+		};
 		B20000000000000000000002 /* Profile */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -738,7 +738,7 @@
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Profile-development;
-		}
+		};
 		C30000000000000000000002 /* Profile */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A10000010000000000000002 /* Profile-development.xcconfig */;
@@ -760,7 +760,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Profile-development;
-		}
+		};
 		B20000000000000000000003 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -814,7 +814,7 @@
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release-development;
-		}
+		};
 		C30000000000000000000003 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A10000010000000000000003 /* Release-development.xcconfig */;
@@ -836,7 +836,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release-development;
-		}
+		};
 		B20000000000000000000004 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -893,7 +893,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug-production;
-		}
+		};
 		C30000000000000000000004 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A10000010000000000000004 /* Debug-production.xcconfig */;
@@ -916,7 +916,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug-production;
-		}
+		};
 		B20000000000000000000005 /* Profile */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -968,7 +968,7 @@
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Profile-production;
-		}
+		};
 		C30000000000000000000005 /* Profile */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A10000010000000000000005 /* Profile-production.xcconfig */;
@@ -990,7 +990,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Profile-production;
-		}
+		};
 		B20000000000000000000006 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1044,7 +1044,7 @@
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release-production;
-		}
+		};
 		C30000000000000000000006 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A10000010000000000000006 /* Release-production.xcconfig */;
@@ -1066,7 +1066,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release-production;
-		}
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
