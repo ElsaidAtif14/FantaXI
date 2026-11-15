@@ -1,0 +1,100 @@
+
+name: FantaXI iOS CI
+
+on:
+  push:
+    branches:
+      - app_flavors
+
+  pull_request:
+    branches:
+      - app_flavors
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ios-build:
+    name: Build iOS (${{ matrix.flavor }})
+    runs-on: macos-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - flavor: development
+            app_env: development
+            expected_bundle_id: com.example.fantasy.dev
+
+          - flavor: production
+            app_env: production
+            expected_bundle_id: com.example.fantasy
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.47.8"
+          channel: stable
+          cache: true
+
+      - name: Check Xcode
+        run: xcodebuild -version
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Build iOS
+        run: |
+          flutter build ios \
+            --release \
+            --flavor ${{ matrix.flavor }} \
+            --no-codesign \
+            --dart-define=APP_ENV=${{ matrix.app_env }}
+
+      - name: Verify bundle identifier
+        run: |
+          APP_PATH="build/ios/iphoneos/Runner.app"
+
+          test -d "$APP_PATH"
+
+          ACTUAL_ID=$(/usr/libexec/PlistBuddy \
+            -c "Print :CFBundleIdentifier" \
+            "$APP_PATH/Info.plist")
+
+          echo "Expected: ${{ matrix.expected_bundle_id }}"
+          echo "Actual: $ACTUAL_ID"
+
+          test "$ACTUAL_ID" = "${{ matrix.expected_bundle_id }}"
+
+      
+      - name: Verify Firebase configuration
+        run: |
+          APP_PATH="build/ios/iphoneos/Runner.app"
+          FIREBASE_PLIST="$APP_PATH/GoogleService-Info.plist"
+
+          test -f "$FIREBASE_PLIST"
+
+          FIREBASE_BUNDLE_ID=$(/usr/libexec/PlistBuddy \
+            -c "Print :BUNDLE_ID" \
+            "$FIREBASE_PLIST")
+
+          echo "Expected Firebase Bundle ID: ${{ matrix.expected_bundle_id }}"
+          echo "Actual Firebase Bundle ID: $FIREBASE_BUNDLE_ID"
+
+          test "$FIREBASE_BUNDLE_ID" = "${{ matrix.expected_bundle_id }}"
+
+          echo "Firebase configuration verified successfully."
+
+
+      - name: Upload unsigned iOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-${{ matrix.flavor }}-unsigned
+          path: build/ios/iphoneos/Runner.app
+          if-no-files-found: error
