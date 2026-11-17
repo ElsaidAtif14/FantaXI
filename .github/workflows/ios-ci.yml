@@ -1,4 +1,3 @@
-
 name: FantaXI iOS CI
 
 on:
@@ -25,16 +24,20 @@ jobs:
       matrix:
         include:
           - flavor: development
-            app_env: development
             expected_bundle_id: com.example.fantasy.dev
 
           - flavor: production
-            app_env: production
             expected_bundle_id: com.example.fantasy
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -49,13 +52,8 @@ jobs:
       - name: Install Flutter dependencies
         run: flutter pub get
 
-      - name: Build iOS
-        run: |
-          flutter build ios \
-            --release \
-            --flavor ${{ matrix.flavor }} \
-            --no-codesign \
-            --dart-define=APP_ENV=${{ matrix.app_env }}
+      - name: Build iOS with Fastlane
+        run: bundle exec fastlane ios build_unsigned_${{ matrix.flavor }}
 
       - name: Verify bundle identifier
         run: |
@@ -72,7 +70,6 @@ jobs:
 
           test "$ACTUAL_ID" = "${{ matrix.expected_bundle_id }}"
 
-      
       - name: Verify Firebase configuration
         run: |
           APP_PATH="build/ios/iphoneos/Runner.app"
@@ -90,7 +87,6 @@ jobs:
           test "$FIREBASE_BUNDLE_ID" = "${{ matrix.expected_bundle_id }}"
 
           echo "Firebase configuration verified successfully."
-
 
       - name: Upload unsigned iOS artifact
         uses: actions/upload-artifact@v4
