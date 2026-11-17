@@ -61,7 +61,7 @@ platform :ios do
 
     UI.user_error!("Firebase plist not found!") unless File.file?(firebase_plist)
 
-    UI.success!("iOS #{flavor} build verified successfully.")
+    UI.success("iOS #{flavor} build verified successfully.")
   end
 
   desc "Build unsigned FantaXI Development for iOS"
