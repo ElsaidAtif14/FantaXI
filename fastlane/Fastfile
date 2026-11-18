@@ -1,0 +1,98 @@
+
+default_platform(:android)
+
+platform :android do
+  desc "Build FantaXI Development APK"
+  lane :build_development do
+    sh(
+      "flutter",
+      "build",
+      "apk",
+      "--release",
+      "--flavor",
+      "development",
+      "--dart-define=APP_ENV=development"
+    )
+
+    apk_path = File.expand_path(
+      "../build/app/outputs/flutter-apk/app-development-release.apk",
+      __dir__
+    )
+
+    UI.user_error!("Development APK not found!") unless File.exist?(apk_path)
+
+    UI.success("Development APK built successfully.")
+  end
+
+  desc "Distribute existing FantaXI Development APK to Firebase"
+  lane :distribute_development do
+    apk_path = File.expand_path(
+      "../build/app/outputs/flutter-apk/app-development-release.apk",
+      __dir__
+    )
+
+    UI.user_error!(
+      "Development APK not found! Run build_development first."
+    ) unless File.exist?(apk_path)
+
+    firebase_app_distribution(
+      app: "1:171688641064:android:838438d159ab02ea8feb1d",
+      android_artifact_path: apk_path,
+      android_artifact_type: "APK",
+      release_notes: "FantaXI Development - Automated build",
+      service_credentials_file: ENV["GOOGLE_APPLICATION_CREDENTIALS"]
+    )
+
+    UI.success("Development APK distributed successfully.")
+  end
+end
+
+platform :ios do
+  private_lane :build_unsigned do |options|
+    flavor = options[:flavor]
+    app_env = options[:app_env]
+
+    sh(
+      "flutter",
+      "build",
+      "ios",
+      "--release",
+      "--flavor",
+      flavor,
+      "--no-codesign",
+      "--dart-define=APP_ENV=#{app_env}"
+    )
+
+    app_path = File.expand_path(
+      "../build/ios/iphoneos/Runner.app",
+      __dir__
+    )
+
+    UI.user_error!("iOS app not found!") unless Dir.exist?(app_path)
+
+    firebase_plist = File.join(
+      app_path,
+      "GoogleService-Info.plist"
+    )
+
+    UI.user_error!("Firebase plist not found!") unless File.file?(firebase_plist)
+
+    UI.success("iOS #{flavor} build verified successfully.")
+  end
+
+  desc "Build unsigned FantaXI Development for iOS"
+  lane :build_unsigned_development do
+    build_unsigned(
+      flavor: "development",
+      app_env: "development"
+    )
+  end
+
+  desc "Build unsigned FantaXI Production for iOS"
+  lane :build_unsigned_production do
+    build_unsigned(
+      flavor: "production",
+      app_env: "production"
+    )
+  end
+end

@@ -29,4 +29,8 @@ Thumbs.db
 *.iml
 
 # Design reference assets (not part of the app source)
-design_references/match_details/
+design_references/match_details/vendor/bundle/
+.bundle/
+/vendor/bundle/
+/vendor/bundle/
+/design_references/

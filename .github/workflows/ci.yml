@@ -1,0 +1,167 @@
+name: FantaXI CI/CD
+
+on:
+  push:
+    branches:
+      - app_flavors
+
+  pull_request:
+    branches:
+      - app_flavors
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Analyze and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.47.8"
+          channel: stable
+          cache: true
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Analyze project
+        run: flutter analyze
+
+      - name: Run tests
+        run: flutter test
+
+  android-build:
+    name: Android Build and Distribution
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.47.8"
+          channel: stable
+          cache: true
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Build Development APK
+        run: bundle exec fastlane android build_development
+
+      - name: Authenticate with Google Cloud
+        if: github.event_name != 'pull_request'
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          create_credentials_file: true
+          export_environment_variables: true
+
+      - name: Distribute Development to Firebase
+        if: github.event_name != 'pull_request'
+        run: bundle exec fastlane android distribute_development
+
+  ios-build:
+    name: Build iOS (${{ matrix.flavor }})
+    needs: test
+    runs-on: macos-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - flavor: development
+            expected_bundle_id: com.example.fantasy.dev
+
+          - flavor: production
+            expected_bundle_id: com.example.fantasy
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.47.8"
+          channel: stable
+          cache: true
+
+      - name: Check Xcode
+        run: xcodebuild -version
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Build iOS with Fastlane
+        run: bundle exec fastlane ios build_unsigned_${{ matrix.flavor }}
+
+      - name: Verify bundle identifier
+        run: |
+          APP_PATH="build/ios/iphoneos/Runner.app"
+
+          test -d "$APP_PATH"
+
+          ACTUAL_ID=$(/usr/libexec/PlistBuddy \
+            -c "Print :CFBundleIdentifier" \
+            "$APP_PATH/Info.plist")
+
+          echo "Expected: ${{ matrix.expected_bundle_id }}"
+          echo "Actual: $ACTUAL_ID"
+
+          test "$ACTUAL_ID" = "${{ matrix.expected_bundle_id }}"
+
+      - name: Verify Firebase configuration
+        run: |
+          APP_PATH="build/ios/iphoneos/Runner.app"
+          FIREBASE_PLIST="$APP_PATH/GoogleService-Info.plist"
+
+          test -f "$FIREBASE_PLIST"
+
+          FIREBASE_BUNDLE_ID=$(/usr/libexec/PlistBuddy \
+            -c "Print :BUNDLE_ID" \
+            "$FIREBASE_PLIST")
+
+          echo "Expected Firebase Bundle ID: ${{ matrix.expected_bundle_id }}"
+          echo "Actual Firebase Bundle ID: $FIREBASE_BUNDLE_ID"
+
+          test "$FIREBASE_BUNDLE_ID" = "${{ matrix.expected_bundle_id }}"
+
+          echo "Firebase configuration verified successfully."
+
+      - name: Upload unsigned iOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-${{ matrix.flavor }}-unsigned
+          path: build/ios/iphoneos/Runner.app
+          if-no-files-found: error

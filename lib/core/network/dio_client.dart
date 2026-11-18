@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fantasy/core/constants/app_constants.dart';
 import 'package:fantasy/core/error/expentions.dart';
+import 'package:fantasy/core/config/app_config.dart';
 
 class DioClient {
   late final Dio _dio;
@@ -20,7 +21,7 @@ class DioClient {
       ),
     );
 
-    if (kDebugMode) {
+    if (kDebugMode && AppConfig.isDevelopment) {
       _dio.interceptors.add(
         LogInterceptor(
           requestBody: false,
