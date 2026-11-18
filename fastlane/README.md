@@ -15,13 +15,42 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## Android
 
+### android build_development
+
+```sh
+[bundle exec] fastlane android build_development
+```
+
+Build FantaXI Development APK
+
 ### android distribute_development
 
 ```sh
 [bundle exec] fastlane android distribute_development
 ```
 
-Build and distribute FantaXI Development to Firebase
+Distribute existing FantaXI Development APK to Firebase
+
+----
+
+
+## iOS
+
+### ios build_unsigned_development
+
+```sh
+[bundle exec] fastlane ios build_unsigned_development
+```
+
+Build unsigned FantaXI Development for iOS
+
+### ios build_unsigned_production
+
+```sh
+[bundle exec] fastlane ios build_unsigned_production
+```
+
+Build unsigned FantaXI Production for iOS
 
 ----
 

@@ -2,8 +2,8 @@
 default_platform(:android)
 
 platform :android do
-  desc "Build and distribute FantaXI Development to Firebase"
-  lane :distribute_development do
+  desc "Build FantaXI Development APK"
+  lane :build_development do
     sh(
       "flutter",
       "build",
@@ -21,6 +21,20 @@ platform :android do
 
     UI.user_error!("Development APK not found!") unless File.exist?(apk_path)
 
+    UI.success("Development APK built successfully.")
+  end
+
+  desc "Distribute existing FantaXI Development APK to Firebase"
+  lane :distribute_development do
+    apk_path = File.expand_path(
+      "../build/app/outputs/flutter-apk/app-development-release.apk",
+      __dir__
+    )
+
+    UI.user_error!(
+      "Development APK not found! Run build_development first."
+    ) unless File.exist?(apk_path)
+
     firebase_app_distribution(
       app: "1:171688641064:android:838438d159ab02ea8feb1d",
       android_artifact_path: apk_path,
@@ -28,6 +42,8 @@ platform :android do
       release_notes: "FantaXI Development - Automated build",
       service_credentials_file: ENV["GOOGLE_APPLICATION_CREDENTIALS"]
     )
+
+    UI.success("Development APK distributed successfully.")
   end
 end
 
