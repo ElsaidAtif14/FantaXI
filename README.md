@@ -10,23 +10,35 @@ FantaXI is a Flutter app for following a Fantasy Premier League manager entry. I
 
 | Home | Squad | Leagues |
 |:---:|:---:|:---:|
-| <img src="assets/images/screenshots/01-home-dashboard.jpeg" width="240" alt="Home dashboard" /> | <img src="assets/images/screenshots/02-squad-picks.jpeg" width="240" alt="Squad picks" /> | <img src="assets/images/screenshots/03-leagues.jpeg" width="240" alt="Leagues and standings" /> |
+| <img width="720" height="1600" alt="Home" src="https://github.com/user-attachments/assets/6322e8dd-2dbf-4e13-ac17-7c7b9351c646" />
+| <img width="720" height="1600" alt="Squad" src="https://github.com/user-attachments/assets/31f7e340-5732-46b3-af0d-db996708e1f8" />
+| <img width="720" height="1600" alt="Leagues" src="https://github.com/user-attachments/assets/f9ba695b-e361-4c20-b611-5c55a3845aef" />|
 
 | League standings | Gameweek points | History |
 |:---:|:---:|:---:|
-| <img src="assets/images/screenshots/04-league-standings.jpeg" width="240" alt="League standings" /> | <img src="assets/images/screenshots/05-league-gameweek-points.jpeg" width="240" alt="League gameweek points" /> | <img src="assets/images/screenshots/06-history.jpeg" width="240" alt="Season history" /> |
+| <img width="720" height="1600" alt="League standings" src="https://github.com/user-attachments/assets/189cfbb1-d133-457b-9ee8-a4fc090dc35a" />
+|<img width="720" height="1600" alt="Gameweek points" src="https://github.com/user-attachments/assets/114b5487-a89d-4f5b-bbc1-5edbeb09a527" />
+| <img width="720" height="1600" alt="History" src="https://github.com/user-attachments/assets/36e3f822-6812-4feb-b059-007454e41498" />|
 
 | Market | Matches | Match timeline |
 |:---:|:---:|:---:|
-| <img src="assets/images/screenshots/07-market.jpeg" width="240" alt="Player market" /> | <img src="assets/images/screenshots/08-matches.jpeg" width="240" alt="Matchweek fixtures" /> | <img src="assets/images/screenshots/09-match-timeline.jpeg" width="240" alt="Match timeline" /> |
+| <img width="720" height="1600" alt="Market" src="https://github.com/user-attachments/assets/c8720a6c-9705-455b-afa4-99b9a5caf4f6" />
+| <img width="720" height="1600" alt="Matches" src="https://github.com/user-attachments/assets/dccba47d-5177-42ec-be5f-ffdbde5588ac" />
+ | <img width="720" height="1600" alt="Match timeline" src="https://github.com/user-attachments/assets/b9ff429d-4469-4fd0-b6a8-fad8bc243408" />
+|
 
 | Lineups | Match stats | Appearance |
 |:---:|:---:|:---:|
-| <img src="assets/images/screenshots/10-match-lineups.jpeg" width="240" alt="Match lineups" /> | <img src="assets/images/screenshots/11-match-stats.jpeg" width="240" alt="Match statistics" /> | <img src="assets/images/screenshots/14-appearance-settings.jpeg" width="240" alt="Appearance settings" /> |
+|<img width="720" height="1600" alt="Lineups" src="https://github.com/user-attachments/assets/41c83426-d1e4-4c3d-af09-956b7920c050" />
+| <img width="720" height="1600" alt="Match stats" src="https://github.com/user-attachments/assets/e7680d55-9136-4bfb-806f-2c9b1cd1e8a4" />
+| <img width="720" height="1600" alt="Appearance" src="https://github.com/user-attachments/assets/12116b45-7aec-4cf0-83ca-c253a1a842ce" />
+|
 
 | Splash | Onboarding |
 |:---:|:---:|
-| <img src="assets/images/screenshots/13-splash.jpeg" width="240" alt="Splash screen" /> | <img src="assets/images/screenshots/12-onboarding.jpeg" width="240" alt="Manager ID onboarding" /> |
+| <img width="720" height="1600" alt="Splash" src="https://github.com/user-attachments/assets/927b6d23-267d-4bd5-a8f2-cd2bd4a156ec" />
+| <img width="720" height="1600" alt="Onboarding" src="https://github.com/user-attachments/assets/e507c86f-c19f-41f7-ba87-bb1f21e374eb" />
+|
 
 ## Features
 
